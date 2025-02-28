@@ -14,6 +14,6 @@ int main(int ac, char* av[])
 	for (size_t i = 0; i < password.length(); i++)
 		std::cout << '*';
 
-    std::cout << std::endl;
+	std::cout << std::endl;
 	return 0;
 }
