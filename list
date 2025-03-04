@@ -1,0 +1,64 @@
+Projeto ft_irc
+
+1️⃣ Processamento de redes e conexões.
+2️⃣ Processamento de comandos e gestão de utilizadores/canais.
+
+Pessoa 1: Servidor, ligações, E/S
+
+Tarefa principal: Criar um servidor TCP que aceite ligações e transmita dados.
+
+Tarefas:
+
+1️⃣ Criação de um servidor básico:
+	- Implementação de socket(), bind(), listen(), accept().
+	- O servidor aceita conexões de clientes para a porta especificada.
+	- Usando poll() (ou select()) para gerenciar conexões.
+
+2️⃣ Armazenamento de clientes:
+	- Uma classe Client que armazena nickname, status, IP, socket.
+	- Adicionando clientes ao std::map<int, Client> (onde int é um socket).
+	- Tratamento de desconexões (QUIT).
+
+3️⃣ Processamento de entrada e saída (I/O):
+	- Receção de dados (recv()) e reconhecimento de comandos.
+	- Envio de dados (send()).
+
+4️⃣ Proteção do servidor:
+	- Limitar o número máximo de clientes.
+	- Encerramento de ligações em caso de erro.
+
+Resultado esperado:
+
+✔ O servidor aceita com sucesso conexões de clientes.
+O servidor recebe e transmite dados.
+Os utilizadores podem ligar-se e terminar a sessão.
+
+Pessoa 2: Comandos IRC, canais, analisador
+
+Tarefa principal: Implementar comandos e gerir utilizadores/canais.
+
+Tarefas:
+
+1️⃣ Implementação de comandos:
+	- PASS - verificação da palavra-passe.
+	- NICK - selecionar uma alcunha.
+	- USER - registo de utilizador.
+	- JOIN - juntar-se ao canal.
+	- PRIVMSG - mensagens privadas.
+	- PART - sair do canal.
+	- QUIT - sair do servidor.
+
+2️⃣ Trabalhar com canais:
+	- Criar um canal (guarda participantes, definições).
+	- Gerir direitos (MODE).
+	- Chutar, convidar e convidar.
+
+3️⃣ Processar a entrada do utilizador:
+	- Analisar comandos (parseCommand()).
+	- Envio de respostas (sendReply()).
+
+Resultado esperado:
+
+O servidor entende e processa comandos básicos.
+Os utilizadores podem escrever no canal, alterar o nickname.
+Os administradores podem gerir os canais.
