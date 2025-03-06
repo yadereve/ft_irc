@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yadereve <yadereve@student.42lisboa.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 09:18:42 by yadereve          #+#    #+#             */
+/*   Updated: 2025/03/06 09:18:42 by yadereve         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <iostream>
 #include <string>
 
@@ -13,7 +25,6 @@ int main(int ac, char* av[])
 	std::cout << "password: ";
 	for (size_t i = 0; i < password.length(); i++)
 		std::cout << '*';
-
 	std::cout << std::endl;
 	return 0;
 }
