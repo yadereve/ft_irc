@@ -62,3 +62,14 @@ Resultado esperado:
 O servidor entende e processa comandos básicos.
 Os utilizadores podem escrever no canal, alterar o nickname.
 Os administradores podem gerir os canais.
+
+
+Documentation: https://datatracker.ietf.org/doc/html/rfc1459
+
+This is where the replays are located: https://datatracker.ietf.org/doc/html/rfc2812
+
+A book on network programming: https://github.com/media-lib/prog_lib/blob/master/general/Beej%20-%20Guide%20to%20Network%20Programming.pdf. 
+
+Detailed explanation of sockaddr and sockaddr_in: https://medium.com/@hughbrown123/project-creating-an-ftp-server-and-client-part-3-butchering-some-code-97b5ba39e622 
+
+Test server (example): chat.freenode.net

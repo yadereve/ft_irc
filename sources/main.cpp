@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yadereve <yadereve@student.42lisboa.c      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 09:18:42 by yadereve          #+#    #+#             */
-/*   Updated: 2025/03/06 09:18:42 by yadereve         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <iostream>
-#include <string>
+#include "../includes/Server.hpp"
 
 int main(int ac, char* av[])
 {
@@ -26,5 +13,17 @@ int main(int ac, char* av[])
 	for (size_t i = 0; i < password.length(); i++)
 		std::cout << '*';
 	std::cout << std::endl;
-	return 0;
+
+	Server server(av[1], av[2]);
+
+	try
+	{
+		server.start();
+		return 0;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
 }
