@@ -34,7 +34,7 @@ int Server::start()
 	//Bind the ip adress and port to socket
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
-	hint.sin_port = htons(std::atoi(_port.c_str()));
+	hint.sin_port = htons(atoi(_port.c_str()));
 	inet_pton(AF_INET, "0.0.0.0", &hint.sin_addr);
 	if (bind(listening, (sockaddr*)&hint, sizeof(hint)) == -1)
 	{

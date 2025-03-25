@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <cstring>
+#include <stdlib.h>
 
 class Server
 {
