@@ -93,7 +93,7 @@ int Server::start()
 			break;
 		}
 
-		client1.Parser(std::string(buff, 0, bytesReceived));
+		client1.Parser(std::string(buff));
 	}
 
 	// Close socket
@@ -102,6 +102,8 @@ int Server::start()
 	return 0;
 }
 
+void Server::closeFds()
+{ }
 
 /* getters */
 

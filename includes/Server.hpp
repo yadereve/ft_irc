@@ -16,6 +16,7 @@ public:
 	~Server();
 	
 	int start();
+	void closeFds();
 
 	// getters
 	std::string GetPass() const;
