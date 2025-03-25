@@ -1,13 +1,7 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include <iostream>
-#include <string>
-#include <unistd.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <cstring>
-#include <stdlib.h>
+#include "text_format.h"
 
 class Server
 {
