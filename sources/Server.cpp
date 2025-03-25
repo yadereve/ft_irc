@@ -72,7 +72,7 @@ int Server::start()
 	// While loop: accept and message back to client
 	char buff[4096];
 
-	// Create a client
+	// Create 1 client
 	Client client1(*this, clientSocket);
 
 	// Client input wait

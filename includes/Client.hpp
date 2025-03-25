@@ -23,14 +23,21 @@ public:
 private:
 	// attributes
 	std::string _cmd;
-	std::string _message;
+	std::vector<std::string> _message;
 	const Server &_server;
 	int _socket;
+	// 	status
+	bool _pass_check;
+	bool _nick_check;
+	bool _user_check;
+
 
 	// methods
+	// 	commands
 	void Pass();
 	void Nick();
 	void User();
+	void Help();
 	void PrintMessage(std::string);
 
 };
