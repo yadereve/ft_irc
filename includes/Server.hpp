@@ -2,6 +2,9 @@
 #define SERVER_HPP
 
 #include "text_format.h"
+#include "config_macros.h"
+
+#include "Client.hpp"
 
 class Server
 {
@@ -13,6 +16,9 @@ public:
 	~Server();
 	
 	int start();
+
+	// getters
+	std::string GetPass() const;
 
 private:
 	std::string _port;

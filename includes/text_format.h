@@ -3,25 +3,6 @@
 
 /******************************************
  *                                        *
- *                INCLUDES                *
- *                                        *
- ******************************************/
-
-#include <cstdlib>
-#include <iomanip>
-#include <cstdio>
-#include <climits>
-#include <cctype>
-#include <iostream>
-#include <string>
-#include <unistd.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <cstring>
-#include <stdlib.h>
-
-/******************************************
- *                                        *
  *                DEFINES                 *
  *                                        *
  ******************************************/
