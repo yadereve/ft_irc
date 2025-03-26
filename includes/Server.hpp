@@ -19,11 +19,16 @@ public:
 
 	// getters
 	std::string GetPass() const;
+	std::vector<std::string> GetNickList() const;
+
+	// setters
+	void SetElementNickList(std::string str);
 
 private:
 	std::string _port;
 	std::string _pass;
 	std::string _host;
+	std::vector<std::string> _nick_list;
 
 };
 

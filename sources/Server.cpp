@@ -102,10 +102,11 @@ int Server::start()
 	return 0;
 }
 
-
 /* getters */
 
-std::string Server::GetPass() const
-{
-    return _pass;
-}
+std::string Server::GetPass() const { return _pass; }
+std::vector<std::string> Server::GetNickList() const { return _nick_list; }
+
+/* setters */
+
+void Server::SetElementNickList(std::string str){ _nick_list.push_back(str); }

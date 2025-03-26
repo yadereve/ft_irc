@@ -14,6 +14,7 @@ SRC_FILE = \
 	Pass \
 	User \
 	Utils \
+	CommandHandler \
 	
 SRC = $(addsuffix .cpp ,$(addprefix $(SRC_DIR)/, $(SRC_FILE)))
 OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))

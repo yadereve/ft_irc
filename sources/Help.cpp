@@ -2,5 +2,5 @@
 
 void Client::Help()
 {
-    PrintMessage(GREEN "User ok\n" RESET);
+    MessageUser(GREEN "User ok\n" RESET);
 }

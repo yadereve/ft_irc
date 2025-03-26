@@ -1,5 +1,4 @@
 #include "../includes/Client.hpp"
-#include "../includes/Utils.hpp"
 
 Client::Client(Server &server, int s) : _server(server), _socket(s)
 {
@@ -12,41 +11,17 @@ Client::~Client()
 {
 }
 
-void Client::PrintMessage(std::string msg)
+void Client::MessageUser(std::string msg)
 {
     send(_socket, msg.c_str(), msg.length() + 1, 0);
 }
 
-void Client::Parser(std::string input)
+void Client::MessageUser(int nb)
 {
-    // error handling
-    std::string input2 = input.substr(0, input.find_first_of("\n"));
-    if (input2.length() <= 0)
-    {
-        return;
-    }
-
-    // define command list
-    std::string command_list[] = {"PASS", "NICK", "USER", "HELP"};
-    void (Client::*actions[])() = {
-        &Client::Pass,
-        &Client::Nick,
-        &Client::User,
-        &Client::Help};
-
-    // compare input with command list
-    _message = Utils::Split(input2, ' ');
-    _cmd = _message[0];
-    for (size_t i = 0; i < command_list->size(); ++i)
-    {
-        if (_cmd == command_list[i])
-        {
-            _message.erase(_message.begin());
-            (this->*actions[i])();
-            return;
-        }
-    }
-    PrintMessage(RED "Invalid command\n" RESET);
+    std::ostringstream oss;
+    oss << nb;
+    std::string msg = oss.str();
+    send(_socket, msg.c_str(), msg.length() + 1, 0);
 }
 
 /* setters */

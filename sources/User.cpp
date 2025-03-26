@@ -1,6 +1,7 @@
 #include "../includes/Client.hpp"
 
-void Client::User()
+int Client::User()
 {
-    PrintMessage(GREEN "User ok\n" RESET);
+    MessageUser(GREEN "User ok\n" RESET);
+    return OK;
 }

@@ -5,6 +5,7 @@
 #include "config_macros.h"
 
 #include "Server.hpp"
+#include "Utils.hpp"
 
 class Server;
 
@@ -24,7 +25,7 @@ private:
 	// attributes
 	std::string _cmd;
 	std::vector<std::string> _message;
-	const Server &_server;
+	Server &_server;
 	int _socket;
 	// 	status
 	bool _pass_check;
@@ -34,11 +35,15 @@ private:
 
 	// methods
 	// 	commands
-	void Pass();
-	void Nick();
-	void User();
+	int Pass();
+	int Nick();
+	int User();
 	void Help();
-	void PrintMessage(std::string);
+	// 	user
+	void MessageUser(std::string);
+	void MessageUser(int);
+	void CommandHandler(int);
+	bool NickAlreadyExist(std::string str);
 
 };
 
