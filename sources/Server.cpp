@@ -109,4 +109,16 @@ std::vector<std::string> Server::GetNickList() const { return _nick_list; }
 
 /* setters */
 
-void Server::SetElementNickList(std::string str){ _nick_list.push_back(str); }
+void Server::SetElementNickList(std::string old_nick, std::string new_nick)
+{
+	// if there is a old nick
+	if (old_nick.length() > 0)
+	{
+		// look for the old nick on the _nick_lst an erase it
+		std::vector<std::string>::iterator it = std::find(_nick_list.begin(), _nick_list.end(), old_nick);
+		if (it != _nick_list.end())
+			_nick_list.erase(it);
+	}
+	// add new nick
+	_nick_list.push_back(new_nick);
+}

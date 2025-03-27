@@ -15,16 +15,16 @@ public:
 	Server& operator=(const Server& other);
 	~Server();
 	
+	// METHODS
 	int start();
-
 	// getters
 	std::string GetPass() const;
 	std::vector<std::string> GetNickList() const;
-
 	// setters
-	void SetElementNickList(std::string str);
+	void SetElementNickList(std::string, std::string);
 
 private:
+	// ATTRIBUTES
 	std::string _port;
 	std::string _pass;
 	std::string _host;

@@ -9,12 +9,17 @@ SRC_FILE = \
 	main \
 	Server \
 	Client \
-	Help \
-	Nick \
-	Pass \
-	User \
 	Utils \
 	CommandHandler \
+	\
+	Pass \
+	Nick \
+	User \
+	\
+	Help \
+	Oper \
+	Ping \
+	Quit \
 	
 SRC = $(addsuffix .cpp ,$(addprefix $(SRC_DIR)/, $(SRC_FILE)))
 OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))

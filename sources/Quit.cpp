@@ -1,6 +1,6 @@
 #include "../includes/Client.hpp"
 
-int Client::Help()
+int Client::Quit()
 {
     return 0;
 }

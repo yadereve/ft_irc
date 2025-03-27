@@ -30,8 +30,8 @@ int Client::Parser(std::string raw_input)
         return ERR_EMPTY_INPUT;
 
     // set message and cmd
-    _message = Utils::Split(input, ' ');
-    _cmd = _message[0];
+    _arguments = Utils::Split(input, ' ');
+    _cmd = _arguments[0];
 
     // get command id
     std::vector<std::string> command_list;
@@ -41,7 +41,7 @@ int Client::Parser(std::string raw_input)
     {
         if (_cmd == command_list[i])
         {
-            _message.erase(_message.begin());
+            _arguments.erase(_arguments.begin());
             command_id = i + 1;
             break;
         }
@@ -56,17 +56,35 @@ int Client::Parser(std::string raw_input)
 
 int Client::CommandHandler(int command_id)
 {
+    // login and HELP commands
     switch (command_id)
     {
     case PASS:
         return Pass();
-
     case NICK:
         return Nick();
-
-    default:
-        return command_id;
+    case USER:
+        return User();
+    case HELP:
+        return Help();
     }
+
+    // authentication check to use other commands
+    if (_authenticated_check == false)
+        return ERR_NOT_AUTHENTICATED;
+
+    switch (command_id)
+    {
+    case OPER:
+        return Oper();
+    case PING:
+        return Ping();
+    case QUIT:
+        return Quit();
+    }
+
+    // if id hasn't a command is a error, so return it
+    return command_id;
 }
 
 void Client::PrintErrorMessage(int nb)
@@ -158,9 +176,37 @@ void Client::PrintErrorMessage(int nb)
     case ERR_EMPTY_INPUT:
         oss << "Empty Input";
         break;
+    case ERR_ERRONEUS_USER:
+        oss << "Erroneous User";
+        break;
+    case ERR_ERRONEUS_REAL_NAME:
+        oss << "Erroneous Real Name";
+        break;
     }
 
     oss << RESET << std::endl;
     
-    MessageUser(oss.str());
+    MessageClient(oss.str());
+}
+
+void Client::PrintSuccessMessage(int nb)
+{
+    std::ostringstream oss;
+
+    switch (nb)
+    {
+    case PASSWORD_SUCCESS:
+        oss << GREEN << "001: Correct Password" << ITALICS << RESEND;
+        break;
+    case NICKNAME_SUCCESS:
+        oss << GREEN << "001: Nickname assigned: " << _nick << RESEND;
+        break;
+    case USERNAME_SUCCESS:
+        oss << GREEN << "001: Username assigned: " << RESET ITALICS << _user << RESEND;
+        oss << GREEN << "001: Real name assigned: " << RESET ITALICS << _real_name << RESEND;
+        oss << BRIGHT_BLUE << "001: Welcome to the Internet Relay Chat Network, " << RESET ITALICS << _nick << RESEND;
+        break;
+    }
+    
+    MessageClient(oss.str());
 }

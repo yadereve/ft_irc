@@ -1,17 +1,5 @@
 #include "../includes/Client.hpp"
 
-static bool ValidNick(std::string str)
-{
-    if (str.length() < 3)
-        return false;
-    if (!isalpha(str[0]))
-        return false;
-    for (size_t i = 0; i < str.length(); i++)
-        if (!isalnum(str[i]))
-            return false;
-    return true;
-}
-
 bool Client::NickAlreadyExist(std::string str)
 {
     std::vector<std::string> list = _server.GetNickList();
@@ -24,31 +12,31 @@ bool Client::NickAlreadyExist(std::string str)
 
 int Client::Nick()
 {
-    // server password is setted
+    // if PASS not setted yet
     if (_pass_check == false)
     {
         return ERR_NOT_AUTHENTICATED;
     }
-    // NICK need another argument
-    if (_message.size() < 1)
+    // if NICK doesn't has arguments
+    if (_arguments.size() < 1)
     {
         return ERR_NO_NICKNAME_GIVEN;
     }
-    // NICK only has one argument and it is valid
-    if (_message.size() > 1 || ValidNick(_message[0]) == false)
+    // if NICK has too many argument or if NICK isn't valid
+    if (_arguments.size() > 1 || ValidName(_arguments[0]) == false)
     {
         return ERR_ERRONEUS_NICKNAME;
     }
-    // NICK is unique
-    if (NickAlreadyExist(_message[0]) == true)
+    // if NICK isn't unique
+    if (NickAlreadyExist(_arguments[0]) == true)
     {
         return ERR_NICKNAME_IN_USE;
     }
 
-    _server.SetElementNickList(_message[0]);
-
+    // set NICK
+    _server.SetElementNickList(_nick, _arguments[0]);
+    _nick = _arguments[0];
     _nick_check = true;
-    MessageUser(GREEN "Nick added\n" RESET);
-    
-    return 0;
+
+    return NICKNAME_SUCCESS;
 }
