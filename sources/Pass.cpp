@@ -1,5 +1,8 @@
 #include "../includes/Client.hpp"
 
+/*
+ * PASS <pass>
+ */
 int Client::Pass()
 {
     // if PASS was already setted

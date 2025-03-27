@@ -10,6 +10,9 @@ bool Client::NickAlreadyExist(std::string str)
     return false;
 }
 
+/*
+ * NICK <nick>
+ */
 int Client::Nick()
 {
     // if PASS not setted yet

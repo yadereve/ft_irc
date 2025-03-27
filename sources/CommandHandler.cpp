@@ -108,7 +108,7 @@ void Client::PrintErrorMessage(int nb)
         oss << "Too many channels";
         break;
     case ERR_UNKNOWN_COMMAND:
-        oss << "Unknown command";
+        oss << "Unknown command or invalid argument";
         break;
     case ERR_NO_NICKNAME_GIVEN:
         oss << "No nickname given";

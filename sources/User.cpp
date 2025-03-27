@@ -2,18 +2,12 @@
 
 #define USER_MAX_LEN 12
 
+/*
+ * USER <user> * * :<real_name>
+ * USER <user> 0 * :<real_name>
+ */
 int Client::User()
 {
-    /*
-     *
-     * USER syntax
-     *
-     * USER <user> * * :<real_name>
-     * or
-     * USER <user> 0 * :<real_name>
-     *
-     */
-
     // if USER was already setted
     if (_user_check == true)
     {
@@ -34,8 +28,13 @@ int Client::User()
     {
         return ERR_UNKNOWN_COMMAND;
     }
-    // if USER third arg in not '*'
+    // if USER third arg is not '*'
     if (_arguments[2] != "*")
+    {
+        return ERR_UNKNOWN_COMMAND;
+    }
+    // if USER forth arg doesn't start with ':'
+    if (_arguments[3][0] != ':')
     {
         return ERR_UNKNOWN_COMMAND;
     }
