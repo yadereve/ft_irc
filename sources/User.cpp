@@ -3,5 +3,5 @@
 int Client::User()
 {
     MessageUser(GREEN "User ok\n" RESET);
-    return OK;
+    return 0;
 }

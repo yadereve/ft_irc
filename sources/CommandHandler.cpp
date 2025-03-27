@@ -20,14 +20,14 @@ void CommandListInitializer(std::vector<std::string> &list)
     list.push_back("KICK");
 }
 
-void Client::Parser(std::string raw_input)
+int Client::Parser(std::string raw_input)
 {
     // remove input las char '\n'
     std::string input = raw_input.substr(0, raw_input.find_first_of("\n"));
 
     // handle void input
     if (input.length() <= 0)
-        return;
+        return ERR_EMPTY_INPUT;
 
     // set message and cmd
     _message = Utils::Split(input, ' ');
@@ -49,33 +49,118 @@ void Client::Parser(std::string raw_input)
 
     // handle non existent command
     if (command_id == -1)
-    {
-        MessageUser(RED "Invalid command\n" RESET);
-        return; // error
-    }
+        return ERR_INVALID_INPUT;
 
-    CommandHandler(command_id);
+    return command_id;
 }
 
-void Client::CommandHandler(int command_id)
+int Client::CommandHandler(int command_id)
 {
-    int return_nb = OK;
-
     switch (command_id)
     {
     case PASS:
-        return_nb = Pass();
-        break;
+        return Pass();
 
     case NICK:
-        return_nb = Nick();
+        return Nick();
+
+    default:
+        return command_id;
+    }
+}
+
+void Client::PrintErrorMessage(int nb)
+{
+    std::ostringstream oss;
+
+    oss << RED BOLT << nb << ": ";
+
+    switch (nb)
+    {
+    case ERR_NO_SUCH_NICK:
+        oss << "No such nick/channel";
+        break;
+    case ERR_NO_SUCH_CHANNEL:
+        oss << "No such channel";
+        break;
+    case ERR_CANNOT_SEND_TO_CHAN:
+        oss << "Cannot send to channel";
+        break;
+    case ERR_TOO_MANY_CHANNELS:
+        oss << "Too many channels";
+        break;
+    case ERR_UNKNOWN_COMMAND:
+        oss << "Unknown command";
+        break;
+    case ERR_NO_NICKNAME_GIVEN:
+        oss << "No nickname given";
+        break;
+    case ERR_ERRONEUS_NICKNAME:
+        oss << "Erroneous nickname";
+        break;
+    case ERR_NICKNAME_IN_USE:
+        oss << "Nickname is already in use";
+        break;
+    case ERR_USER_NOT_IN_CHANNEL:
+        oss << "User is not in the channel";
+        break;
+    case ERR_NOT_ON_CHANNEL:
+        oss << "Not on channel";
+        break;
+    case ERR_USER_ALREADY_INVITED:
+        oss << "User is already invited";
+        break;
+    case ERR_USER_ON_CHANNEL:
+        oss << "User is already on the channel";
+        break;
+    case ERR_NEED_MORE_PARAMS:
+        oss << "Need more parameters";
+        break;
+    case ERR_ALREADY_REGISTERED:
+        oss << "Already registered";
+        break;
+    case ERR_NOT_AUTHENTICATED:
+        oss << "Not authenticated";
+        break;
+    case ERR_PASSWD_MIS_MATCH:
+        oss << "Password mismatch";
+        break;
+    case ERR_INVALID_PASSWORD:
+        oss << "Invalid password";
+        break;
+    case ERR_CHANNEL_IS_FULL:
+        oss << "Channel is full";
+        break;
+    case ERR_UNKNOWN_MODE:
+        oss << "Unknown mode";
+        break;
+    case ERR_INVITE_ONLY_CHAN:
+        oss << "Invite only channel";
+        break;
+    case ERR_BAD_CHANNEL_KEY:
+        oss << "Bad channel key";
+        break;
+    case ERR_BAD_CHAN_MASK:
+        oss << "Bad channel mask";
+        break;
+    case ERR_CHAN_OP_PRIV_NEEDED:
+        oss << "Channel operator privileges needed";
+        break;
+    case ERR_NO_OPER_HOST:
+        oss << "No operator host";
+        break;
+    case ERR_USERS_DONT_MATCH:
+        oss << "Users don't match";
+        break;
+    case ERR_INVALID_INPUT:
+        oss << "Invalid Input";
+        break;
+    case ERR_EMPTY_INPUT:
+        oss << "Empty Input";
         break;
     }
 
-    if (return_nb != 0)
-    {
-        MessageUser(return_nb);
-        MessageUser(RED " - Something was wrong\n" RESET);
-    }
-    // FeedbackClient(return_nb);
+    oss << RESET << std::endl;
+    
+    MessageUser(oss.str());
 }

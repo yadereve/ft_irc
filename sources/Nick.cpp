@@ -27,22 +27,22 @@ int Client::Nick()
     // server password is setted
     if (_pass_check == false)
     {
-        return ERROR_1;
+        return ERR_NOT_AUTHENTICATED;
     }
     // NICK need another argument
     if (_message.size() < 1)
     {
-        return ERROR_2;
+        return ERR_NO_NICKNAME_GIVEN;
     }
     // NICK only has one argument and it is valid
     if (_message.size() > 1 || ValidNick(_message[0]) == false)
     {
-        return ERROR_3;
+        return ERR_ERRONEUS_NICKNAME;
     }
     // NICK is unique
     if (NickAlreadyExist(_message[0]) == true)
     {
-        return ERROR_4;
+        return ERR_NICKNAME_IN_USE;
     }
 
     _server.SetElementNickList(_message[0]);
@@ -50,5 +50,5 @@ int Client::Nick()
     _nick_check = true;
     MessageUser(GREEN "Nick added\n" RESET);
     
-    return OK;
+    return 0;
 }

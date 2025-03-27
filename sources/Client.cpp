@@ -24,5 +24,18 @@ void Client::MessageUser(int nb)
     send(_socket, msg.c_str(), msg.length() + 1, 0);
 }
 
+void Client::ExecuteCommand(std::string input)
+{
+    // transform input into a legible command
+    int command_id = Parser(input);
+
+    // execute command by id
+    int error = CommandHandler(command_id);
+
+    // if needed, show user the error
+    if (error)
+        PrintErrorMessage(error);
+}
+
 /* setters */
 void Client::SetSocket(int s) { _socket = s; }

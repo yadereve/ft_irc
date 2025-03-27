@@ -16,7 +16,7 @@ public:
 	~Client();
 	
 	// methods
-	void Parser(std::string);
+	void ExecuteCommand(std::string);
 
 	// setters
 	void SetSocket(int);
@@ -34,17 +34,20 @@ private:
 
 
 	// methods
-	// 	commands
+	// commands
 	int Pass();
 	int Nick();
 	int User();
 	void Help();
-	// 	user
+	// message user
 	void MessageUser(std::string);
 	void MessageUser(int);
-	void CommandHandler(int);
+	// execute command
+	int Parser(std::string);
+	int CommandHandler(int);
+	// command specific
 	bool NickAlreadyExist(std::string str);
-
+	void PrintErrorMessage(int nb);
 };
 
 #endif

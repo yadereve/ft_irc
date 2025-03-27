@@ -4,15 +4,15 @@ int Client::Pass()
 {
     if (_message.size() != 1)
     {
-        return ERROR_1;
+        return ERR_NEED_MORE_PARAMS;
     }
     if (_message.front() != _server.GetPass())
     {
-        return ERROR_2;
+        return ERR_PASSWD_MIS_MATCH;
     }
 
     _pass_check = true;
     MessageUser(GREEN "Correct password\n" RESET);
 
-    return OK;
+    return 0;
 }
