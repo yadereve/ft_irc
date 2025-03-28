@@ -1,5 +1,12 @@
 #include "../includes/Client.hpp"
 
+void Client::Pass(std::ostringstream &oss)
+{
+    oss << CYAN BOLT << "PASS <password>" RESEND;
+    oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
+    oss << WHITE << "\tEnter the server password" RESEND;
+}
+
 /*
  * PASS <pass>
  */

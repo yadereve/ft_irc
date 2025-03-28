@@ -23,11 +23,13 @@ public:
 
 private:
 	// ATTRIBUTES
-	std::string _cmd;
-	std::vector<std::string> _arguments;
+	// specific data
 	Server &_server;
 	int _socket;
-	// user vars
+	// temporary data
+	std::string _cmd;
+	std::vector<std::string> _arguments;
+	// user data
 	std::string _nick;
 	std::string _user;
 	std::string _real_name;
@@ -56,15 +58,18 @@ private:
 	int Part();
 	int Privmsg();
 	int Topic();
+	// commands description message
+	void Pass(std::ostringstream &oss);
+	void Nick(std::ostringstream &oss);
+	void User(std::ostringstream &oss);
 	// message client
 	void MessageClient(std::string);
 	void MessageClient(int);
-	// execute command
+	// command candler
 	int Parser(std::string);
 	int CommandHandler(int);
 	void PrintErrorMessage(int nb);
 	void PrintSuccessMessage(int nb);
-	// command specific
 	bool NickAlreadyExist(std::string str);
 	bool ValidName(std::string str);
 };

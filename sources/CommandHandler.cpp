@@ -83,7 +83,7 @@ int Client::CommandHandler(int command_id)
         return Quit();
     }
 
-    // if id hasn't a command is a error, so return it
+    // if command_id hasn't a command, it is a error, so return it
     return command_id;
 }
 

@@ -1,5 +1,14 @@
 #include "../includes/Client.hpp"
 
+void Client::User(std::ostringstream &oss)
+{
+    oss << CYAN BOLT << "USER <username> * * :<real name>" RESEND;
+    oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
+    oss << WHITE << "\tSet you a username and your real name" RESEND;
+    oss << WHITE << "\tYour username and real name should start with a letter and" RESEND;
+    oss << WHITE << "\tcan only have numbers, letters, hyphen (-) and underscore (_)" RESEND;
+}
+
 #define USER_MAX_LEN 12
 
 /*

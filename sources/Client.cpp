@@ -42,6 +42,10 @@ bool Client::ValidName(std::string str)
 
 void Client::ExecuteCommand(std::string input)
 {
+    // reset command and arguments
+    _cmd.clear();
+    _arguments.clear();
+    
     // transform input into a legible command
     int command_id = Parser(input);
 
@@ -51,7 +55,7 @@ void Client::ExecuteCommand(std::string input)
     // if needed, show user the error
     if (return_nb >= 400)
         PrintErrorMessage(return_nb);
-    else
+    else if (return_nb > 0)
         PrintSuccessMessage(return_nb);
 }
 

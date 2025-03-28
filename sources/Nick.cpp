@@ -1,5 +1,14 @@
 #include "../includes/Client.hpp"
 
+void Client::Nick(std::ostringstream &oss)
+{
+    oss << CYAN BOLT << "NICK <nickname>" RESEND;
+    oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
+    oss << WHITE << "\tSet a new nickname" RESEND;
+    oss << WHITE << "\tYour nickname should start with a letter and" RESEND;
+    oss << WHITE << "\tcan only have numbers, letters, hyphen (-) and underscore (_)" RESEND;
+}
+
 bool Client::NickAlreadyExist(std::string str)
 {
     std::vector<std::string> list = _server.GetNickList();
