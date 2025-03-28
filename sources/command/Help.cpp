@@ -1,6 +1,18 @@
 #include "../../includes/Client.hpp"
 
-void Client::Help()
+int Client::Help()
 {
-    PrintMessage(GREEN "User ok\n" RESET);
+    std::ostringstream oss;
+
+    oss << std::endl;
+    Pass(oss);
+    oss << std::endl;
+    Nick(oss);
+    oss << std::endl;
+    User(oss);
+    oss << std::endl;
+
+    MessageClient(oss.str());
+
+    return 0;
 }

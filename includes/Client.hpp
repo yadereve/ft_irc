@@ -5,6 +5,7 @@
 #include "config_macros.h"
 
 #include "Server.hpp"
+#include "Utils.hpp"
 
 class Server;
 
@@ -14,32 +15,63 @@ public:
 	Client(Server &, int);
 	~Client();
 	
-	// methods
-	void Parser(std::string);
+	// METHODS
+	void ExecuteCommand(std::string);
 
-	// setters
+	// SETTERS
 	void SetSocket(int);
 
 private:
-	// attributes
-	std::string _cmd;
-	std::vector<std::string> _message;
-	const Server &_server;
+	// ATTRIBUTES
+	// specific data
+	Server &_server;
 	int _socket;
-	// 	status
+	// temporary data
+	std::string _cmd;
+	std::vector<std::string> _arguments;
+	// user data
+	std::string _nick;
+	std::string _user;
+	std::string _real_name;
+	// status
 	bool _pass_check;
 	bool _nick_check;
 	bool _user_check;
+	bool _authenticated_check;
 
 
-	// methods
-	// 	commands
-	void Pass();
-	void Nick();
-	void User();
-	void Help();
-	void PrintMessage(std::string);
-
+	// METHODS
+	// login commands
+	int Pass();
+	int Nick();
+	int User();
+	// general commands
+	int Help();
+	int Oper();
+	int Ping();
+	int Quit();
+	// chanel commands
+	int Invite();
+	int Join();
+	int Kick();
+	int Mode();
+	int Part();
+	int Privmsg();
+	int Topic();
+	// commands description message
+	void Pass(std::ostringstream &oss);
+	void Nick(std::ostringstream &oss);
+	void User(std::ostringstream &oss);
+	// message client
+	void MessageClient(std::string);
+	void MessageClient(int);
+	// command candler
+	int Parser(std::string);
+	int CommandHandler(int);
+	void PrintErrorMessage(int nb);
+	void PrintSuccessMessage(int nb);
+	bool NickAlreadyExist(std::string str);
+	bool ValidName(std::string str);
 };
 
 #endif

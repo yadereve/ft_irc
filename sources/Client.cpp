@@ -1,52 +1,62 @@
 #include "../includes/Client.hpp"
-#include "../includes/Utils.hpp"
 
 Client::Client(Server &server, int s) : _server(server), _socket(s)
 {
     _pass_check = false;
     _nick_check = false;
     _user_check = false;
+    _authenticated_check = false;
 }
 
 Client::~Client()
 {
 }
 
-void Client::PrintMessage(std::string msg)
+void Client::MessageClient(std::string msg)
 {
     send(_socket, msg.c_str(), msg.length() + 1, 0);
 }
 
-void Client::Parser(std::string input)
+void Client::MessageClient(int nb)
 {
-    // error handling
-    std::string input2 = input.substr(0, input.find_first_of("\n"));
-    if (input2.length() <= 0)
-    {
-        return;
-    }
+    std::ostringstream oss;
+    oss << nb;
+    std::string msg = oss.str();
+    send(_socket, msg.c_str(), msg.length() + 1, 0);
+}
 
-    // define command list
-    std::string command_list[] = {"PASS", "NICK", "USER", "HELP"};
-    void (Client::*actions[])() = {
-        &Client::Pass,
-        &Client::Nick,
-        &Client::User,
-        &Client::Help};
+bool Client::ValidName(std::string str)
+{
+    // 3 or more chars
+    if (str.length() < 3)
+        return false;
+    // first char is a letter
+    if (!isalpha(str[0]))
+        return false;
+    // only has letters, numbers, '-' and '_'
+    for (size_t i = 0; i < str.length(); i++)
+        if ((isalnum(str[i]) || str[i] == '-' || str[i] == '_') == false)
+            return false;
+    return true;
+}
 
-    // compare input with command list
-    _message = Utils::Split(input2, ' ');
-    _cmd = _message[0];
-    for (size_t i = 0; i < command_list->size(); ++i)
-    {
-        if (_cmd == command_list[i])
-        {
-            _message.erase(_message.begin());
-            (this->*actions[i])();
-            return;
-        }
-    }
-    PrintMessage(RED "Invalid command\n" RESET);
+void Client::ExecuteCommand(std::string input)
+{
+    // reset command and arguments
+    _cmd.clear();
+    _arguments.clear();
+    
+    // transform input into a legible command
+    int command_id = Parser(input);
+
+    // execute command by id
+    int return_nb = CommandHandler(command_id);
+
+    // if needed, show user the error
+    if (return_nb >= 400)
+        PrintErrorMessage(return_nb);
+    else if (return_nb > 0)
+        PrintSuccessMessage(return_nb);
 }
 
 /* setters */

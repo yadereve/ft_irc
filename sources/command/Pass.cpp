@@ -1,14 +1,40 @@
 #include "../../includes/Client.hpp"
 
-void Client::Pass()
+void Client::Pass(std::ostringstream &oss)
 {
-    std::string pass = _server.getPass();
+    oss << CYAN BOLT << "PASS <password>" RESEND;
+    oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
+    oss << WHITE << "\tEnter the server password" RESEND;
+}
 
-    if (_message.size() > 0 && _message.front() == pass)
+/*
+ * PASS <pass>
+ */
+int Client::Pass()
+{
+    // if PASS was already setted
+    if (_pass_check == true)
     {
-        PrintMessage(GREEN "Correct password\n" RESET);
-        _pass_check = true;
-        return;
+        return ERR_ALREADY_REGISTERED;
     }
-    PrintMessage(RED "Incorrect password\n" RESET);
+    // if PASS doesn't have args
+    if (_arguments.size() < 1)
+    {
+        return ERR_NEED_MORE_PARAMS;
+    }
+    // if PASS have too many args
+    if (_arguments.size() > 1)
+    {
+        return ERR_INVALID_PASSWORD;
+    }
+    // if PASS was incorrect
+    if (_arguments.front() != _server.GetPass())
+    {
+        return ERR_PASSWD_MIS_MATCH;
+    }
+
+    // set PASS
+    _pass_check = true;
+
+    return PASSWORD_SUCCESS;
 }

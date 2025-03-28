@@ -93,7 +93,7 @@ int Server::start()
 			break;
 		}
 
-		client1.Parser(std::string(buff));
+		client1.ExecuteCommand(std::string(buff, 0, bytesReceived));
 	}
 
 	// Close socket
@@ -104,7 +104,21 @@ int Server::start()
 
 /* getters */
 
-std::string Server::getPass() const
+std::string Server::GetPass() const { return _pass; }
+std::vector<std::string> Server::GetNickList() const { return _nick_list; }
+
+/* setters */
+
+void Server::SetElementNickList(std::string old_nick, std::string new_nick)
 {
-    return _pass;
+	// if there is a old nick
+	if (old_nick.length() > 0)
+	{
+		// look for the old nick on the _nick_lst an erase it
+		std::vector<std::string>::iterator it = std::find(_nick_list.begin(), _nick_list.end(), old_nick);
+		if (it != _nick_list.end())
+			_nick_list.erase(it);
+	}
+	// add new nick
+	_nick_list.push_back(new_nick);
 }
