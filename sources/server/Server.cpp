@@ -1,4 +1,4 @@
-#include "../includes/Server.hpp"
+#include "../../includes/Server.hpp"
 
 Server::Server()
 {
@@ -102,12 +102,9 @@ int Server::start()
 	return 0;
 }
 
-void Server::closeFds()
-{ }
-
 /* getters */
 
-std::string Server::GetPass() const
+std::string Server::getPass() const
 {
     return _pass;
 }

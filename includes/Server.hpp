@@ -16,10 +16,9 @@ public:
 	~Server();
 	
 	int start();
-	void closeFds();
 
 	// getters
-	std::string GetPass() const;
+	std::string getPass() const;
 
 private:
 	std::string _port;

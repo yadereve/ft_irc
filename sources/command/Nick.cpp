@@ -1,10 +1,8 @@
-#include "../includes/Client.hpp"
+#include "../../includes/Client.hpp"
 
-void Client::Pass()
+void Client::Nick()
 {
-    std::string pass = _server.GetPass();
-
-    if (_message.size() > 0 && _message.front() == pass)
+    if (_pass_check == true && _message.size() > 0)
     {
         PrintMessage(GREEN "Correct password\n" RESET);
         _pass_check = true;
