@@ -65,7 +65,7 @@ private:
 	// message client
 	void MessageClient(std::string);
 	void MessageClient(int);
-	// command candler
+	// command handler
 	int Parser(std::string);
 	int CommandHandler(int);
 	void PrintErrorMessage(int nb);

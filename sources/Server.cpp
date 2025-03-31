@@ -34,7 +34,7 @@ int Server::start()
 		return -1;
 	}
 
-	// Bind the ip adress and port to socket
+	// Bind the ip address and port to socket
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(atoi(_port.c_str()));

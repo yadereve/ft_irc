@@ -50,7 +50,9 @@ void Client::ExecuteCommand(std::string input)
     int command_id = Parser(input);
 
     // execute command by id
-    int return_nb = CommandHandler(command_id);
+    int return_nb = command_id;
+    if (command_id >= 1 && command_id <= 16)
+        return_nb = CommandHandler(command_id);
 
     // if needed, show user the error
     if (return_nb >= 400)
