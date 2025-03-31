@@ -8,7 +8,7 @@ int main(int ac, char* av[])
 		if (ac != 3)
 			throw std::runtime_error("Usage: ./irserv <port> <password>");
 
-		std::cout << "----------SRVER----------\n";
+		std::cout << "----------SERVER----------\n";
 
 		Server server(av[1], av[2]);
 		server.start();
