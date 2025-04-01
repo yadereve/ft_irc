@@ -62,6 +62,7 @@ private:
 	void pass(std::ostringstream &oss);
 	void nick(std::ostringstream &oss);
 	void user(std::ostringstream &oss);
+	void ping(std::ostringstream &oss);
 	// message client
 	void messageClient(std::string);
 	void messageClient(int);

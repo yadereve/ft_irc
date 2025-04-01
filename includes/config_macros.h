@@ -30,8 +30,9 @@ enum commands
 enum success
 {
 	PASSWORD_SUCCESS = 100,
-	NICKNAME_SUCCESS = 101,
-	USERNAME_SUCCESS = 102,
+	NICKNAME_SUCCESS,
+	USERNAME_SUCCESS,
+	PONG,
 };
 
 enum errors

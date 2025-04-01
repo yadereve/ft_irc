@@ -176,16 +176,18 @@ void Client::printSuccessMessage(int nb)
     switch (nb)
     {
     case PASSWORD_SUCCESS:
-        oss << GREEN << "001: Correct Password" << ITALICS << RESEND;
+        oss << GREEN << "001: Correct Password" << RESEND;
         break;
     case NICKNAME_SUCCESS:
         oss << GREEN << "001: Nickname assigned: " << _nick << RESEND;
         break;
     case USERNAME_SUCCESS:
-        oss << GREEN << "001: Username assigned: " << RESET ITALICS << _user << RESEND;
-        oss << GREEN << "001: Real name assigned: " << RESET ITALICS << _real_name << RESEND;
-        oss << BRIGHT_BLUE << "001: Welcome to the Internet Relay Chat Network, " << RESET ITALICS << _nick << RESEND;
+        oss << GREEN << "001: Username assigned: " << WHITE ITALICS << _user << RESEND;
+        oss << GREEN << "001: Real name assigned: " << WHITE ITALICS << _real_name << RESEND;
+        oss << BRIGHT_BLUE << "001: Welcome to the Internet Relay Chat Network, " << WHITE ITALICS << _nick << RESEND;
         break;
+    case PONG:
+        oss << GREEN BOLT << "Pong: " << WHITE << _arguments[0] << RESEND;
     }
 
     messageClient(oss.str());
