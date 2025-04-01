@@ -1,6 +1,6 @@
 #include "../../includes/Client.hpp"
 
-void Client::User(std::ostringstream &oss)
+void Client::user(std::ostringstream &oss)
 {
     oss << CYAN BOLT << "USER <username> * * :<real name>" RESEND;
     oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
@@ -15,7 +15,7 @@ void Client::User(std::ostringstream &oss)
  * USER <user> * * :<real_name>
  * USER <user> 0 * :<real_name>
  */
-int Client::User()
+int Client::user()
 {
     // if USER was already setted
     if (_user_check == true)
@@ -53,12 +53,12 @@ int Client::User()
     std::string real_name = _arguments[3].substr(1);
 
     // if user isn't valid
-    if (ValidName(user) == false)
+    if (validName(user) == false)
     {
         return ERR_ERRONEUS_USER;
     }
     // if user isn't valid
-    if (ValidName(real_name) == false)
+    if (validName(real_name) == false)
     {
         return ERR_ERRONEUS_REAL_NAME;
     }

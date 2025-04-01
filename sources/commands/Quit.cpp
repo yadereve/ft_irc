@@ -1,6 +1,6 @@
 #include "../../includes/Client.hpp"
 
-int Client::Ping()
+int Client::quit()
 {
     return 0;
 }

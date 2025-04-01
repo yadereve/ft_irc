@@ -1,4 +1,4 @@
-#include "../includes/Client.hpp"
+#include "../../includes/Client.hpp"
 
 Client::Client(Server &server, int s) : _server(server), _socket(s)
 {
@@ -12,12 +12,12 @@ Client::~Client()
 {
 }
 
-void Client::MessageClient(std::string msg)
+void Client::messageClient(std::string msg)
 {
     send(_socket, msg.c_str(), msg.length() + 1, 0);
 }
 
-void Client::MessageClient(int nb)
+void Client::messageClient(int nb)
 {
     std::ostringstream oss;
     oss << nb;
@@ -25,7 +25,7 @@ void Client::MessageClient(int nb)
     send(_socket, msg.c_str(), msg.length() + 1, 0);
 }
 
-bool Client::ValidName(std::string str)
+bool Client::validName(std::string str)
 {
     // 3 or more chars
     if (str.length() < 3)
@@ -47,18 +47,18 @@ void Client::ExecuteCommand(std::string input)
     _arguments.clear();
     
     // transform input into a legible command
-    int command_id = Parser(input);
+    size_t command_id = parser(input);
 
     // execute command by id
     int return_nb = command_id;
-    if (command_id >= 1 && command_id <= 16)
-        return_nb = CommandHandler(command_id);
+    if (command_id >= 1 && command_id <= _server.getCommandList().size())
+        return_nb = commandHandler(command_id);
 
     // if needed, show user the error
     if (return_nb >= 400)
-        PrintErrorMessage(return_nb);
+        printErrorMessage(return_nb);
     else if (return_nb > 0)
-        PrintSuccessMessage(return_nb);
+        printSuccessMessage(return_nb);
 }
 
 /* setters */

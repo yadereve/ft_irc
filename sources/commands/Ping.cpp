@@ -1,6 +1,6 @@
 #include "../../includes/Client.hpp"
 
-int Client::Oper()
+int Client::ping()
 {
     return 0;
 }

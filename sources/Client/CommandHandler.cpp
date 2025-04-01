@@ -1,26 +1,6 @@
-#include "../includes/Client.hpp"
+#include "../../includes/Client.hpp"
 
-void CommandListInitializer(std::vector<std::string> &list)
-{
-    list.push_back("CAP");
-    list.push_back("HELP");
-    list.push_back("OPER");
-    list.push_back("PING");
-    list.push_back("QUIT");
-    list.push_back("PASS");
-    list.push_back("NICK");
-    list.push_back("USER");
-    list.push_back("WHOIS");
-    list.push_back("JOIN");
-    list.push_back("MODE");
-    list.push_back("TOPIC");
-    list.push_back("PART");
-    list.push_back("PRIVMSG");
-    list.push_back("INVITE");
-    list.push_back("KICK");
-}
-
-int Client::Parser(std::string raw_input)
+int Client::parser(std::string raw_input)
 {
     // remove input las char '\n'
     std::string input = raw_input.substr(0, raw_input.find_first_of("\n"));
@@ -30,16 +10,16 @@ int Client::Parser(std::string raw_input)
         return ERR_EMPTY_INPUT;
 
     // set message and cmd
-    _arguments = Utils::Split(input, ' ');
+    _arguments = Utils::split(input, ' ');
     _cmd = _arguments[0];
 
     // get command id
     std::vector<std::string> command_list;
-    CommandListInitializer(command_list);
+    command_list = _server.getCommandList();
     int command_id = -1;
     for (size_t i = 0; i < command_list.size(); i++)
     {
-        if (_cmd == command_list[i])
+        if (Utils::compareStringsCaseInsensitive(_cmd, command_list[i]) == true)
         {
             _arguments.erase(_arguments.begin());
             command_id = i + 1;
@@ -54,19 +34,19 @@ int Client::Parser(std::string raw_input)
     return command_id;
 }
 
-int Client::CommandHandler(int command_id)
+int Client::commandHandler(int command_id)
 {
     // login and HELP commands
     switch (command_id)
     {
     case PASS:
-        return Pass();
+        return pass();
     case NICK:
-        return Nick();
+        return nick();
     case USER:
-        return User();
+        return user();
     case HELP:
-        return Help();
+        return help();
     }
 
     // authentication check to use other commands
@@ -76,18 +56,18 @@ int Client::CommandHandler(int command_id)
     switch (command_id)
     {
     case OPER:
-        return Oper();
+        return oper();
     case PING:
-        return Ping();
+        return ping();
     case QUIT:
-        return Quit();
+        return quit();
     }
 
     // if command_id hasn't a command, it is a error, so return it
     return command_id;
 }
 
-void Client::PrintErrorMessage(int nb)
+void Client::printErrorMessage(int nb)
 {
     std::ostringstream oss;
 
@@ -185,11 +165,11 @@ void Client::PrintErrorMessage(int nb)
     }
 
     oss << RESET << std::endl;
-    
-    MessageClient(oss.str());
+
+    messageClient(oss.str());
 }
 
-void Client::PrintSuccessMessage(int nb)
+void Client::printSuccessMessage(int nb)
 {
     std::ostringstream oss;
 
@@ -207,6 +187,6 @@ void Client::PrintSuccessMessage(int nb)
         oss << BRIGHT_BLUE << "001: Welcome to the Internet Relay Chat Network, " << RESET ITALICS << _nick << RESEND;
         break;
     }
-    
-    MessageClient(oss.str());
+
+    messageClient(oss.str());
 }

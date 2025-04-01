@@ -1,27 +1,23 @@
-#include "../includes/Server.hpp"
+#include "../../includes/Server.hpp"
 
-Server::Server()
+void Server::commandListInitializer(std::vector<std::string> &list)
 {
-}
-
-Server::Server(const std::string port, const std::string pass)
-	: _port(port), _pass(pass), _host("127.0.0.1")
-{
-}
-
-Server::Server(const Server &other)
-{
-	(void)other;
-}
-
-Server &Server::operator=(const Server &other)
-{
-	(void)other;
-	return *this;
-}
-
-Server::~Server()
-{
+	list.push_back("CAP");
+	list.push_back("HELP");
+	list.push_back("OPER");
+	list.push_back("PING");
+	list.push_back("QUIT");
+	list.push_back("PASS");
+	list.push_back("NICK");
+	list.push_back("USER");
+	list.push_back("WHOIS");
+	list.push_back("JOIN");
+	list.push_back("MODE");
+	list.push_back("TOPIC");
+	list.push_back("PART");
+	list.push_back("PRIVMSG");
+	list.push_back("INVITE");
+	list.push_back("KICK");
 }
 
 int Server::start()
@@ -100,25 +96,4 @@ int Server::start()
 	close(clientSocket);
 
 	return 0;
-}
-
-/* getters */
-
-std::string Server::GetPass() const { return _pass; }
-std::vector<std::string> Server::GetNickList() const { return _nick_list; }
-
-/* setters */
-
-void Server::SetElementNickList(std::string old_nick, std::string new_nick)
-{
-	// if there is a old nick
-	if (old_nick.length() > 0)
-	{
-		// look for the old nick on the _nick_lst an erase it
-		std::vector<std::string>::iterator it = std::find(_nick_list.begin(), _nick_list.end(), old_nick);
-		if (it != _nick_list.end())
-			_nick_list.erase(it);
-	}
-	// add new nick
-	_nick_list.push_back(new_nick);
 }

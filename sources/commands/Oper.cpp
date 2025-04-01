@@ -1,6 +1,6 @@
 #include "../../includes/Client.hpp"
 
-int Client::Quit()
+int Client::oper()
 {
     return 0;
 }

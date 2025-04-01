@@ -8,13 +8,13 @@ class Utils
 {
 public:
 	// methods
-	static std::vector<std::string> Split(const std::string &, char);
-	static void PrintVector(std::vector<std::string> vec);
+	static std::vector<std::string> split(const std::string &, char);
+	static void printVector(std::vector<std::string> vec);
+	static bool compareStringsCaseInsensitive(std::string, std::string);
 
 private:
 	Utils();
 	~Utils();
-
 };
 
 #endif

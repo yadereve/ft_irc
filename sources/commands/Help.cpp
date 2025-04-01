@@ -1,18 +1,18 @@
 #include "../../includes/Client.hpp"
 
-int Client::Help()
+int Client::help()
 {
     std::ostringstream oss;
 
     oss << std::endl;
-    Pass(oss);
+    pass(oss);
     oss << std::endl;
-    Nick(oss);
+    nick(oss);
     oss << std::endl;
-    User(oss);
+    user(oss);
     oss << std::endl;
 
-    MessageClient(oss.str());
+    messageClient(oss.str());
 
     return 0;
 }

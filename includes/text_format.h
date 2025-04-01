@@ -43,11 +43,18 @@
 #define CATCH \
     catch (const std::exception &e) { std::cerr << e.what() << '\n'; }
 
+#define ON 1
+#define OFF 0
+
 /******************************************
  *                                        *
  *              DEFINE COLORS             *
  *                                        *
  ******************************************/
+
+#define COLORS ON
+
+#if COLORS == ON
 
 // Cursor Moving
 #define CURSOR_UP(x) "\033[" << x << "A"
@@ -103,5 +110,53 @@
 #define REVERSE_COLORS "\033[7m"
 #define HIDE_TEXT "\033[8m"
 #define CROSSED_OUT "\033[9m"
+
+#else
+
+#define CURSOR_UP(x) ""
+#define CURSOR_DOWN(x) ""
+#define CURSOR_RIGHT(x) ""
+#define CURSOR_LEFT(x) ""
+#define CURSOR_ALL_LEFT ""
+#define CLEAR_SCREEN_FORWARD_CURSOR ""
+#define CLEAR_LINE_FORWARD_CURSOR ""
+#define CLEAR_LINE_BACK_CURSOR ""
+#define CLEAR_ACTUAL_LINE ""
+#define RESET ""
+#define BLACK ""
+#define RED ""
+#define GREEN ""
+#define YELLOW ""
+#define BLUE ""
+#define MAGENTA ""
+#define CYAN ""
+#define WHITE ""
+#define ORANGE ""
+#define BRIGHT_BLACK ""
+#define BRIGHT_RED ""
+#define BRIGHT_GREEN ""
+#define BRIGHT_YELLOW ""
+#define BRIGHT_BLUE ""
+#define BRIGHT_MAGENTA ""
+#define BRIGHT_CYAN ""
+#define BRIGHT_WHITE ""
+#define BLACK_BACKGROUND ""
+#define RED_BACKGROUND ""
+#define GREEN_BACKGROUND ""
+#define YELLOW_BACKGROUND ""
+#define BLUE_BACKGROUND ""
+#define MAGENTA_BACKGROUND ""
+#define CYAN_BACKGROUND ""
+#define WHITE_BACKGROUND ""
+#define BOLT ""
+#define LOW_BRIGHT ""
+#define ITALICS ""
+#define UNDERLINED ""
+#define BLINKING ""
+#define REVERSE_COLORS ""
+#define HIDE_TEXT ""
+#define CROSSED_OUT ""
+
+#endif
 
 #endif

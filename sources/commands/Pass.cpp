@@ -1,6 +1,6 @@
 #include "../../includes/Client.hpp"
 
-void Client::Pass(std::ostringstream &oss)
+void Client::pass(std::ostringstream &oss)
 {
     oss << CYAN BOLT << "PASS <password>" RESEND;
     oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
@@ -10,7 +10,7 @@ void Client::Pass(std::ostringstream &oss)
 /*
  * PASS <pass>
  */
-int Client::Pass()
+int Client::pass()
 {
     // if PASS was already setted
     if (_pass_check == true)
@@ -28,7 +28,7 @@ int Client::Pass()
         return ERR_INVALID_PASSWORD;
     }
     // if PASS was incorrect
-    if (_arguments.front() != _server.GetPass())
+    if (_arguments.front() != _server.getPass())
     {
         return ERR_PASSWD_MIS_MATCH;
     }

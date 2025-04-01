@@ -42,36 +42,36 @@ private:
 
 	// METHODS
 	// login commands
-	int Pass();
-	int Nick();
-	int User();
+	int pass();
+	int nick();
+	int user();
 	// general commands
-	int Help();
-	int Oper();
-	int Ping();
-	int Quit();
+	int help();
+	int oper();
+	int ping();
+	int quit();
 	// chanel commands
-	int Invite();
-	int Join();
-	int Kick();
-	int Mode();
-	int Part();
-	int Privmsg();
-	int Topic();
+	int invite();
+	int join();
+	int kick();
+	int mode();
+	int part();
+	int privmsg();
+	int topic();
 	// commands description message
-	void Pass(std::ostringstream &oss);
-	void Nick(std::ostringstream &oss);
-	void User(std::ostringstream &oss);
+	void pass(std::ostringstream &oss);
+	void nick(std::ostringstream &oss);
+	void user(std::ostringstream &oss);
 	// message client
-	void MessageClient(std::string);
-	void MessageClient(int);
+	void messageClient(std::string);
+	void messageClient(int);
 	// command handler
-	int Parser(std::string);
-	int CommandHandler(int);
-	void PrintErrorMessage(int nb);
-	void PrintSuccessMessage(int nb);
-	bool NickAlreadyExist(std::string str);
-	bool ValidName(std::string str);
+	int parser(std::string);
+	int commandHandler(int);
+	void printErrorMessage(int nb);
+	void printSuccessMessage(int nb);
+	bool nickAlreadyExist(std::string str);
+	bool validName(std::string str);
 };
 
 #endif
