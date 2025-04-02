@@ -36,7 +36,7 @@ int Client::parser(std::string raw_input)
 
 int Client::commandHandler(int command_id)
 {
-    // login and HELP commands
+    // login commands, QUIT and HELP
     switch (command_id)
     {
     case PASS:
@@ -47,6 +47,8 @@ int Client::commandHandler(int command_id)
         return user();
     case HELP:
         return help();
+    case QUIT:
+        return quit();
     }
 
     // authentication check to use other commands
@@ -59,8 +61,6 @@ int Client::commandHandler(int command_id)
         return oper();
     case PING:
         return ping();
-    case QUIT:
-        return quit();
     }
 
     // if command_id hasn't a command, it is a error, so return it
