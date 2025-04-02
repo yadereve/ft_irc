@@ -46,7 +46,7 @@ int Client::nick()
     }
 
     // set NICK
-    _server.setElementNickList(_nick, _arguments[0]);
+    _server.setNewNick(_nick, _arguments[0]);
     _nick = _arguments[0];
     _nick_check = true;
 

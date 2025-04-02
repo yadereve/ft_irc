@@ -1,8 +1,8 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include "text_format.h"
-#include "config_macros.h"
+#include "format/text_format.h"
+#include "format/config_macros.h"
 
 class Utils
 {

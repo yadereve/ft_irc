@@ -30,10 +30,11 @@ Server::~Server()
 std::string Server::getPass() const { return _pass; }
 std::vector<std::string> Server::getNickList() const { return _nick_list; }
 std::vector<std::string> Server::getCommandList() const { return _command_list; }
+std::vector<Channel> Server::getChannelList() const { return _channel_list; }
 
 /* setters */
 
-void Server::setElementNickList(std::string old_nick, std::string new_nick)
+void Server::setNewNick(std::string old_nick, std::string new_nick)
 {
 	// if there is a old nick
 	if (old_nick.length() > 0)
@@ -46,3 +47,5 @@ void Server::setElementNickList(std::string old_nick, std::string new_nick)
 	// add new nick
 	_nick_list.push_back(new_nick);
 }
+
+void Server::setNewChannel(Channel newChannel) { _channel_list.push_back(newChannel); }

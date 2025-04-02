@@ -1,10 +1,11 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include "text_format.h"
-#include "config_macros.h"
+#include "format/text_format.h"
+#include "format/config_macros.h"
 
 #include "Client.hpp"
+#include "Channel.hpp"
 
 class Server
 {
@@ -20,8 +21,10 @@ public:
 	std::string getPass() const;
 	std::vector<std::string> getNickList() const;
 	std::vector<std::string> getCommandList() const;
+	std::vector<Channel> getChannelList() const;
 	// setters
-	void setElementNickList(std::string, std::string);
+	void setNewNick(std::string, std::string);
+	void setNewChannel(Channel);
 
 private:
 	Server();
@@ -32,6 +35,7 @@ private:
 	std::string _host;
 	std::vector<std::string> _nick_list;
 	std::vector<std::string> _command_list;
+	std::vector<Channel> _channel_list;
 
 	// METHODS
 	void commandListInitializer(std::vector<std::string> &);
