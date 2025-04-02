@@ -1,16 +1,17 @@
 #include "../includes/Server.hpp"
-#include <stdexcept>
 
 int main(int ac, char* av[])
 {
 	try
 	{
 		if (ac != 3)
-			throw std::runtime_error("Usage: ./irserv <port> <password>");
+			throw std::invalid_argument("Usage: ./irserv <port> <password>");
 
-		std::cout << "----------SRVER----------\n";
+		std::cout << "---------------SERVER---------------\n";
 
-		Server server(av[1], av[2]);
+		parseInput(av[1], av[2]);
+		signal(SIGPIPE, SIG_IGN);
+		Server server(av[1], static_cast<std::string>(av[2]));
 		server.start();
 		std::cout << BLUE << ">>> The Server Closed! <<<" << RESET << std::endl;
 		return 0;
@@ -20,4 +21,11 @@ int main(int ac, char* av[])
 		std::cerr << e.what() << std::endl;
 		return 1;
 	}
+	catch (...)
+	{
+		std::cerr << "Exception occurred" << std::endl;
+		return 2;
+	}
+
+	return 0;
 }

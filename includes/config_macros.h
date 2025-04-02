@@ -89,5 +89,7 @@ enum errors
 #include <sstream>
 #include <algorithm>
 #include <vector>
+#include <csignal>
+#include <stdexcept>
 
 #endif

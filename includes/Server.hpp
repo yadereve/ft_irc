@@ -15,7 +15,7 @@ public:
 	Server& operator=(const Server& other);
 	~Server();
 	
-	// METHODS
+	 //METHODS
 	int start();
 	// getters
 	std::string GetPass() const;
