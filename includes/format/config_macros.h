@@ -11,7 +11,6 @@ enum commands
 {
 	CAP = 1,
 	HELP,
-	OPER,
 	PING,
 	QUIT,
 	PASS,

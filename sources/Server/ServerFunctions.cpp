@@ -4,7 +4,6 @@ void Server::commandListInitializer(std::vector<std::string> &list)
 {
 	list.push_back("CAP");
 	list.push_back("HELP");
-	list.push_back("OPER");
 	list.push_back("PING");
 	list.push_back("QUIT");
 	list.push_back("PASS");

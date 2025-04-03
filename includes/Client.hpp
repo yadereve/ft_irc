@@ -47,7 +47,6 @@ private:
 	int user();
 	// general commands
 	int help();
-	int oper();
 	int ping();
 	int quit();
 	// chanel commands

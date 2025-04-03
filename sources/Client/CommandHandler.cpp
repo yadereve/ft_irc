@@ -57,8 +57,6 @@ int Client::commandHandler(int command_id)
 
     switch (command_id)
     {
-    case OPER:
-        return oper();
     case PING:
         return ping();
     }
