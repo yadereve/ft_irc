@@ -64,6 +64,7 @@ private:
 	void quit(std::ostringstream &oss);
 	void join(std::ostringstream &oss);
 	void part(std::ostringstream &oss);
+	void topic(std::ostringstream &oss);
 	// message client
 	void messageClient(std::string);
 	void messageClient(int);

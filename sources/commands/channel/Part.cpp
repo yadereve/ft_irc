@@ -12,6 +12,10 @@ int Client::part()
     if (_arguments.size() != 1)
         return ERR_NEED_MORE_PARAMS;
 
+    // check if channel starts with #
+    if (_arguments[0][0] != '#')
+        return ERR_BAD_CHAN_MASK;
+
     // check if channel exist
     if (channelExist(_arguments[0]) == false)
         return ERR_NO_SUCH_CHANNEL;

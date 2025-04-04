@@ -73,6 +73,9 @@ int Client::commandHandler(int command_id)
 
     case PART:
         return part();
+
+    case TOPIC:
+        return topic();
     }
 
     return 0;
@@ -158,7 +161,7 @@ void Client::printMessage(int message_id)
             oss << "Bad channel key" << RESEND;
             break;
         case ERR_BAD_CHAN_MASK:
-            oss << "Bad channel mask" << RESEND;
+            oss << "Bad channel mask, channel name should start with (#)" << RESEND;
             break;
         case ERR_CHAN_OP_PRIV_NEEDED:
             oss << "Channel operator privileges needed" << RESEND;
@@ -214,6 +217,13 @@ void Client::printMessage(int message_id)
             break;
         case LEAVE_CHANNEL:
             oss << BRIGHT_MAGENTA BOLT << "You left the channel: " << WHITE << _arguments[0] << RESEND;
+            break;
+        case SHOWING_CHANNEL_TOPIC:
+            oss << BRIGHT_MAGENTA BOLT << "You are seeing the topic of the channel: " << WHITE << _arguments[0] << RESEND;
+            break;
+        case CHANNEL_TOPIC_CHANGED:
+            oss << BRIGHT_MAGENTA BOLT << "You are changing the topic of the channel: " << WHITE << _arguments[0] << RESEND;
+            oss << BRIGHT_MAGENTA BOLT << "Now it is: " << WHITE << _arguments[1] << RESEND;
             break;
         }
     }
