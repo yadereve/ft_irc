@@ -34,6 +34,11 @@ std::vector<Channel> Server::getChannelList() const { return _channel_list; }
 
 /* setters */
 
+void Server::setNewChannel(std::string channel_name)
+{
+	Channel newChannel(channel_name);
+	_channel_list.push_back(newChannel);
+}
 void Server::setNewNick(std::string old_nick, std::string new_nick)
 {
 	// if there is a old nick
@@ -47,5 +52,3 @@ void Server::setNewNick(std::string old_nick, std::string new_nick)
 	// add new nick
 	_nick_list.push_back(new_nick);
 }
-
-void Server::setNewChannel(Channel newChannel) { _channel_list.push_back(newChannel); }

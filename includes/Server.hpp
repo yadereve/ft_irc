@@ -24,7 +24,7 @@ public:
 	std::vector<Channel> getChannelList() const;
 	// setters
 	void setNewNick(std::string, std::string);
-	void setNewChannel(Channel);
+	void setNewChannel(std::string);
 
 private:
 	Server();

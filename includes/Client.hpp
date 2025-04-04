@@ -14,7 +14,7 @@ class Client
 public:
 	Client(Server &, int);
 	~Client();
-	
+
 	// METHODS
 	void ExecuteCommand(std::string);
 
@@ -39,7 +39,6 @@ private:
 	bool _user_check;
 	bool _authenticated_check;
 
-
 	// METHODS
 	// login commands
 	int pass();
@@ -63,16 +62,18 @@ private:
 	void user(std::ostringstream &oss);
 	void ping(std::ostringstream &oss);
 	void quit(std::ostringstream &oss);
+	void join(std::ostringstream &oss);
 	// message client
 	void messageClient(std::string);
 	void messageClient(int);
 	// command handler
 	int parser(std::string);
 	int commandHandler(int);
-	void printErrorMessage(int nb);
-	void printSuccessMessage(int nb);
+	void printMessage(int nb);
+	// command utils
 	bool nickAlreadyExist(std::string str);
 	bool validName(std::string str);
+	bool channelExist(std::string);
 };
 
 #endif

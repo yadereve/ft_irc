@@ -18,6 +18,8 @@ int Client::help()
     oss << std::endl;
     quit(oss);
     oss << std::endl;
+    join(oss);
+    oss << std::endl;
 
     messageClient(oss.str());
 

@@ -7,15 +7,19 @@
 class Channel
 {
 public:
-	Channel();
+	Channel(std::string);
 	~Channel();
-	
+
 	// METHODS
 
-	// SETTERS
+	// GETTERS
+	std::string getName() const;
 
 private:
+	Channel();
+
 	// ATTRIBUTES
+	const std::string _name;
 
 	// METHODS
 };

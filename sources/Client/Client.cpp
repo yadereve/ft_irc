@@ -12,6 +12,8 @@ Client::~Client()
 {
 }
 
+/* methods */
+
 void Client::messageClient(std::string msg)
 {
     send(_socket, msg.c_str(), msg.length() + 1, 0);
@@ -40,6 +42,19 @@ bool Client::validName(std::string str)
     return true;
 }
 
+bool Client::channelExist(std::string channel_name)
+{
+    const std::vector<Channel> &channel_list = _server.getChannelList();
+
+    std::vector<Channel>::const_iterator it;
+    for (it = channel_list.begin(); it != channel_list.end(); ++it)
+    {
+        if (it->getName() == channel_name)
+            return true;
+    }
+    return false;
+}
+
 void Client::ExecuteCommand(std::string input)
 {
     // reset command and arguments
@@ -50,16 +65,12 @@ void Client::ExecuteCommand(std::string input)
     size_t command_id = parser(input);
 
     // execute command by id
-    int return_nb = command_id;
-    if (command_id >= 1 && command_id <= _server.getCommandList().size())
-        return_nb = commandHandler(command_id);
+    int return_message = commandHandler(command_id);
 
-    // if needed, show user the error
-    if (return_nb >= 400)
-        printErrorMessage(return_nb);
-    else if (return_nb > 0)
-        printSuccessMessage(return_nb);
+    // print return message
+    printMessage(return_message);
 }
 
 /* setters */
+
 void Client::SetSocket(int s) { _socket = s; }

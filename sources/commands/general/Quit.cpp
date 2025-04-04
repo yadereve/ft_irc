@@ -18,9 +18,9 @@ int Client::quit()
     // print quit message to user (CLIENT)
     messageClient(BRIGHT_RED "Leaving the server...\n" RESET);
 
-    // send message to the channels with the reason (CHANNEL)
+    //TODO - send message to the channels with the reason (CHANNEL)
 
-    // remove client form server (SERVER)
+    //TODO - remove client form server (SERVER)
     
     return 0;
 }

@@ -32,6 +32,10 @@ enum success
 	NICKNAME_SUCCESS,
 	USERNAME_SUCCESS,
 	PONG,
+	// debug messages
+	CHANNEL_CREATED,
+	JOINED_CHANNEL,
+	CHANNEL_OP,
 };
 
 enum errors
