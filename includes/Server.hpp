@@ -25,6 +25,8 @@ public:
 	// setters
 	void setNewNick(std::string, std::string);
 	void setNewChannel(std::string);
+	// clears
+	void removeChannel(std::string channel_name);
 
 private:
 	Server();

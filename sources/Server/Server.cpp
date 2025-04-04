@@ -39,6 +39,7 @@ void Server::setNewChannel(std::string channel_name)
 	Channel newChannel(channel_name);
 	_channel_list.push_back(newChannel);
 }
+
 void Server::setNewNick(std::string old_nick, std::string new_nick)
 {
 	// if there is a old nick
@@ -51,4 +52,18 @@ void Server::setNewNick(std::string old_nick, std::string new_nick)
 	}
 	// add new nick
 	_nick_list.push_back(new_nick);
+}
+
+/* clears */
+
+void Server::removeChannel(std::string channel_name)
+{
+    std::vector<Channel>::iterator it;
+    for (it = _channel_list.begin(); it != _channel_list.end(); ++it)
+    {
+        if (it->getName() == channel_name)
+		{
+			_channel_list.erase(it);
+		}
+    }
 }

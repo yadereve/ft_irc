@@ -70,6 +70,9 @@ int Client::commandHandler(int command_id)
 
     case JOIN:
         return join();
+
+    case PART:
+        return part();
     }
 
     return 0;
@@ -208,6 +211,9 @@ void Client::printMessage(int message_id)
             break;
         case CHANNEL_OP:
             oss << BRIGHT_MAGENTA BOLT << "You just became a channel OP: " << WHITE << _arguments[0] << RESEND;
+            break;
+        case LEAVE_CHANNEL:
+            oss << BRIGHT_MAGENTA BOLT << "You left the channel: " << WHITE << _arguments[0] << RESEND;
             break;
         }
     }

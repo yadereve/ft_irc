@@ -19,7 +19,7 @@ private:
 	Channel();
 
 	// ATTRIBUTES
-	const std::string _name;
+	std::string _name;
 
 	// METHODS
 };

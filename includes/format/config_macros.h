@@ -36,6 +36,7 @@ enum success
 	CHANNEL_CREATED,
 	JOINED_CHANNEL,
 	CHANNEL_OP,
+	LEAVE_CHANNEL,
 };
 
 enum errors

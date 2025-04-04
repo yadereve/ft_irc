@@ -63,6 +63,7 @@ private:
 	void ping(std::ostringstream &oss);
 	void quit(std::ostringstream &oss);
 	void join(std::ostringstream &oss);
+	void part(std::ostringstream &oss);
 	// message client
 	void messageClient(std::string);
 	void messageClient(int);
