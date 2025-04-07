@@ -21,6 +21,10 @@ public:
 	// SETTERS
 	void SetSocket(int);
 
+	//add for channel
+	std::string getNickname() const;
+	void receiveMessage(const std::string &source, const std::string &command, const std::string &args);
+
 private:
 	// ATTRIBUTES
 	// specific data
@@ -74,6 +78,7 @@ private:
 	void printSuccessMessage(int nb);
 	bool nickAlreadyExist(std::string str);
 	bool validName(std::string str);
+
 };
 
 #endif
