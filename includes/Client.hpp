@@ -60,11 +60,13 @@ private:
 	void pass(std::ostringstream &oss);
 	void nick(std::ostringstream &oss);
 	void user(std::ostringstream &oss);
+	void help(std::ostringstream &oss);
 	void ping(std::ostringstream &oss);
 	void quit(std::ostringstream &oss);
 	void join(std::ostringstream &oss);
 	void part(std::ostringstream &oss);
 	void topic(std::ostringstream &oss);
+	void kick(std::ostringstream &oss);
 	// message client
 	void messageClient(std::string);
 	void messageClient(int);

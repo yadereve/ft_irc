@@ -9,14 +9,12 @@
 
 enum commands
 {
-	CAP = 1,
-	HELP,
+	HELP = 1,
 	PING,
 	QUIT,
 	PASS,
 	NICK,
 	USER,
-	WHOIS,
 	JOIN,
 	MODE,
 	TOPIC,
@@ -39,6 +37,8 @@ enum success
 	LEAVE_CHANNEL,
 	SHOWING_CHANNEL_TOPIC,
 	CHANNEL_TOPIC_CHANGED,
+	KICK_SOMEONE,
+	KICK_SOMEONE_MESSAGE,
 };
 
 enum errors

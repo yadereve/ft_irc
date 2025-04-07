@@ -2,14 +2,12 @@
 
 void Server::commandListInitializer(std::vector<std::string> &list)
 {
-	list.push_back("CAP");
 	list.push_back("HELP");
 	list.push_back("PING");
 	list.push_back("QUIT");
 	list.push_back("PASS");
 	list.push_back("NICK");
 	list.push_back("USER");
-	list.push_back("WHOIS");
 	list.push_back("JOIN");
 	list.push_back("MODE");
 	list.push_back("TOPIC");

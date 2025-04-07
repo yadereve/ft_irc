@@ -2,24 +2,35 @@
 
 void Client::topic(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "topic <channel>" RESEND;
+    oss << CYAN BOLT << "TOPIC <channel>" RESEND;
     oss << WHITE << "\tSee the channel topic" RESEND;
-    oss << CYAN BOLT << "topic <channel> <new_topic>" RESEND;
+    oss << RESEND;
+    oss << CYAN BOLT << "TOPIC <channel> <new_topic>" RESEND;
     oss << WHITE << "\tChange the channel topic" RESEND;
 }
 
 int Client::topic()
 {
+    // check if is authenticated
+    if (_authenticated_check == false)
+        return ERR_NOT_AUTHENTICATED;
+        
     // check if topic have 1 argument
     if (_arguments.size() != 1 && _arguments.size() != 2)
         return ERR_NEED_MORE_PARAMS;
 
+    // initialize values
+    std::string channel = _arguments[0];
+    std::string topic = "";
+    if (_arguments.size() == 2)
+        topic = _arguments[1];
+
     // check if channel starts with #
-    if (_arguments[0][0] != '#')
+    if (channel[0] != '#')
         return ERR_BAD_CHAN_MASK;
 
     // check if channel exist
-    if (channelExist(_arguments[0]) == false)
+    if (channelExist(channel) == false)
         return ERR_NO_SUCH_CHANNEL;
 
     // TODO - check if user is on channel (CHANNEL)

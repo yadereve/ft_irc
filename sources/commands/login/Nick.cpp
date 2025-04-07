@@ -26,24 +26,19 @@ int Client::nick()
 {
     // if PASS not setted yet
     if (_pass_check == false)
-    {
         return ERR_NOT_AUTHENTICATED;
-    }
+
     // if NICK doesn't has arguments
     if (_arguments.size() < 1)
-    {
         return ERR_NO_NICKNAME_GIVEN;
-    }
+
     // if NICK has too many argument or if NICK isn't valid
     if (_arguments.size() > 1 || validName(_arguments[0]) == false)
-    {
         return ERR_ERRONEUS_NICKNAME;
-    }
+
     // if NICK isn't unique
     if (nickAlreadyExist(_arguments[0]) == true)
-    {
         return ERR_NICKNAME_IN_USE;
-    }
 
     // set NICK
     _server.setNewNick(_nick, _arguments[0]);

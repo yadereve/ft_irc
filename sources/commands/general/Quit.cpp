@@ -2,8 +2,7 @@
 
 void Client::quit(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "QUIT <reason>" RESEND;
-    oss << WHITE ITALICS << "\t(Reason is optional)" RESEND;
+    oss << CYAN BOLT << "QUIT [<reason>]" RESEND;
     oss << WHITE << "\tLeave the server" RESEND;
 }
 

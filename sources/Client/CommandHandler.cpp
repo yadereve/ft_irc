@@ -40,9 +40,11 @@ int Client::commandHandler(int command_id)
     if (command_id > (int)_server.getCommandList().size())
         return command_id;
 
-    // login commands, QUIT and HELP
+    // execute commands
     switch (command_id)
     {
+
+    // login commands
     case PASS:
         return pass();
 
@@ -52,22 +54,17 @@ int Client::commandHandler(int command_id)
     case USER:
         return user();
 
+    // general commands
     case HELP:
         return help();
 
     case QUIT:
         return quit();
-    }
-
-    // authentication check to use other commands
-    if (_authenticated_check == false)
-        return ERR_NOT_AUTHENTICATED;
-
-    switch (command_id)
-    {
+    
     case PING:
         return ping();
 
+    // channel commands
     case JOIN:
         return join();
 
@@ -76,6 +73,9 @@ int Client::commandHandler(int command_id)
 
     case TOPIC:
         return topic();
+
+    case KICK:
+        return kick();
     }
 
     return 0;
@@ -224,6 +224,15 @@ void Client::printMessage(int message_id)
         case CHANNEL_TOPIC_CHANGED:
             oss << BRIGHT_MAGENTA BOLT << "You are changing the topic of the channel: " << WHITE << _arguments[0] << RESEND;
             oss << BRIGHT_MAGENTA BOLT << "Now it is: " << WHITE << _arguments[1] << RESEND;
+            break;
+        case KICK_SOMEONE:
+            oss << BRIGHT_MAGENTA BOLT << "You just kicked: " << WHITE << _arguments[1] << RESEND;
+            oss << BRIGHT_MAGENTA BOLT << "He is no longer on server: " << WHITE << _arguments[0] << RESEND;
+            break;
+        case KICK_SOMEONE_MESSAGE:
+            oss << BRIGHT_MAGENTA BOLT << "You just kicked: " << WHITE << _arguments[1] << RESEND;
+            oss << BRIGHT_MAGENTA BOLT << "He is no longer on server: " << WHITE << _arguments[0] << RESEND;
+            oss << BRIGHT_MAGENTA BOLT << "Kick message: " << WHITE << _arguments[2] << RESEND;
             break;
         }
     }

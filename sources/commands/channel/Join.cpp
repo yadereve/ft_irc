@@ -11,16 +11,23 @@ void Client::join(std::ostringstream &oss)
 
 int Client::join()
 {
+    // check if is authenticated
+    if (_authenticated_check == false)
+        return ERR_NOT_AUTHENTICATED;
+        
     // check if join have 1 argument
     if (_arguments.size() != 1)
         return ERR_NEED_MORE_PARAMS;
 
+    // initialize values
+    std::string channel = _arguments[0];
+
     // check if channel starts with #
-    if (_arguments[0][0] != '#')
+    if (channel[0] != '#')
         return ERR_BAD_CHAN_MASK;
 
     // check if channel already exist
-    if (channelExist(_arguments[0]) == true)
+    if (channelExist(channel) == true)
     {
         // if exist just join channel
         // TODO - user join channel (CHANNEL)
@@ -34,7 +41,7 @@ int Client::join()
         // - become channel OP
 
         // create new channel (SERVER)
-        _server.setNewChannel(_arguments[0]);
+        _server.setNewChannel(channel);
         printMessage(CHANNEL_CREATED);
 
         // TODO - user join channel (CHANNEL)
@@ -43,5 +50,6 @@ int Client::join()
         // TODO - user become channel OP (CHANNEL)
         printMessage(CHANNEL_OP);
     }
+    
     return 0;
 }
