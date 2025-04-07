@@ -34,7 +34,7 @@ int Server::start()
 	int listening = socket(AF_INET, SOCK_STREAM, 0);
 	if (listening == -1)
 	{
-		std::cerr << "Can't create socket! Quitting" << std::endl;
+		throw std::runtime_error("Can't create socket! Quitting");
 		return -1;
 	}
 
@@ -48,7 +48,7 @@ int Server::start()
 	hint.sin_port = htons(atoi(_port.c_str()));
 	inet_pton(AF_INET, "0.0.0.0", &hint.sin_addr);
 	if (bind(listening, (sockaddr *)&hint, sizeof(hint)) == -1)
-		throw std::runtime_error("Can't bind socket!\n");
+		throw std::runtime_error("Can't bind socket!");
 
 	// Tell Winsock the socket is for listening
 	if (listen(listening, SOMAXCONN) == -1)
@@ -71,7 +71,7 @@ int Server::start()
 	{
 		int pollCount = poll(pollFds.data(), pollFds.size(), -1);
 		if (pollCount == -1)
-			throw "Poll error!";
+			throw std::runtime_error("Poll error!");
 
 		if (pollFds[0].revents & POLLIN)
 		{
