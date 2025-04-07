@@ -17,6 +17,6 @@ private:
 
 };
 
-int parseInput(const char* port, std::string pass);
+int parseInput(const std::string& portStr, const std::string& pass);
 
 #endif

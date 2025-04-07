@@ -1,4 +1,8 @@
 #include "../includes/Server.hpp"
+#include "../includes/Client.hpp"
+#include <stdexcept>
+#include <sys/socket.h>
+#include <utility>
 
 Server::Server()
 {
@@ -34,71 +38,99 @@ int Server::start()
 		return -1;
 	}
 
+	// Set socket to be reusable
+	int opt = 1;
+	setsockopt(listening, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
 	// Bind the ip adress and port to socket
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(atoi(_port.c_str()));
 	inet_pton(AF_INET, "0.0.0.0", &hint.sin_addr);
 	if (bind(listening, (sockaddr *)&hint, sizeof(hint)) == -1)
-	{
-		std::cout << "Can't bind\n";
-		return -2;
-	}
+		throw std::runtime_error("Can't bind socket!\n");
 
 	// Tell Winsock the socket is for listening
-	listen(listening, SOMAXCONN);
+	if (listen(listening, SOMAXCONN) == -1)
+		throw std::runtime_error("Can't listen on socket!");
 
-	// Wait for a connection
-	sockaddr_in client;
-	socklen_t clientSize = sizeof(client);
-	int clientSocket = accept(listening, (sockaddr *)&client, &clientSize);
-	char host[NI_MAXHOST];	  // Client's remote name
-	char service[NI_MAXSERV]; // Service (i. e. port) the client is connect on
+	// Non-blocking mode (as required for MacOS)
+	fcntl(listening, F_SETFL, O_NONBLOCK);
 
-	memset(host, 0, NI_MAXHOST); // same as memset(host, 0, NI_MAXHOST);
-	memset(service, 0, NI_MAXSERV);
+	// Poll setup
+	std::vector<pollfd> pollFds;
+	pollfd listeningFd = {listening, POLLIN, 0};
+	pollFds.push_back(listeningFd);
 
-	if (getnameinfo((sockaddr *)&client, sizeof(client), host, NI_MAXHOST, service, NI_MAXSERV, 0))
-		std::cout << host << " connected on port " << service << std::endl;
-	else
-	{
-		inet_ntop(AF_INET, &client.sin_addr, host, NI_MAXHOST);
-		std::cout << host << " connect on " << ntohs(client.sin_port) << std::endl;
-	}
+	std::map<int, Client> clients;
 
-	// Close listening socket
-	close(listening);
-
-	// While loop: accept and message back to client
-	char buff[4096];
-
-	// Create 1 client
-	Client client1(*this, clientSocket);
+	std::cout << "Server is running on port " << _port << std::endl;
 
 	// Client input wait
 	while (true)
 	{
-		memset(buff, 0, 4096);
+		int pollCount = poll(pollFds.data(), pollFds.size(), -1);
+		if (pollCount == -1)
+			throw "Poll error!";
 
-		// Wait for client to send data
-		int bytesReceived = recv(clientSocket, buff, 4096, 0);
-		if (bytesReceived == -1)
+		if (pollFds[0].revents & POLLIN)
 		{
-			std::cerr << "Error in recv(). Quitting\n";
-			break;
-		}
-		if (bytesReceived == 0)
-		{
-			std::cout << "Client disconnected\n";
-			break;
+			sockaddr_in client;
+			socklen_t clientSize = sizeof(client);
+			int clientSocket = accept(listening, (sockaddr*)&client, &clientSize);
+			if (clientSocket == -1)
+				std::cerr << "Error accepting client!" << std::endl;
+			else
+			{
+				// Set client socket to non_blocking
+				fcntl(clientSocket, F_SETFL, O_NONBLOCK);
+
+				// Add to poll list
+				pollfd clientFd = {clientSocket, POLLIN, 0};
+				pollFds.push_back(clientFd);
+
+				// Create client object
+				// clients[clientSocket] = Client(*this, clientSocket);
+				Client newClient(*this, clientSocket);
+				clients.insert((std::make_pair(clientSocket, newClient)));
+				std::cout << "New client connected: " << clientSocket << std::endl;
+			}
 		}
 
-		client1.ExecuteCommand(std::string(buff, 0, bytesReceived));
+		// Check client message
+		for (size_t i = 1; i < pollFds.size(); ++i)
+		{
+			if (pollFds[i].revents & POLLIN)
+			{
+				char buf[4096];
+				memset(buf, 0, 4096);
+				int clientSocket = pollFds[i].fd;
+				int bytesReseived = recv(clientSocket, buf, 4096, 0);
+
+				if (bytesReseived <= 0)
+				{
+					// Client disconnected
+					std::cout << "Client " << clientSocket << " disconnected" << std::endl;
+					close(clientSocket);
+					pollFds.erase(pollFds.begin() + i);
+					clients.erase(clientSocket);
+					--i;	// Adjust index after removal
+				}
+				else
+				{
+					// Process client message
+					std::map<int, Client>::iterator it = clients.find(clientSocket);
+					if (it != clients.end())
+						it->second.ExecuteCommand(std::string(buf, bytesReseived));
+				}
+			}
+		}
 	}
 
-	// Close socket
-	close(clientSocket);
-
+	// Cleanup
+	for (size_t i = 0; i < pollFds.size(); ++i)
+		close(pollFds[i].fd);
+	close(listening);
 	return 0;
 }
 

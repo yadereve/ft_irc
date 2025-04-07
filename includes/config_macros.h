@@ -68,6 +68,9 @@ enum errors
 	ERR_ERRONEUS_REAL_NAME = 904,
 };
 
+#define MIN_ALLOWED_PORT 1024
+#define MAX_ALLOWED_PORT 65535
+
 /******************************************
  *                                        *
  *                INCLUDES                *
@@ -91,5 +94,8 @@ enum errors
 #include <vector>
 #include <csignal>
 #include <stdexcept>
+#include <poll.h>
+#include <fcntl.h>
+#include <map>
 
 #endif

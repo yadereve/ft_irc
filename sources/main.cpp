@@ -11,7 +11,7 @@ int main(int ac, char* av[])
 
 		parseInput(av[1], av[2]);
 		signal(SIGPIPE, SIG_IGN);
-		Server server(av[1], static_cast<std::string>(av[2]));
+		Server server(av[1], av[2]);
 		server.start();
 		std::cout << BLUE << ">>> The Server Closed! <<<" << RESET << std::endl;
 		return 0;
