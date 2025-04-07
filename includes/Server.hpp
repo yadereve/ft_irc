@@ -1,11 +1,13 @@
 #ifndef SERVER_HPP
-#define SERVER_HPP
+# define SERVER_HPP
 
-#include "format/text_format.h"
-#include "format/config_macros.h"
+# include "format/text_format.h"
+# include "format/config_macros.h"
 
-#include "Client.hpp"
-#include "Channel.hpp"
+# include "Client.hpp"
+# include "Channel.hpp"
+
+class Channel;
 
 class Server
 {

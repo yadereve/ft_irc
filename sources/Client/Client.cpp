@@ -74,3 +74,15 @@ void Client::ExecuteCommand(std::string input)
 /* setters */
 
 void Client::SetSocket(int s) { _socket = s; }
+
+//add for channel
+
+std::string Client::getNickname() const {
+    return _nick;
+}
+
+void Client::receiveMessage(const std::string &source, const std::string &command, const std::string &args) {
+    std::string msg = ":" + source + " " + command + " " + args + "\r\n";
+    messageClient(msg);
+}
+

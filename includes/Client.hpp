@@ -21,6 +21,10 @@ public:
 	// SETTERS
 	void SetSocket(int);
 
+	//add for channel
+	std::string getNickname() const;
+	void receiveMessage(const std::string &source, const std::string &command, const std::string &args);
+
 private:
 	// ATTRIBUTES
 	// specific data
