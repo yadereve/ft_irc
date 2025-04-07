@@ -9,29 +9,36 @@
 
 enum commands
 {
-	CAP = 1,
-	HELP = 2,
-	OPER = 3,
-	PING = 4,
-	QUIT = 5,
-	PASS = 6,
-	NICK = 7,
-	USER = 8,
-	WHOIS = 9,
-	JOIN = 10,
-	MODE = 11,
-	TOPIC = 12,
-	PART = 13,
-	PRIVMSG = 14,
-	INVITE = 15,
-	KICK = 16,
+	HELP = 1,
+	PING,
+	QUIT,
+	PASS,
+	NICK,
+	USER,
+	JOIN,
+	MODE,
+	TOPIC,
+	PART,
+	PRIVMSG,
+	INVITE,
+	KICK,
 };
 
 enum success
 {
 	PASSWORD_SUCCESS = 100,
-	NICKNAME_SUCCESS = 101,
-	USERNAME_SUCCESS = 102,
+	NICKNAME_SUCCESS,
+	USERNAME_SUCCESS,
+	PONG,
+	// debug messages
+	CHANNEL_CREATED,
+	JOINED_CHANNEL,
+	CHANNEL_OP,
+	LEAVE_CHANNEL,
+	SHOWING_CHANNEL_TOPIC,
+	CHANNEL_TOPIC_CHANGED,
+	KICK_SOMEONE,
+	KICK_SOMEONE_MESSAGE,
 };
 
 enum errors
@@ -97,5 +104,7 @@ enum errors
 #include <poll.h>
 #include <fcntl.h>
 #include <map>
+#include <sys/socket.h>
+#include <utility>
 
 #endif

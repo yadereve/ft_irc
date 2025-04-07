@@ -1,8 +1,8 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include "text_format.h"
-#include "config_macros.h"
+#include "format/text_format.h"
+#include "format/config_macros.h"
 
 #include "Server.hpp"
 #include "Utils.hpp"
@@ -14,7 +14,7 @@ class Client
 public:
 	Client(Server &, int);
 	~Client();
-	
+
 	// METHODS
 	void ExecuteCommand(std::string);
 
@@ -39,39 +39,45 @@ private:
 	bool _user_check;
 	bool _authenticated_check;
 
-
 	// METHODS
 	// login commands
-	int Pass();
-	int Nick();
-	int User();
+	int pass();
+	int nick();
+	int user();
 	// general commands
-	int Help();
-	int Oper();
-	int Ping();
-	int Quit();
+	int help();
+	int ping();
+	int quit();
 	// chanel commands
-	int Invite();
-	int Join();
-	int Kick();
-	int Mode();
-	int Part();
-	int Privmsg();
-	int Topic();
+	int invite();
+	int join();
+	int kick();
+	int mode();
+	int part();
+	int privmsg();
+	int topic();
 	// commands description message
-	void Pass(std::ostringstream &oss);
-	void Nick(std::ostringstream &oss);
-	void User(std::ostringstream &oss);
+	void pass(std::ostringstream &oss);
+	void nick(std::ostringstream &oss);
+	void user(std::ostringstream &oss);
+	void help(std::ostringstream &oss);
+	void ping(std::ostringstream &oss);
+	void quit(std::ostringstream &oss);
+	void join(std::ostringstream &oss);
+	void part(std::ostringstream &oss);
+	void topic(std::ostringstream &oss);
+	void kick(std::ostringstream &oss);
 	// message client
-	void MessageClient(std::string);
-	void MessageClient(int);
-	// command candler
-	int Parser(std::string);
-	int CommandHandler(int);
-	void PrintErrorMessage(int nb);
-	void PrintSuccessMessage(int nb);
-	bool NickAlreadyExist(std::string str);
-	bool ValidName(std::string str);
+	void messageClient(std::string);
+	void messageClient(int);
+	// command handler
+	int parser(std::string);
+	int commandHandler(int);
+	void printMessage(int nb);
+	// command utils
+	bool nickAlreadyExist(std::string str);
+	bool validName(std::string str);
+	bool channelExist(std::string);
 };
 
 #endif

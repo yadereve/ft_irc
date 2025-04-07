@@ -1,4 +1,4 @@
-#include "../includes/Client.hpp"
+#include "../../includes/Client.hpp"
 
 Client::Client(Server &server, int s) : _server(server), _socket(s)
 {
@@ -12,12 +12,14 @@ Client::~Client()
 {
 }
 
-void Client::MessageClient(std::string msg)
+/* methods */
+
+void Client::messageClient(std::string msg)
 {
     send(_socket, msg.c_str(), msg.length() + 1, 0);
 }
 
-void Client::MessageClient(int nb)
+void Client::messageClient(int nb)
 {
     std::ostringstream oss;
     oss << nb;
@@ -25,7 +27,7 @@ void Client::MessageClient(int nb)
     send(_socket, msg.c_str(), msg.length() + 1, 0);
 }
 
-bool Client::ValidName(std::string str)
+bool Client::validName(std::string str)
 {
     // 3 or more chars
     if (str.length() < 3)
@@ -40,6 +42,19 @@ bool Client::ValidName(std::string str)
     return true;
 }
 
+bool Client::channelExist(std::string channel_name)
+{
+    const std::vector<Channel> &channel_list = _server.getChannelList();
+
+    std::vector<Channel>::const_iterator it;
+    for (it = channel_list.begin(); it != channel_list.end(); ++it)
+    {
+        if (it->getName() == channel_name)
+            return true;
+    }
+    return false;
+}
+
 void Client::ExecuteCommand(std::string input)
 {
     // reset command and arguments
@@ -47,17 +62,15 @@ void Client::ExecuteCommand(std::string input)
     _arguments.clear();
     
     // transform input into a legible command
-    int command_id = Parser(input);
+    size_t command_id = parser(input);
 
     // execute command by id
-    int return_nb = CommandHandler(command_id);
+    int return_message = commandHandler(command_id);
 
-    // if needed, show user the error
-    if (return_nb >= 400)
-        PrintErrorMessage(return_nb);
-    else if (return_nb > 0)
-        PrintSuccessMessage(return_nb);
+    // print return message
+    printMessage(return_message);
 }
 
 /* setters */
+
 void Client::SetSocket(int s) { _socket = s; }

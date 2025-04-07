@@ -1,35 +1,46 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include "text_format.h"
-#include "config_macros.h"
+#include "format/text_format.h"
+#include "format/config_macros.h"
 
 #include "Client.hpp"
+#include "Channel.hpp"
 
 class Server
 {
 public:
-	Server();
 	Server(const std::string port, const std::string pass);
-	Server(const Server& other);
-	Server& operator=(const Server& other);
+	Server(const Server &other);
+	Server &operator=(const Server &other);
 	~Server();
-	
-	 //METHODS
+
+	// METHODS
 	int start();
 	// getters
-	std::string GetPass() const;
-	std::vector<std::string> GetNickList() const;
+	std::string getPass() const;
+	std::vector<std::string> getNickList() const;
+	std::vector<std::string> getCommandList() const;
+	std::vector<Channel> getChannelList() const;
 	// setters
-	void SetElementNickList(std::string, std::string);
+	void setNewNick(std::string, std::string);
+	void setNewChannel(std::string);
+	// clears
+	void removeChannel(std::string channel_name);
 
 private:
+	Server();
+
 	// ATTRIBUTES
 	std::string _port;
 	std::string _pass;
 	std::string _host;
 	std::vector<std::string> _nick_list;
+	std::vector<std::string> _command_list;
+	std::vector<Channel> _channel_list;
 
+	// METHODS
+	void commandListInitializer(std::vector<std::string> &);
 };
 
 #endif
