@@ -3,8 +3,12 @@
 
 # include "format/text_format.h"
 # include "format/config_macros.h"
-# include "../includes/Client.hpp"
+//# include "../includes/Client.hpp"
 # include <map>
+# include <string>
+# include <vector>
+
+class Client;
 
 class Channel
 {
@@ -23,16 +27,18 @@ private:
 	int					usersCount;
 
 public:
+	Channel();
 	Channel(std::string);
 	~Channel();
 
 	// METHODS
 
 	// GETTERS
-	std::string getName() const;
+	const std::string		&getName(void) const;
+
+//	std::string getName() const;
 
 private:
-	Channel();
 
 	// ATTRIBUTES
 	std::string _name;
@@ -69,7 +75,6 @@ private:
 	void			removePassword();
 
 	// Getters and setters
-	const std::string		&getName(void) const;
 	void						setName(const std::string &src);
 	const _mapclient	&getClients(void) const;
 	void						setClients(_mapclient &src);

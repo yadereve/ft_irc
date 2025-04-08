@@ -3,8 +3,6 @@
 // Construtor
 Channel::Channel() : mode(""), name(""), key(""), topic(""), password(""), usersLimit(0), usersCount(0) {}
 
-// Destrutor
-Channel::~Channel() {}
 
 // Adiciona um cliente ao canal
 void Channel::addClient(Client *client) {
@@ -21,7 +19,7 @@ Channel::~Channel()
 }
 
 /* getters */
-std::string Channel::getName() const { return _name; }
+const std::string &Channel::getName() const { return _name; }
 
 // Verifica se um cliente é membro do canal
 bool Channel::isMember(Client *client) {
@@ -135,11 +133,6 @@ const std::string& Channel::getPassword() const {
 // Remove a senha do canal
 void Channel::removePassword() {
 	password = "";
-}
-
-// Obtém o nome do canal
-const std::string& Channel::getName(void) const {
-	return name;
 }
 
 // Define o nome do canal
