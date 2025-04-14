@@ -20,33 +20,46 @@ int Client::topic()
         return ERR_NEED_MORE_PARAMS;
 
     // initialize values
-    std::string channel = _arguments[0];
+    std::string channel_name = _arguments[0];
     std::string topic = "";
     if (_arguments.size() == 2)
         topic = _arguments[1];
 
     // check if channel starts with #
-    if (channel[0] != '#')
+    if (channel_name[0] != '#')
         return ERR_BAD_CHAN_MASK;
 
     // check if channel exist
-    if (channelExist(channel) == false)
+    if (!channelExist(channel_name))
         return ERR_NO_SUCH_CHANNEL;
 
     // TODO - check if user is on channel (CHANNEL)
-    if (/* user on channel == false */ 0)
+    Channel *channel = NULL;
+    std::vector<Channel>& channels = _server.getChannelList();
+    for (size_t i = 0; i < channels.size(); ++i) {
+        if (channels[i].getName() == channel_name) {
+            channel = &channels[i];
+            break;
+        }
+    }
+
+    if (!channel || !channel->isMember(this))
         return ERR_NOT_ON_CHANNEL;
 
     // show topic
     if (_arguments.size() == 1)
     {
         // TODO - show channel topic do the client (CHANNEL)
+        std::string current_topic = channel->getTopic();
+        messageClient("Channel topic for " + channel_name + ": " + current_topic);
         printMessage(SHOWING_CHANNEL_TOPIC);
     }
     // change topic
     if (_arguments.size() == 2)
     {
         // TODO - change channel topic do the new one (CHANNEL)
+        channel->setTopic(topic);
+        messageClient("Channel topic for " + channel_name + " changed to: " + topic);
         printMessage(CHANNEL_TOPIC_CHANGED);
     }
 

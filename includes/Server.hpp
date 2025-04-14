@@ -27,12 +27,13 @@ public:
 	std::string getPass() const;
 	std::vector<std::string> getNickList() const;
 	std::vector<std::string> getCommandList() const;
-	std::vector<Channel> getChannelList() const;
+	std::vector<Channel>& getChannelList();
 	// setters
 	void setNewNick(std::string, std::string);
 	void setNewChannel(std::string);
 	// clears
 	void removeChannel(std::string channel_name);
+	Client* getClientByNick(const std::string& nickname) const;
 
 private:
 	Server();
@@ -44,6 +45,7 @@ private:
 	std::vector<std::string> _nick_list;
 	std::vector<std::string> _command_list;
 	std::vector<Channel> _channel_list;
+	std::vector<Client> _client_list;
 
 	// METHODS
 	void commandListInitializer(std::vector<std::string> &);

@@ -30,7 +30,7 @@ Server::~Server()
 std::string Server::getPass() const { return _pass; }
 std::vector<std::string> Server::getNickList() const { return _nick_list; }
 std::vector<std::string> Server::getCommandList() const { return _command_list; }
-std::vector<Channel> Server::getChannelList() const { return _channel_list; }
+std::vector<Channel>& Server::getChannelList() { return _channel_list; }
 
 /* setters */
 
@@ -64,6 +64,17 @@ void Server::removeChannel(std::string channel_name)
         if (it->getName() == channel_name)
 		{
 			_channel_list.erase(it);
+			break;
 		}
     }
+}
+
+Client* Server::getClientByNick(const std::string& nickname) const
+{
+    for (size_t i = 0; i < _client_list.size(); ++i)
+    {
+        if (_client_list[i].getNickname() == nickname)
+			return const_cast<Client*>(&_client_list[i]);
+    }
+    return NULL;
 }

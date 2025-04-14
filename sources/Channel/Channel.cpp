@@ -28,8 +28,24 @@ bool Channel::isMember(Client *client) {
 
 // Remove um cliente do canal
 void Channel::removeClient(Client *client) {
-	clients.erase(client->getNickname());
-	usersCount--;
+
+	if (!client) {
+        std::cerr << "Client is NULL!" << std::endl;
+        return;
+    }
+
+    std::cout << "Removing client: " << client << std::endl;
+	
+	std::string nickname = client->getNickname();
+
+	if (clients.find(nickname) != clients.end()) {
+		clients.erase(client->getNickname());
+		usersCount--;
+	}
+	else {
+		std::cerr << "Warning: trying to remove client '" << nickname 
+		<< "' who is not in channel " << name << std::endl;
+	}
 }
 
 // Verifica se o canal está vazio
