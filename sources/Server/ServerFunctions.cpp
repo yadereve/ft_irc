@@ -63,7 +63,7 @@ int Server::start()
 		{
 			sockaddr_in client;
 			socklen_t clientSize = sizeof(client);
-			int clientSocket = accept(listening, (sockaddr*)&client, &clientSize);
+			int clientSocket = accept(listening, (sockaddr *)&client, &clientSize);
 			if (clientSocket == -1)
 				std::cerr << "Error accepting client!" << std::endl;
 			else
@@ -91,23 +91,23 @@ int Server::start()
 				char buf[4096];
 				memset(buf, 0, 4096);
 				int clientSocket = pollFds[i].fd;
-				int bytesReseived = recv(clientSocket, buf, 4096, 0);
+				int bytesReceived = recv(clientSocket, buf, 4096, 0);
 
-				if (bytesReseived <= 0)
+				if (bytesReceived <= 0)
 				{
 					// Client disconnected
 					std::cout << "Client " << clientSocket << " disconnected" << std::endl;
 					close(clientSocket);
 					pollFds.erase(pollFds.begin() + i);
 					clients.erase(clientSocket);
-					--i;	// Adjust index after removal
+					--i; // Adjust index after removal
 				}
 				else
 				{
 					// Process client message
 					std::map<int, Client>::iterator it = clients.find(clientSocket);
 					if (it != clients.end())
-						it->second.ExecuteCommand(std::string(buf, bytesReseived));
+						it->second.ExecuteCommand(std::string(buf, bytesReceived));
 				}
 			}
 		}
@@ -118,4 +118,9 @@ int Server::start()
 		close(pollFds[i].fd);
 	close(listening);
 	return 0;
+}
+
+void Server::privateMessage(Client &c, std::string msg)
+{
+	c.messageClient(msg);
 }

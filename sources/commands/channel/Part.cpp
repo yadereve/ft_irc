@@ -3,8 +3,8 @@
 
 void Client::part(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "PART <channel>" RESEND;
-    oss << WHITE << "\tLeave a channel" RESEND;
+    oss << CYAN << "├─ "  << CYAN BOLT << "PART <channel>" << std::endl;
+    oss << CYAN << "│"    << WHITE << "\tLeave a channel" << std::endl;
 }
 
 int Client::part()

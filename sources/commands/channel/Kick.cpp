@@ -3,8 +3,8 @@
 
 void Client::kick(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "KICK <channel> <user> [<message>]" RESEND;
-    oss << WHITE << "\tKicks a user from a channel" RESEND;
+    oss << CYAN << "├─ " << CYAN BOLT << "KICK <channel> <user> [<message>]" << std::endl;
+    oss << CYAN << "│" << WHITE << "\tKicks a user from a channel" << std::endl;
 }
 
 int Client::kick()
@@ -34,12 +34,12 @@ int Client::kick()
 
     // TODO - check if user is on channel (CHANNEL)
     Channel *channel = NULL;
-    const std::vector<Channel>& channels = _server.getChannelList();
+    const std::vector<Channel> &channels = _server.getChannelList();
     for (size_t i = 0; i < channels.size(); ++i)
     {
         if (channels[i].getName() == channel_name)
         {
-            channel = const_cast<Channel*>(&channels[i]);
+            channel = const_cast<Channel *>(&channels[i]);
             break;
         }
     }

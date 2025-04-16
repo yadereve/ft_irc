@@ -23,11 +23,13 @@ public:
 
 	// METHODS
 	int start();
+	void privateMessage(Client &c ,std::string msg);
 	// getters
 	std::string getPass() const;
 	std::vector<std::string> getNickList() const;
 	std::vector<std::string> getCommandList() const;
 	std::vector<Channel>& getChannelList();
+	Channel *getChannelByName(std::string);
 	// setters
 	void setNewNick(std::string, std::string);
 	void setNewChannel(std::string);

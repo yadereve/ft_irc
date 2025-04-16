@@ -2,11 +2,11 @@
 
 void Client::topic(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "TOPIC <channel>" RESEND;
-    oss << WHITE << "\tSee the channel topic" RESEND;
-    oss << RESEND;
-    oss << CYAN BOLT << "TOPIC <channel> <new_topic>" RESEND;
-    oss << WHITE << "\tChange the channel topic" RESEND;
+    oss << CYAN << "├─┬─ " << CYAN BOLT << "TOPIC <channel>" << std::endl;
+    oss << CYAN << "│ │" << WHITE << "\tSee the channel topic" << std::endl;
+    oss << CYAN << "│ │" << std::endl;
+    oss << CYAN << "│ └─ " << CYAN BOLT << "TOPIC <channel> <new_topic>" << std::endl;
+    oss << CYAN << "│" << WHITE << "\tChange the channel topic" << std::endl;
 }
 
 int Client::topic()
@@ -14,7 +14,7 @@ int Client::topic()
     // check if is authenticated
     if (_authenticated_check == false)
         return ERR_NOT_AUTHENTICATED;
-        
+
     // check if topic have 1 argument
     if (_arguments.size() != 1 && _arguments.size() != 2)
         return ERR_NEED_MORE_PARAMS;
@@ -35,9 +35,11 @@ int Client::topic()
 
     // TODO - check if user is on channel (CHANNEL)
     Channel *channel = NULL;
-    std::vector<Channel>& channels = _server.getChannelList();
-    for (size_t i = 0; i < channels.size(); ++i) {
-        if (channels[i].getName() == channel_name) {
+    std::vector<Channel> &channels = _server.getChannelList();
+    for (size_t i = 0; i < channels.size(); ++i)
+    {
+        if (channels[i].getName() == channel_name)
+        {
             channel = &channels[i];
             break;
         }

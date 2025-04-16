@@ -6,6 +6,7 @@ Client::Client(Server &server, int s) : _server(server), _socket(s)
     _nick_check = false;
     _user_check = false;
     _authenticated_check = false;
+    printMessage(FIRST_MESSAGE);
 }
 
 Client::~Client()

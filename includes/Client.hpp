@@ -17,6 +17,9 @@ public:
 
 	// METHODS
 	void ExecuteCommand(std::string);
+	// message client
+	void messageClient(std::string);
+	void messageClient(int);
 
 	// SETTERS
 	void SetSocket(int);
@@ -71,9 +74,6 @@ private:
 	void part(std::ostringstream &oss);
 	void topic(std::ostringstream &oss);
 	void kick(std::ostringstream &oss);
-	// message client
-	void messageClient(std::string);
-	void messageClient(int);
 	// command handler
 	int parser(std::string);
 	int commandHandler(int);

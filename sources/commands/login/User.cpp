@@ -2,11 +2,11 @@
 
 void Client::user(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "USER <username> * * :<real name>" RESEND;
-    oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
-    oss << WHITE << "\tSet you a username and your real name" RESEND;
-    oss << WHITE << "\tYour username and real name should start with a letter and" RESEND;
-    oss << WHITE << "\tcan only have numbers, letters, hyphen (-) and underscore (_)" RESEND;
+    oss << CYAN << "├─ " << CYAN BOLT << "USER <username> * * :<real name>" << std::endl;
+    oss << CYAN << "│"   << WHITE ITALICS << "\t(Needed to join the server)" << std::endl;
+    oss << CYAN << "│"   << WHITE << "\tSet you a username and your real name" << std::endl;
+    oss << CYAN << "│"   << WHITE << "\tYour username and real name should start with a letter and" << std::endl;
+    oss << CYAN << "│"   << WHITE << "\tcan only have numbers, letters, hyphen (-) and underscore (_)" << std::endl;
 }
 
 #define USER_MAX_LEN 12
@@ -58,6 +58,6 @@ int Client::user()
     _real_name = real_name;
     _authenticated_check = true;
     _user_check = true;
-
-    return USERNAME_SUCCESS;
+    printMessage(USERNAME_SUCCESS);
+    return LOGIN_SUCCESS;
 }

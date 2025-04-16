@@ -1,14 +1,13 @@
 #include "../../../includes/Client.hpp"
 #include "../../../includes/Channel.hpp"
 
-
 void Client::join(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "JOIN <channel>" RESEND;
-    oss << WHITE << "\tJoin a channel" RESEND;
-    oss << WHITE << "\tIf channel doesn't exist:" RESEND;
-    oss << WHITE << "\t- Create a new one" RESEND;
-    oss << WHITE << "\t- Become de channel operator" RESEND;
+    oss << CYAN << "├─ " << CYAN BOLT << "JOIN <channel>" << std::endl;
+    oss << CYAN << "│" << WHITE << "\tJoin a channel" << std::endl;
+    oss << CYAN << "│" << WHITE << "\tIf channel doesn't exist:" << std::endl;
+    oss << CYAN << "│" << WHITE << "\t- Create a new one" << std::endl;
+    oss << CYAN << "│" << WHITE << "\t- Become de channel operator" << std::endl;
 }
 
 int Client::join()
@@ -16,7 +15,7 @@ int Client::join()
     // check if is authenticated
     if (_authenticated_check == false)
         return ERR_NOT_AUTHENTICATED;
-        
+
     // check if join have 1 argument
     if (_arguments.size() != 1)
         return ERR_NEED_MORE_PARAMS;
@@ -35,15 +34,7 @@ int Client::join()
     {
         // if exist just join channel
         // TODO - user join channel (CHANNEL)
-        const std::vector<Channel> &channels = _server.getChannelList();
-        for (size_t i = 0; i < channels.size(); ++i)
-        {
-            if (channels[i].getName() == channel_name)
-            {
-                channel = const_cast<Channel*>(&channels[i]);
-                break;
-            }
-        }
+        channel = _server.getChannelByName(channel_name);
         if (channel && !channel->isMember(this))
         {
             channel->addClient(this);
@@ -64,7 +55,7 @@ int Client::join()
         {
             if (channels[i].getName() == channel_name)
             {
-                channel = const_cast<Channel*>(&channels[i]);
+                channel = const_cast<Channel *>(&channels[i]);
                 break;
             }
         }
@@ -77,14 +68,10 @@ int Client::join()
             printMessage(CHANNEL_OP);
         }
 
-        
-
         // TODO - user join channel (CHANNEL)
-       
 
         // TODO - user become channel OP (CHANNEL)
-       
     }
-    
+
     return 0;
 }
