@@ -71,14 +71,14 @@ void Server::setupPullFds()
 	_pollFds.push_back(listeningFd);
 }
 
-void Server::handlePollEvents()
+void Server::handlPollEvents()
 {
 	int pollCount = poll(_pollFds.data(), _pollFds.size(), -1);
 	if (pollCount == -1)
 		throw std::runtime_error("Poll error!");
 
 	if (_pollFds[0].revents & POLLIN)
-		handleNewConnection();
+		handlNewConnection();
 	for (size_t i = 1; i < _pollFds.size(); ++i)
 	{
 		if (_pollFds[i].revents & POLLIN)
@@ -86,7 +86,7 @@ void Server::handlePollEvents()
 	}
 }
 
-void Server::handleNewConnection()
+void Server::handlNewConnection()
 {
 	sockaddr_in clientAddr;
 	socklen_t clientSize = sizeof(clientAddr);

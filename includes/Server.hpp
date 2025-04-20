@@ -22,8 +22,8 @@ public:
 	void start();
 	void createListeningSocket();
 	void setupPullFds();
-	void handlePollEvents();
-	void handleNewConnection();
+	void handlPollEvents();
+	void handlNewConnection();
 	void handlClientMessage(size_t& index);
 	void privateMessage(Client &c ,std::string msg);
 	void handlQuit(int clientSocket, const std::string quitMsg);
