@@ -17,7 +17,7 @@ void Server::commandListInitializer(std::vector<std::string> &list)
 	list.push_back("KICK");
 }
 
-static std::string getTime()
+std::string Server::getTime() const
 {
 	time_t timestamp;
 	time(&timestamp);
@@ -33,7 +33,7 @@ void Server::start()
 
 	std::cout << "[" << getTime() << "] " << "Server is running on port " << _port << std::endl;
 	while (true)
-		handlePollEvents();
+		handlPollEvents();
 }
 
 void Server::createListeningSocket()
@@ -150,8 +150,11 @@ void Server::handlQuit(int clientSocket, const std::string quitMsg)
 	close(clientSocket);
 	for (size_t i = 0; i < _pollFds.size(); ++i)
 	{
-		_pollFds.erase(_pollFds.begin() + i);
-		break;
+		if (_pollFds[i].fd == clientSocket)
+		{
+			_pollFds.erase(_pollFds.begin() + i);
+			break;
+		}
 	}
-	_client_list.erase(clientSocket);
+	_client_list.erase(it);
 }

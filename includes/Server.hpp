@@ -27,6 +27,7 @@ public:
 	void handlClientMessage(size_t& index);
 	void privateMessage(Client &c ,std::string msg);
 	void handlQuit(int clientSocket, const std::string quitMsg);
+	std::string getTime() const;
 
 	// getters
 	std::string getPass() const;
