@@ -3,9 +3,6 @@
 
 # include "format/text_format.h"
 # include "format/config_macros.h"
-# include <string>
-# include <vector>
-# include <map>
 
 # include "Client.hpp"
 # include "Channel.hpp"
@@ -19,11 +16,18 @@ public:
 	Server(const std::string port, const std::string pass);
 	Server(const Server &other);
 	Server &operator=(const Server &other);
-	~Server();
+	virtual ~Server();
 
 	// METHODS
-	int start();
+	void start();
+	void createListeningSocket();
+	void setupPullFds();
+	void handlePollEvents();
+	void handleNewConnection();
+	void handlClientMessage(size_t& index);
 	void privateMessage(Client &c ,std::string msg);
+	void handlQuit(int clientSocket, const std::string quitMsg);
+
 	// getters
 	std::string getPass() const;
 	std::vector<std::string> getNickList() const;
@@ -44,10 +48,13 @@ private:
 	std::string _port;
 	std::string _pass;
 	std::string _host;
+	sockaddr_in hint;
+	int _listening;
+	std::vector<pollfd> _pollFds;
+	std::map<int, Client> _client_list;
 	std::vector<std::string> _nick_list;
 	std::vector<std::string> _command_list;
 	std::vector<Channel> _channel_list;
-	std::vector<Client> _client_list;
 
 	// METHODS
 	void commandListInitializer(std::vector<std::string> &);

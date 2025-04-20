@@ -20,6 +20,8 @@ int Client::quit()
     // TODO - send message to the channels with the (string) reason (CHANNEL)
 
     // TODO - remove client form server (SERVER)
+	DEBUG("_socket: " << _socket);
+	_server.handlQuit(_socket, "Leaving");
 
     return 0;
 }

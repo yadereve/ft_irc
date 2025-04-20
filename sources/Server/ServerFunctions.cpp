@@ -17,110 +17,141 @@ void Server::commandListInitializer(std::vector<std::string> &list)
 	list.push_back("KICK");
 }
 
-int Server::start()
+static std::string getTime()
+{
+	time_t timestamp;
+	time(&timestamp);
+	std::string currentTime = asctime(localtime(&timestamp));
+	currentTime.pop_back(); // remove '\n'
+	return currentTime;
+}
+
+void Server::start()
+{
+	createListeningSocket();
+	setupPullFds();
+
+	std::cout << "[" << getTime() << "] " << "Server is running on port " << _port << std::endl;
+	while (true)
+		handlePollEvents();
+}
+
+void Server::createListeningSocket()
 {
 	// Create sockets
-	int listening = socket(AF_INET, SOCK_STREAM, 0);
-	if (listening == -1)
+	_listening = socket(AF_INET, SOCK_STREAM, 0);
+	DEBUG("_listening: " << _listening);
+	if (_listening == -1)
 		throw std::runtime_error("Can't create socket! Quitting");
 
 	// Set socket to be reusable
 	int opt = 1;
-	setsockopt(listening, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+	setsockopt(_listening, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
 	// Bind the ip address and port to socket
-	sockaddr_in hint;
+	//sockaddr_in hint;
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(atoi(_port.c_str()));
-	inet_pton(AF_INET, "0.0.0.0", &hint.sin_addr);
-	if (bind(listening, (sockaddr *)&hint, sizeof(hint)) == -1)
+	inet_pton(AF_INET, _host.c_str(), &hint.sin_addr);
+	if (bind(_listening, (sockaddr *)&hint, sizeof(hint)) == -1)
 		throw std::runtime_error("Can't bind socket!");
 
 	// Tell Winsock the socket is for listening
-	if (listen(listening, SOMAXCONN) == -1)
+	if (listen(_listening, SOMAXCONN) == -1)
 		throw std::runtime_error("Can't listen on socket!");
 
 	// Non-blocking mode (as required for MacOS)
-	fcntl(listening, F_SETFL, O_NONBLOCK);
+	fcntl(_listening, F_SETFL, O_NONBLOCK);
+}
 
+void Server::setupPullFds()
+{
 	// Poll setup
-	std::vector<pollfd> pollFds;
-	pollfd listeningFd = {listening, POLLIN, 0};
-	pollFds.push_back(listeningFd);
+	pollfd listeningFd = {_listening, POLLIN, 0};
+	_pollFds.push_back(listeningFd);
+}
 
-	std::map<int, Client> clients;
+void Server::handlePollEvents()
+{
+	int pollCount = poll(_pollFds.data(), _pollFds.size(), -1);
+	if (pollCount == -1)
+		throw std::runtime_error("Poll error!");
 
-	std::cout << "Server is running on port " << _port << std::endl;
-
-	// Client input wait
-	while (true)
+	if (_pollFds[0].revents & POLLIN)
+		handleNewConnection();
+	for (size_t i = 1; i < _pollFds.size(); ++i)
 	{
-		int pollCount = poll(pollFds.data(), pollFds.size(), -1);
-		if (pollCount == -1)
-			throw std::runtime_error("Poll error!");
-
-		if (pollFds[0].revents & POLLIN)
-		{
-			sockaddr_in client;
-			socklen_t clientSize = sizeof(client);
-			int clientSocket = accept(listening, (sockaddr *)&client, &clientSize);
-			if (clientSocket == -1)
-				std::cerr << "Error accepting client!" << std::endl;
-			else
-			{
-				// Set client socket to non_blocking
-				fcntl(clientSocket, F_SETFL, O_NONBLOCK);
-
-				// Add to poll list
-				pollfd clientFd = {clientSocket, POLLIN, 0};
-				pollFds.push_back(clientFd);
-
-				// Create client object
-				// clients[clientSocket] = Client(*this, clientSocket);
-				Client newClient(*this, clientSocket);
-				clients.insert((std::make_pair(clientSocket, newClient)));
-				std::cout << "New client connected: " << clientSocket << std::endl;
-			}
-		}
-
-		// Check client message
-		for (size_t i = 1; i < pollFds.size(); ++i)
-		{
-			if (pollFds[i].revents & POLLIN)
-			{
-				char buf[4096];
-				memset(buf, 0, 4096);
-				int clientSocket = pollFds[i].fd;
-				int bytesReceived = recv(clientSocket, buf, 4096, 0);
-
-				if (bytesReceived <= 0)
-				{
-					// Client disconnected
-					std::cout << "Client " << clientSocket << " disconnected" << std::endl;
-					close(clientSocket);
-					pollFds.erase(pollFds.begin() + i);
-					clients.erase(clientSocket);
-					--i; // Adjust index after removal
-				}
-				else
-				{
-					// Process client message
-					std::map<int, Client>::iterator it = clients.find(clientSocket);
-					if (it != clients.end())
-						it->second.ExecuteCommand(std::string(buf, bytesReceived));
-				}
-			}
-		}
+		if (_pollFds[i].revents & POLLIN)
+			handlClientMessage(i);
 	}
+}
 
-	// Cleanup
-	for (size_t i = 0; i < pollFds.size(); ++i)
-		close(pollFds[i].fd);
-	close(listening);
-	return 0;
+void Server::handleNewConnection()
+{
+	sockaddr_in clientAddr;
+	socklen_t clientSize = sizeof(clientAddr);
+	int clientSocket = accept(_listening, (sockaddr *)&clientAddr, &clientSize);
+	if (clientSocket == -1)
+		throw std::runtime_error("Error accepting client!");
+	
+	DEBUG("clientSocket: " << clientSocket);
+	// Set client socket to non_blocking
+	fcntl(clientSocket, F_SETFL, O_NONBLOCK);
+
+	// Add to poll list
+	pollfd clientFd = {clientSocket, POLLIN, 0};
+	_pollFds.push_back(clientFd);
+
+	// Create client object
+	Client newClient(*this, clientSocket);
+	_client_list.insert((std::make_pair(clientSocket, newClient)));
+
+	std::cout << "[" << getTime() << "] " << GREEN << "New client connected: " << clientSocket << RESET << std::endl;
+}
+
+void Server::handlClientMessage(size_t& index)
+{
+	char buf[4096];
+	memset(buf, 0, sizeof(buf));
+	int clientSocket = _pollFds[index].fd;
+	int bytesReceived = recv(clientSocket, buf, sizeof(buf), 0);
+
+	if (bytesReceived <= 0)
+	{
+		// Client disconnected
+		std::cout << "[" << getTime() << "] " << RED << "Client " << clientSocket << " disconnected" << RESET << std::endl;
+		close(clientSocket);
+		_pollFds.erase(_pollFds.begin() + index);
+		_client_list.erase(clientSocket);
+		--index; // Adjust index after removal
+	}
+	else
+	{
+		// Process client message
+		std::map<int, Client>::iterator it = _client_list.find(clientSocket);
+		if (it != _client_list.end())
+			it->second.executeCommand(std::string(buf, bytesReceived));
+	}
 }
 
 void Server::privateMessage(Client &c, std::string msg)
 {
 	c.messageClient(msg);
+}
+
+void Server::handlQuit(int clientSocket, const std::string quitMsg)
+{
+	std::map<int, Client>::iterator it = _client_list.find(clientSocket);
+	if (it == _client_list.end())
+		return;
+	Client& client = it->second;
+	client.messageClient("Quit :" + quitMsg + "\r\n");
+	std::cout << "[" << getTime() << "] " << RED << "Client " << clientSocket << " disconnected" << RESET << std::endl;
+	close(clientSocket);
+	for (size_t i = 0; i < _pollFds.size(); ++i)
+	{
+		_pollFds.erase(_pollFds.begin() + i);
+		break;
+	}
+	_client_list.erase(clientSocket);
 }

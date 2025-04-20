@@ -16,13 +16,13 @@ public:
 	~Client();
 
 	// METHODS
-	void ExecuteCommand(std::string);
+	void executeCommand(std::string);
 	// message client
 	void messageClient(std::string);
 	void messageClient(int);
 
 	// SETTERS
-	void SetSocket(int);
+	//void setSocket(int);
 
 	//add for channel
 	std::string getNickname() const;
