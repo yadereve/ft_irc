@@ -17,11 +17,17 @@ public:
 
 	// METHODS
 	void ExecuteCommand(std::string);
+	// message client
+	void messageClient(std::string);
+	void messageClient(int);
 
 	// SETTERS
-	void SetSocket(int);
+	void setSocket(int);
 
-	//add for channel
+	// GETTERS
+	int getSocket();
+
+	// add for channel
 	std::string getNickname() const;
 	void receiveMessage(const std::string &source, const std::string &command, const std::string &args);
 
@@ -71,9 +77,7 @@ private:
 	void part(std::ostringstream &oss);
 	void topic(std::ostringstream &oss);
 	void kick(std::ostringstream &oss);
-	// message client
-	void messageClient(std::string);
-	void messageClient(int);
+	void privmsg(std::ostringstream &oss);
 	// command handler
 	int parser(std::string);
 	int commandHandler(int);
@@ -82,6 +86,7 @@ private:
 	bool nickAlreadyExist(std::string str);
 	bool validName(std::string str);
 	bool channelExist(std::string);
+	bool nickExist(std::string);
 };
 
 #endif

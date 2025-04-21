@@ -6,6 +6,7 @@ Client::Client(Server &server, int s) : _server(server), _socket(s)
     _nick_check = false;
     _user_check = false;
     _authenticated_check = false;
+    printMessage(FIRST_MESSAGE);
 }
 
 Client::~Client()
@@ -55,6 +56,19 @@ bool Client::channelExist(std::string channel_name)
     return false;
 }
 
+bool Client::nickExist(std::string nick)
+{
+    const std::vector<std::string> &nick_list = _server.getNickList();
+
+    std::vector<std::string>::const_iterator it;
+    for (it = nick_list.begin(); it != nick_list.end(); ++it)
+    {
+        if (*it == nick)
+            return true;
+    }
+    return false;
+}
+
 void Client::ExecuteCommand(std::string input)
 {
     // reset command and arguments
@@ -73,7 +87,11 @@ void Client::ExecuteCommand(std::string input)
 
 /* setters */
 
-void Client::SetSocket(int s) { _socket = s; }
+void Client::setSocket(int s) { _socket = s; }
+
+/* getters */
+
+int Client::getSocket() { return _socket; }
 
 //add for channel
 

@@ -9,7 +9,7 @@
 
 #define PRINT std::cout
 
-#define ENDL std::endl
+#define ENDL "\n"
 
 #define STRING std::string
 
@@ -20,7 +20,7 @@
 
 // reset text config + '\n'
 #define RESEND \
-    RESET << ENDL
+    RESET ENDL
 
 // align the text (x) spaces to the Right
 #define R_ALIGN(x) \
@@ -70,16 +70,18 @@
 #define CLEAR_ACTUAL_LINE "\033[0K"
 
 // Text Colors (30-37)
-#define RESET "\033[0m"
-#define BLACK "\033[30m"
 #define RED "\033[31m"
-#define GREEN "\033[32m"
-#define YELLOW "\033[33m"
-#define BLUE "\033[34m"
 #define MAGENTA "\033[35m"
-#define CYAN "\033[36m"
-#define WHITE "\033[37m"
 #define ORANGE "\033[38;2;255;140;0m"
+#define YELLOW "\033[33m"
+#define GREEN "\033[32m"
+#define BLUE "\033[34m"
+#define CYAN "\033[36m"
+#define PURPLE "\033[38;2;128;0;128m"
+#define PINK "\033[38;2;255;105;180m"
+#define BLACK "\033[30m"
+#define WHITE "\033[37m"
+#define RESET "\033[0m"
 
 // Bright Text Colors (90-97)
 #define BRIGHT_BLACK "\033[90m"
@@ -110,7 +112,7 @@
 #define REVERSE_COLORS "\033[7m"
 #define HIDE_TEXT "\033[8m"
 #define CROSSED_OUT "\033[9m"
-
+#define RESET_BOLD "\033[22m"
 #else
 
 #define CURSOR_UP(x) ""

@@ -5,6 +5,10 @@
 # include "format/config_macros.h"
 # include "../includes/Client.hpp"
 # include <map>
+# include <string>
+# include <vector>
+
+class Client;
 
 class Channel
 {
@@ -23,24 +27,31 @@ private:
 	int					usersCount;
 
 public:
+	Channel();
 	Channel(std::string);
 	~Channel();
 
 	// METHODS
-
+	void			addClient(Client *client);
+	bool			isMember(Client *client);
+	bool			addOperator(Client* client);
+	void			removeClient(Client *client);
+	bool			isOperator(Client *client) const;
 	// GETTERS
-	std::string getName() const;
+	const std::string		&getName(void) const;
+	const _mapclient	&getClients(void) const;
+
+	const std::string		&getTopic(void) const;
+	void						setTopic(const std::string &src);
+
+//	std::string getName() const;
 
 private:
-	Channel();
 
 	// ATTRIBUTES
 	std::string _name;
 
 	// Client management
-	void			addClient(Client *client);
-	bool			isMember(Client *client);
-	void			removeClient(Client *client);
 	bool			isEmpty(void);
 	
 	// Messaging
@@ -59,8 +70,6 @@ private:
 	std::string		getSymbol(void) const;
 
 	// Operator methods
-	bool			isOperator(Client *client) const;
-	bool			addOperator(Client* client);
 	bool			removeOperator(Client* client);
 
 	// Password methods
@@ -69,14 +78,10 @@ private:
 	void			removePassword();
 
 	// Getters and setters
-	const std::string		&getName(void) const;
 	void						setName(const std::string &src);
-	const _mapclient	&getClients(void) const;
 	void						setClients(_mapclient &src);
 	const std::string		&getKey(void) const;
 	void						setKey(std::string &src);
-	const std::string		&getTopic(void) const;
-	void						setTopic(const std::string &src);
 	void						setInvited(_mapclient &src);
 	const _mapclient	&getInvited(void) const;
 	const std::string		getMode(void) const;

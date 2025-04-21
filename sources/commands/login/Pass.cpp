@@ -2,9 +2,9 @@
 
 void Client::pass(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "PASS <password>" RESEND;
-    oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
-    oss << WHITE << "\tEnter the server password" RESEND;
+    oss << CYAN << "├─ " << BOLT << "PASS <password>" << std::endl;
+    oss << CYAN << "│"   << WHITE ITALICS << "\t(Needed to join the server)" << std::endl;
+    oss << CYAN << "│"   << WHITE << "\tEnter the server password" << std::endl;
 }
 
 /*

@@ -24,11 +24,12 @@ enum commands
 	KICK,
 };
 
-enum success
+enum messages
 {
 	PASSWORD_SUCCESS = 100,
 	NICKNAME_SUCCESS,
 	USERNAME_SUCCESS,
+	LOGIN_SUCCESS,
 	PONG,
 	// debug messages
 	CHANNEL_CREATED,
@@ -39,6 +40,7 @@ enum success
 	CHANNEL_TOPIC_CHANGED,
 	KICK_SOMEONE,
 	KICK_SOMEONE_MESSAGE,
+	FIRST_MESSAGE,
 };
 
 enum errors

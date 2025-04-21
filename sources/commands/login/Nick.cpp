@@ -2,11 +2,11 @@
 
 void Client::nick(std::ostringstream &oss)
 {
-    oss << CYAN BOLT << "NICK <nickname>" RESEND;
-    oss << WHITE ITALICS << "\t(Needed to join the server)" RESEND;
-    oss << WHITE << "\tSet a new nickname" RESEND;
-    oss << WHITE << "\tYour nickname should start with a letter and" RESEND;
-    oss << WHITE << "\tcan only have numbers, letters, hyphen (-) and underscore (_)" RESEND;
+    oss << CYAN << "├─ " << CYAN BOLT << "NICK <nickname>" << std::endl;
+    oss << CYAN << "│"   << WHITE ITALICS << "\t(Needed to join the server)" << std::endl;
+    oss << CYAN << "│"   << WHITE << "\tSet a new nickname" << std::endl;
+    oss << CYAN << "│"   << WHITE << "\tYour nickname should start with a letter and" << std::endl;
+    oss << CYAN << "│"   << WHITE << "\tcan only have numbers, letters, hyphen (-) and underscore (_)" << std::endl;
 }
 
 bool Client::nickAlreadyExist(std::string str)

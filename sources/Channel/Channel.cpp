@@ -3,8 +3,6 @@
 // Construtor
 Channel::Channel() : mode(""), name(""), key(""), topic(""), password(""), usersLimit(0), usersCount(0) {}
 
-// Destrutor
-Channel::~Channel() {}
 
 // Adiciona um cliente ao canal
 void Channel::addClient(Client *client) {
@@ -21,7 +19,7 @@ Channel::~Channel()
 }
 
 /* getters */
-std::string Channel::getName() const { return _name; }
+const std::string &Channel::getName() const { return _name; }
 
 // Verifica se um cliente é membro do canal
 bool Channel::isMember(Client *client) {
@@ -30,8 +28,24 @@ bool Channel::isMember(Client *client) {
 
 // Remove um cliente do canal
 void Channel::removeClient(Client *client) {
-	clients.erase(client->getNickname());
-	usersCount--;
+
+	if (!client) {
+        std::cerr << "Client is NULL!" << std::endl;
+        return;
+    }
+
+    std::cout << "Removing client: " << client << std::endl;
+	
+	std::string nickname = client->getNickname();
+
+	if (clients.find(nickname) != clients.end()) {
+		clients.erase(client->getNickname());
+		usersCount--;
+	}
+	else {
+		std::cerr << "Warning: trying to remove client '" << nickname 
+		<< "' who is not in channel " << name << std::endl;
+	}
 }
 
 // Verifica se o canal está vazio
@@ -135,11 +149,6 @@ const std::string& Channel::getPassword() const {
 // Remove a senha do canal
 void Channel::removePassword() {
 	password = "";
-}
-
-// Obtém o nome do canal
-const std::string& Channel::getName(void) const {
-	return name;
 }
 
 // Define o nome do canal
