@@ -22,7 +22,7 @@ std::string Server::getTime() const
 	time_t timestamp;
 	time(&timestamp);
 	std::string currentTime = asctime(localtime(&timestamp));
-	currentTime.pop_back(); // remove '\n'
+	currentTime.erase(currentTime.end()-1); // remove '\n'
 	return currentTime;
 }
 
