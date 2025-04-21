@@ -158,3 +158,11 @@ void Server::handlQuit(int clientSocket, const std::string quitMsg)
 	}
 	_client_list.erase(it);
 }
+
+void Server::privateMessage(std::string nick, std::string msg)
+{
+	// std::cout << MAGENTA << "Getting client..." << RESEND;
+	Client *c = getClientByNick(nick);
+	// std::cout << MAGENTA << "To: " << c->getNickname() << RESEND;
+	c->messageClient(msg);
+}

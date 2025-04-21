@@ -3,6 +3,9 @@
 
 # include "format/text_format.h"
 # include "format/config_macros.h"
+# include <string>
+# include <vector>
+# include <map>
 
 # include "Client.hpp"
 # include "Channel.hpp"
@@ -28,19 +31,20 @@ public:
 	void privateMessage(Client &c ,std::string msg);
 	void handlQuit(int clientSocket, const std::string quitMsg);
 	std::string getTime() const;
+	void privateMessage(std::string nick ,std::string msg);
 
 	// getters
 	std::string getPass() const;
 	std::vector<std::string> getNickList() const;
 	std::vector<std::string> getCommandList() const;
 	std::vector<Channel>& getChannelList();
+	Client* getClientByNick(const std::string& nickname) const;
 	Channel *getChannelByName(std::string);
 	// setters
 	void setNewNick(std::string, std::string);
 	void setNewChannel(std::string);
 	// clears
 	void removeChannel(std::string channel_name);
-	Client* getClientByNick(const std::string& nickname) const;
 
 private:
 	Server();

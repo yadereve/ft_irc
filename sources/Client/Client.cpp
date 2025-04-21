@@ -56,6 +56,19 @@ bool Client::channelExist(std::string channel_name)
     return false;
 }
 
+bool Client::nickExist(std::string nick)
+{
+    const std::vector<std::string> &nick_list = _server.getNickList();
+
+    std::vector<std::string>::const_iterator it;
+    for (it = nick_list.begin(); it != nick_list.end(); ++it)
+    {
+        if (*it == nick)
+            return true;
+    }
+    return false;
+}
+
 void Client::executeCommand(std::string input)
 {
     // reset command and arguments
@@ -75,6 +88,10 @@ void Client::executeCommand(std::string input)
 /* setters */
 
 //void Client::setSocket(int s) { _socket = s; }
+
+/* getters */
+
+int Client::getSocket() { return _socket; }
 
 //add for channel
 

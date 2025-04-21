@@ -46,6 +46,16 @@ Channel *Server::getChannelByName(std::string channel_name)
 	return NULL;
 }
 
+Client* Server::getClientByNick(const std::string& nickname) const
+{
+	for (std::map<int, Client>::const_iterator it = _client_list.begin(); it != _client_list.end(); ++it)
+	{
+		if (it->second.getNickname() == nickname)
+			return const_cast<Client*>(&it->second);
+	}
+	return NULL;
+}
+
 /* setters */
 
 void Server::setNewChannel(std::string channel_name)
@@ -83,22 +93,3 @@ void Server::removeChannel(std::string channel_name)
 	}
 }
 
-//Client *Server::getClientByNick(const std::string &nickname) const
-//{
-	//for (size_t i = 0; i < _client_list.size(); ++i)
-	//{
-		//if (_client_list[i].getNickname() == nickname)
-			//return const_cast<Client *>(&_client_list[i]);
-	//}
-	//return NULL;
-//}
-
-Client* Server::getClientByNick(const std::string& nickname) const
-{
-	for (std::map<int, Client>::const_iterator it = _client_list.begin(); it != _client_list.end(); ++it)
-	{
-		if (it->second.getNickname() == nickname)
-			return const_cast<Client*>(&it->second);
-	}
-	return NULL;
-}

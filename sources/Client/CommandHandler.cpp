@@ -76,6 +76,9 @@ int Client::commandHandler(int command_id)
 
     case KICK:
         return kick();
+
+    case PRIVMSG:
+        return privmsg();
     }
 
     return 0;

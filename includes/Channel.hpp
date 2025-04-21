@@ -4,6 +4,9 @@
 # include "format/text_format.h"
 # include "format/config_macros.h"
 # include "../includes/Client.hpp"
+# include <map>
+# include <string>
+# include <vector>
 
 class Client;
 
