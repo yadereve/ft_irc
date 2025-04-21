@@ -44,5 +44,5 @@ int Client::privmsg()
         _server.privateMessage(destination, message);
     }
 
-    return PONG;
+    return 0;
 }

@@ -69,12 +69,12 @@ bool Client::nickExist(std::string nick)
     return false;
 }
 
-void Client::ExecuteCommand(std::string input)
+void Client::executeCommand(std::string input)
 {
     // reset command and arguments
     _cmd.clear();
     _arguments.clear();
-    
+
     // transform input into a legible command
     size_t command_id = parser(input);
 
@@ -87,7 +87,7 @@ void Client::ExecuteCommand(std::string input)
 
 /* setters */
 
-void Client::setSocket(int s) { _socket = s; }
+//void Client::setSocket(int s) { _socket = s; }
 
 /* getters */
 

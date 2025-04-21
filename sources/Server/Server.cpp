@@ -5,8 +5,9 @@ Server::Server()
 }
 
 Server::Server(const std::string port, const std::string pass)
-	: _port(port), _pass(pass), _host("127.0.0.1")
+	: _port(port), _pass(pass), _host("0.0.0.0")
 {
+	
 	commandListInitializer(_command_list);
 }
 
@@ -23,6 +24,9 @@ Server &Server::operator=(const Server &other)
 
 Server::~Server()
 {
+	for (size_t i = 0; i < _pollFds.size(); ++i)
+		close(_pollFds[i].fd);
+	close(_listening);
 }
 
 /* getters */
@@ -42,15 +46,12 @@ Channel *Server::getChannelByName(std::string channel_name)
 	return NULL;
 }
 
-Client *Server::getClientByNick(std::string nickname)
+Client* Server::getClientByNick(const std::string& nickname) const
 {
-	// std::cout << MAGENTA << "getClientByNick:" << RESEND;
-	for (size_t i = 0; i < _client_list.size(); ++i)
+	for (std::map<int, Client>::const_iterator it = _client_list.begin(); it != _client_list.end(); ++it)
 	{
-		// std::cout << MAGENTA << "Client[i] pointer: ";
-		// std::cout << &_client_list[i] << RESEND;
-		if (_client_list[i].getNickname() == nickname)
-			return &_client_list[i];
+		if (it->second.getNickname() == nickname)
+			return const_cast<Client*>(&it->second);
 	}
 	return NULL;
 }
@@ -91,3 +92,4 @@ void Server::removeChannel(std::string channel_name)
 		}
 	}
 }
+

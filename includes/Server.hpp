@@ -19,18 +19,26 @@ public:
 	Server(const std::string port, const std::string pass);
 	Server(const Server &other);
 	Server &operator=(const Server &other);
-	~Server();
+	virtual ~Server();
 
 	// METHODS
-	int start();
+	void start();
+	void createListeningSocket();
+	void setupPullFds();
+	void handelPollEvents();
+	void handelNewConnection();
+	void handelClientMessage(size_t& index);
+	void handelQuit(int clientSocket, const std::string quitMsg);
+	std::string getTime() const;
 	void privateMessage(std::string nick ,std::string msg);
+
 	// getters
 	std::string getPass() const;
 	std::vector<std::string> getNickList() const;
 	std::vector<std::string> getCommandList() const;
 	std::vector<Channel>& getChannelList();
+	Client* getClientByNick(const std::string& nickname) const;
 	Channel *getChannelByName(std::string);
-	Client* getClientByNick(std::string nickname);
 	// setters
 	void setNewNick(std::string, std::string);
 	void setNewChannel(std::string);
@@ -44,10 +52,13 @@ private:
 	std::string _port;
 	std::string _pass;
 	std::string _host;
+	sockaddr_in hint;
+	int _listening;
+	std::vector<pollfd> _pollFds;
+	std::map<int, Client> _client_list;
 	std::vector<std::string> _nick_list;
 	std::vector<std::string> _command_list;
 	std::vector<Channel> _channel_list;
-	std::vector<Client> _client_list;
 
 	// METHODS
 	void commandListInitializer(std::vector<std::string> &);

@@ -16,13 +16,13 @@ public:
 	~Client();
 
 	// METHODS
-	void ExecuteCommand(std::string);
+	void executeCommand(std::string);
 	// message client
 	void messageClient(std::string);
 	void messageClient(int);
 
 	// SETTERS
-	void setSocket(int);
+	//void setSocket(int);
 
 	// GETTERS
 	int getSocket();
