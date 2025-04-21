@@ -41,7 +41,7 @@ int Client::privmsg()
             return ERR_NO_SUCH_NICK;
 
         // send message to the other client
-        _server.privateMessage(destination, message);
+        _server.privateMessage(destination,":" + _nick + " PRIVMSG " + destination + " " + message);
     }
 
     return 0;

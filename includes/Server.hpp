@@ -28,7 +28,7 @@ public:
 	void handelPollEvents();
 	void handelNewConnection();
 	void handelClientMessage(size_t& index);
-	void handelQuit(int clientSocket, const std::string quitMsg);
+	void handelQuit(int clientSocket);
 	std::string getTime() const;
 	void privateMessage(std::string nick ,std::string msg);
 

@@ -134,13 +134,11 @@ void Server::handelClientMessage(size_t& index)
 	}
 }
 
-void Server::handelQuit(int clientSocket, const std::string quitMsg)
+void Server::handelQuit(int clientSocket)
 {
 	std::map<int, Client>::iterator it = _client_list.find(clientSocket);
 	if (it == _client_list.end())
 		return;
-	Client& client = it->second;
-	client.messageClient("Quit :" + quitMsg + "\r\n");
 	std::cout << "[" << getTime() << "] " << RED << "Client " << clientSocket << " disconnected" << RESET << std::endl;
 	close(clientSocket);
 	for (size_t i = 0; i < _pollFds.size(); ++i)
@@ -157,6 +155,6 @@ void Server::handelQuit(int clientSocket, const std::string quitMsg)
 void Server::privateMessage(std::string nick, std::string msg)
 {
 	Client *c = getClientByNick(nick);
-	c->messageClient(msg);
-	c->messageClient("\n");
+	DEBUG("privmsg nick: " << nick);
+	c->messageClient(msg + "\r\n");
 }
