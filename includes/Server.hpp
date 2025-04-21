@@ -25,11 +25,10 @@ public:
 	void start();
 	void createListeningSocket();
 	void setupPullFds();
-	void handlPollEvents();
-	void handlNewConnection();
-	void handlClientMessage(size_t& index);
-	void privateMessage(Client &c ,std::string msg);
-	void handlQuit(int clientSocket, const std::string quitMsg);
+	void handelPollEvents();
+	void handelNewConnection();
+	void handelClientMessage(size_t& index);
+	void handelQuit(int clientSocket, const std::string quitMsg);
 	std::string getTime() const;
 	void privateMessage(std::string nick ,std::string msg);
 

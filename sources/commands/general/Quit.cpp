@@ -21,7 +21,7 @@ int Client::quit()
 
     // TODO - remove client form server (SERVER)
 	DEBUG("_socket: " << _socket);
-	_server.handlQuit(_socket, "Leaving");
+	_server.handelQuit(_socket, "Leaving");
 
     return 0;
 }
