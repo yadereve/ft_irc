@@ -75,6 +75,7 @@ void Client::executeCommand(std::string input)
     _cmd.clear();
     _arguments.clear();
 
+	DEBUG("input: \n" << input);
     // transform input into a legible command
     size_t command_id = parser(input);
 

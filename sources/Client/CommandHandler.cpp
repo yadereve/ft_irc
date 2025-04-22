@@ -4,13 +4,15 @@ int Client::parser(std::string raw_input)
 {
     // remove input las char '\n'
     std::string input = raw_input.substr(0, raw_input.find_first_of("\n"));
+    std::string raw = input.substr(0, raw_input.find_first_of("\r"));
+	DEBUG("raw: " << raw);
 
     // handle void input
-    if (input.length() <= 0)
+    if (raw.length() <= 0)
         return ERR_EMPTY_INPUT;
 
     // set message and cmd
-    _arguments = Utils::split(input, ' ');
+    _arguments = Utils::split(raw, ' ');
     _cmd = _arguments[0];
 
     // get command id

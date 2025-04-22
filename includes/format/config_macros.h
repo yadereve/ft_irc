@@ -121,7 +121,7 @@ enum errors
 #define DEBUG_ENABLE 1
 
 #if DEBUG_ENABLE
-	#define DEBUG(msg) std::cerr << "\033[36m[DEBUG] \033[0m" << msg << std::endl
+	#define DEBUG(msg) std::cerr << "\033[36m[DEBUG] \033[0m" << "'" << msg << "'" << std::endl
 #else
 	#define DEBUG(msg)
 #endif
