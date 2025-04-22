@@ -14,17 +14,17 @@ int Client::quit()
     else
 	{
 		reason = _arguments[0];
-		reason.insert(0, " :");
+		reason.insert(0, ":");
 	}
 
     // print quit message to user (CLIENT)
-	messageClient("QUIT" + reason + "\r\n");
+	messageClient(":" + _nick + "!" + _user + " QUIT " + reason + "\r\n");
 
     // TODO - send message to the channels with the (string) reason (CHANNEL)
 
     // TODO - remove client form server (SERVER)
 	DEBUG("_socket: " << _socket);
-	_server.handelQuit(_socket);
+	_server.handleQuit(_socket);
 
     return 0;
 }

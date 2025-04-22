@@ -33,7 +33,7 @@ void Server::start()
 
 	std::cout << "[" << getTime() << "] " << "Server is running on port " << _port << std::endl;
 	while (true)
-		handelPollEvents();
+		handlePollEvents();
 }
 
 void Server::createListeningSocket()
@@ -71,22 +71,22 @@ void Server::setupPullFds()
 	_pollFds.push_back(listeningFd);
 }
 
-void Server::handelPollEvents()
+void Server::handlePollEvents()
 {
 	int pollCount = poll(_pollFds.data(), _pollFds.size(), -1);
 	if (pollCount == -1)
 		throw std::runtime_error("Poll error!");
 
 	if (_pollFds[0].revents & POLLIN)
-		handelNewConnection();
+		handleNewConnection();
 	for (size_t i = 1; i < _pollFds.size(); ++i)
 	{
 		if (_pollFds[i].revents & POLLIN)
-			handelClientMessage(i);
+			handleClientMessage(i);
 	}
 }
 
-void Server::handelNewConnection()
+void Server::handleNewConnection()
 {
 	sockaddr_in clientAddr;
 	socklen_t clientSize = sizeof(clientAddr);
@@ -109,7 +109,7 @@ void Server::handelNewConnection()
 	std::cout << "[" << getTime() << "] " << GREEN << "New client connected: " << clientSocket << RESET << std::endl;
 }
 
-void Server::handelClientMessage(size_t& index)
+void Server::handleClientMessage(size_t& index)
 {
 	char buf[4096];
 	memset(buf, 0, sizeof(buf));
@@ -134,7 +134,7 @@ void Server::handelClientMessage(size_t& index)
 	}
 }
 
-void Server::handelQuit(int clientSocket)
+void Server::handleQuit(int clientSocket)
 {
 	std::map<int, Client>::iterator it = _client_list.find(clientSocket);
 	if (it == _client_list.end())
