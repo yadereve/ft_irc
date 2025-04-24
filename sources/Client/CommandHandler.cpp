@@ -81,8 +81,8 @@ int Client::commandHandler(int command_id)
 
     case PRIVMSG:
         return privmsg();
-	case bot:
-		return bot():
+	case BOT:
+		return bot();
     }
 
     return 0;
