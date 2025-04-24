@@ -41,6 +41,7 @@ enum messages
 	KICK_SOMEONE,
 	KICK_SOMEONE_MESSAGE,
 	FIRST_MESSAGE,
+	MODE_UPDATED,
 };
 
 enum errors

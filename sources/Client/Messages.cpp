@@ -223,6 +223,9 @@ void Client::printMessage(int message_id)
             oss << BRIGHT_MAGENTA BOLT << "He is no longer on server: " << WHITE << _arguments[0] << RESEND;
             oss << BRIGHT_MAGENTA BOLT << "Kick message: " << WHITE << _arguments[2] << RESEND;
             break;
+        case MODE_UPDATED:
+            oss << BRIGHT_MAGENTA BOLT << "Channel mode updated: " << WHITE << _arguments[0] << " → " << _arguments[1] << RESEND;
+            break;
         }
     }
 

@@ -1,7 +1,9 @@
 #include "../../includes/Channel.hpp"
 
 // Construtor
-Channel::Channel() : mode(""), name(""), key(""), topic(""), password(""), usersLimit(0), usersCount(0) {}
+Channel::Channel() : mode(""), name(""), key(""), topic(""), password(""), usersLimit(0), usersCount(0), inviteOnly(false), topicRestricted(false)
+{
+}
 
 
 // Adiciona um cliente ao canal
@@ -10,7 +12,7 @@ void Channel::addClient(Client *client) {
 	usersCount++;
 }
 
-Channel::Channel(std::string name) : _name(name)
+Channel::Channel(std::string name) : name(name), inviteOnly(false), topicRestricted(false)
 {
 }
 
@@ -19,7 +21,7 @@ Channel::~Channel()
 }
 
 /* getters */
-const std::string &Channel::getName() const { return _name; }
+const std::string &Channel::getName() const { return name; }
 
 // Verifica se um cliente é membro do canal
 bool Channel::isMember(Client *client) {
@@ -224,4 +226,28 @@ int Channel::getUserCount() const {
 // Define o número de usuários
 void Channel::setUserCount(int count) {
 	usersCount = count;
+}
+
+void Channel::setInviteOnly(bool value) {
+    inviteOnly = value;
+    if (value)
+        addMode("i");
+    else
+        delMode("i");
+}
+
+bool Channel::isInviteOnly() const {
+    return inviteOnly;
+}
+
+void Channel::setTopicRestriction(bool value) {
+    topicRestricted = value;
+    if (value)
+        addMode("t");
+    else
+        delMode("t");
+}
+
+bool Channel::isTopicRestricted() const {
+    return topicRestricted;
 }
