@@ -83,6 +83,7 @@ private:
 	int parser(std::string);
 	int commandHandler(int);
 	void printMessage(int nb);
+	void printMessage(int messageId, const std::string& arg1, const std::string& arg2);
 	// command utils
 	bool nickAlreadyExist(std::string str);
 	bool validName(std::string str);

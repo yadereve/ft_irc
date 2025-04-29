@@ -38,11 +38,13 @@ public:
 	void			removeClient(Client *client);
 	bool			isOperator(Client *client) const;
 	// GETTERS
-	const std::string		&getName(void) const;
+	const std::string	&getName(void) const;
 	const _mapclient	&getClients(void) const;
 
-	const std::string		&getTopic(void) const;
-	void						setTopic(const std::string &src);
+	const std::string	&getTopic(void) const;
+	void				setTopic(const std::string &src);
+	void				addInvited(Client *client);
+
 
 //	std::string getName() const;
 
@@ -60,7 +62,6 @@ private:
 	
 	// Invitation
 	bool			isInvited(Client *client);
-	void			addInvited(Client *client);
 	void			delInvited(Client *client);
 	
 	// Mode management

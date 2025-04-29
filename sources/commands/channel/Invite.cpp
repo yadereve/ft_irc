@@ -26,18 +26,29 @@ int Client::invite()
         return ERR_BAD_CHAN_MASK;
 
     // check if channel exist
-    if (!channelExist(channel_name))
+    Channel* channel = _server.getChannelByName(channel_name);
+    if (!channel)
         return ERR_NO_SUCH_CHANNEL;
 
     // TODO - check if user is on channel (CHANNEL)
-    if (0)
+    if (!channel->isMember(this))
         return ERR_NOT_ON_CHANNEL;
 
     // TODO - check if actual user has OP permissions to invite (CHANNEL)
-    if (0)
+    if (!channel->isOperator(this))
         return ERR_CHAN_OP_PRIV_NEEDED;
 
     // TODO - add new user to the channel (CHANNEL)
+    Client* target = _server.getClientByNick(username);
+    if (!target)
+        return ERR_NO_SUCH_NICK;
+    if (channel->isMember(target))
+        return ERR_USER_ON_CHANNEL;
+    
+    channel->addInvited(target);
+    printMessage(INVITE_SUCCESS, target->getNickname(), channel_name);
+
+    target->printMessage(YOU_WERE_INVITED, this->getNickname(), channel_name);
 
     return 0;
 }

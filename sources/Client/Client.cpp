@@ -104,3 +104,10 @@ void Client::receiveMessage(const std::string &source, const std::string &comman
     messageClient(msg);
 }
 
+void Client::printMessage(int messageId, const std::string& arg1, const std::string& arg2)
+{
+    _arguments.clear();
+    _arguments.push_back(arg1);
+    _arguments.push_back(arg2);
+    printMessage(messageId);
+}
