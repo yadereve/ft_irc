@@ -24,6 +24,10 @@ int Client::kick()
     if (_arguments.size() == 3)
         message = _arguments[2];
 
+    // check if user exist
+    if (!nickExist(username))
+        return ERR_NO_SUCH_NICK;
+
     // check if channel starts with #
     if (channel_name[0] != '#')
         return ERR_BAD_CHAN_MASK;

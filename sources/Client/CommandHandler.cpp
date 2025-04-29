@@ -79,6 +79,9 @@ int Client::commandHandler(int command_id)
 
     case PRIVMSG:
         return privmsg();
+
+    case INVITE:
+        return invite();
     }
 
     return 0;
