@@ -251,3 +251,9 @@ void Channel::setTopicRestriction(bool value) {
 bool Channel::isTopicRestricted() const {
     return topicRestricted;
 }
+
+void Channel::broadcast(const std::string& message) {
+    for (std::map<std::string, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+        it->second->messageClient(message);
+    }
+}

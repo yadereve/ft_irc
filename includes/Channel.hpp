@@ -87,6 +87,7 @@ public:
 	// Mensagens
 	void				sendMessage(const std::string &source, const std::string &command, const std::string &args);
 	void				privateMessage(const std::string &source, const std::string &command, const std::string &args);
+	void				broadcast(const std::string& message);
 
 	// Convites
 	bool				isInvited(Client *client);
