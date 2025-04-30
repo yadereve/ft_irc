@@ -43,6 +43,7 @@ enum messages
 	FIRST_MESSAGE,
 	YOU_WERE_INVITED,
 	INVITE_SUCCESS,
+	MODE_UPDATED,
 };
 
 enum errors

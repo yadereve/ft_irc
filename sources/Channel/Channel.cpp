@@ -1,7 +1,9 @@
 #include "../../includes/Channel.hpp"
 
 // Construtor
-Channel::Channel() : mode(""), name(""), key(""), topic(""), password(""), usersLimit(0), usersCount(0) {}
+Channel::Channel() : mode(""), name(""), key(""), topic(""), password(""), usersLimit(0), usersCount(0), inviteOnly(false), topicRestricted(false)
+{
+}
 
 
 // Adiciona um cliente ao canal
@@ -10,7 +12,7 @@ void Channel::addClient(Client *client) {
 	usersCount++;
 }
 
-Channel::Channel(std::string name) : _name(name)
+Channel::Channel(std::string name) : name(name), inviteOnly(false), topicRestricted(false)
 {
 }
 
@@ -19,7 +21,7 @@ Channel::~Channel()
 }
 
 /* getters */
-const std::string &Channel::getName() const { return _name; }
+const std::string &Channel::getName() const { return name; }
 
 // Verifica se um cliente é membro do canal
 bool Channel::isMember(Client *client) {
@@ -85,14 +87,16 @@ void Channel::delInvited(Client *client) {
 
 // Adiciona um modo ao canal
 std::string Channel::addMode(const std::string &newMode) {
-	mode += newMode;
-	return mode;
+    mode += newMode;
+    std::cout << "Mode after adding: " << mode << std::endl; // Debug print
+    return mode;
 }
 
 // Remove um modo do canal
 std::string Channel::delMode(const std::string &removeMode) {
-	mode.erase(mode.find(removeMode), removeMode.length());
-	return mode;
+    mode.erase(mode.find(removeMode), removeMode.length());
+    std::cout << "Mode after removing: " << mode << std::endl; // Debug print
+    return mode;
 }
 
 // Obtém o prefixo de um cliente (se é operador ou usuário comum)
@@ -224,4 +228,39 @@ int Channel::getUserCount() const {
 // Define o número de usuários
 void Channel::setUserCount(int count) {
 	usersCount = count;
+}
+
+void Channel::setInviteOnly(bool value) {
+	inviteOnly = value;
+    if (value)
+        addMode("i");
+    else
+        delMode("i");
+
+    // Debug prints to confirm the mode and invite-only status
+    std::cout << "inviteOnly set to: " << inviteOnly << std::endl;
+    std::cout << "Channel Modes: " << mode << std::endl;
+}
+
+
+bool Channel::isInviteOnly() const {
+    return inviteOnly;
+}
+
+void Channel::setTopicRestriction(bool value) {
+    topicRestricted = value;
+    if (value)
+        addMode("t");
+    else
+        delMode("t");
+}
+
+bool Channel::isTopicRestricted() const {
+    return topicRestricted;
+}
+
+void Channel::broadcast(const std::string& message) {
+    for (std::map<std::string, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+        it->second->messageClient(message);
+    }
 }

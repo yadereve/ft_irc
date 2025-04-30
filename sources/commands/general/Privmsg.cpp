@@ -28,10 +28,18 @@ int Client::privmsg()
             return ERR_NO_SUCH_CHANNEL;
 
         // TODO - check if user is on channel (CHANNEL)
-        if (0 /* user not on channel */)
+        Channel* channel = _server.getChannelByName(destination);
+        if (!channel->isMember(this))
             return ERR_USER_NOT_IN_CHANNEL;
 
         // TODO - send message to each client on channel (CHANNEL)
+        const std::map<std::string, Client*>& clients = channel->getClients();
+        for (std::map<std::string, Client*>::const_iterator it = clients.begin(); it != clients.end(); ++it)
+        {
+            Client* target = it->second;
+            if (target != this) // não envia para si mesmo
+                target->messageClient(this->getNickname() + " to " + destination + ": " + message);
+        }
     }
     // if is a user
     else
@@ -41,7 +49,9 @@ int Client::privmsg()
             return ERR_NO_SUCH_NICK;
 
         // send message to the other client
-        _server.privateMessage(destination, message);
+        Client* target = _server.getClientByNick(destination);
+        if (target)
+            target->messageClient(this->getNickname() + " (priv): " + message + "\n");
     }
 
     return 0;

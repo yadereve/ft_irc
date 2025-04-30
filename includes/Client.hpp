@@ -77,6 +77,7 @@ private:
 	void part(std::ostringstream &oss);
 	void topic(std::ostringstream &oss);
 	void kick(std::ostringstream &oss);
+	void mode(std::ostringstream &oss);
 	void privmsg(std::ostringstream &oss);
 	void invite(std::ostringstream &oss);
 	// command handler

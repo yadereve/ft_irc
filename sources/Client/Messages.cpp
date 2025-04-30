@@ -230,6 +230,8 @@ void Client::printMessage(int message_id)
         case YOU_WERE_INVITED:
             oss << BRIGHT_MAGENTA BOLT << "You were invited by " << WHITE << _arguments[0]
                 << BRIGHT_MAGENTA BOLT << " to join channel: " << WHITE << _arguments[1] << RESEND;
+        case MODE_UPDATED:
+            oss << BRIGHT_MAGENTA BOLT << "Channel mode updated: " << WHITE << _arguments[0] << " → " << _arguments[1] << RESEND;
             break;
         }
     }
