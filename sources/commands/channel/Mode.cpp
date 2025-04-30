@@ -25,6 +25,9 @@ int Client::mode()
     std::string mode_flags = _arguments[1];
     std::string param = _arguments.size() >= 3 ? _arguments[2] : "";
 
+    std::cout << "[DEBUG] Mode Flags: " << mode_flags << std::endl;  // Debug print
+
+
     if (channel_name[0] != '#')
         return ERR_BAD_CHAN_MASK;
 
@@ -44,6 +47,10 @@ int Client::mode()
     for (size_t i = 0; i < mode_flags.size(); ++i)
     {
         char mode = mode_flags[i];
+
+        std::cout << "[DEBUG] Processing Mode: " << mode << std::endl;  // Debug print
+
+
         if (mode == '+')
         {
             adding = true;
@@ -58,6 +65,7 @@ int Client::mode()
         switch (mode)
         {
             case 'i':
+                std::cout << "Setting invite-only to: " << adding << std::endl; // Debug print
                 channel->setInviteOnly(adding);
                 break;
 

@@ -50,7 +50,8 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "csignal": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "optional": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

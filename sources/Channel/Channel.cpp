@@ -87,14 +87,16 @@ void Channel::delInvited(Client *client) {
 
 // Adiciona um modo ao canal
 std::string Channel::addMode(const std::string &newMode) {
-	mode += newMode;
-	return mode;
+    mode += newMode;
+    std::cout << "Mode after adding: " << mode << std::endl; // Debug print
+    return mode;
 }
 
 // Remove um modo do canal
 std::string Channel::delMode(const std::string &removeMode) {
-	mode.erase(mode.find(removeMode), removeMode.length());
-	return mode;
+    mode.erase(mode.find(removeMode), removeMode.length());
+    std::cout << "Mode after removing: " << mode << std::endl; // Debug print
+    return mode;
 }
 
 // Obtém o prefixo de um cliente (se é operador ou usuário comum)
@@ -229,12 +231,17 @@ void Channel::setUserCount(int count) {
 }
 
 void Channel::setInviteOnly(bool value) {
-    inviteOnly = value;
+	inviteOnly = value;
     if (value)
         addMode("i");
     else
         delMode("i");
+
+    // Debug prints to confirm the mode and invite-only status
+    std::cout << "inviteOnly set to: " << inviteOnly << std::endl;
+    std::cout << "Channel Modes: " << mode << std::endl;
 }
+
 
 bool Channel::isInviteOnly() const {
     return inviteOnly;
