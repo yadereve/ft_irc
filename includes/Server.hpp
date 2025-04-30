@@ -52,7 +52,7 @@ private:
 	std::string _port;
 	std::string _pass;
 	std::string _host;
-	sockaddr_in hint;
+	sockaddr_in _hint;
 	int _listening;
 	std::vector<pollfd> _pollFds;
 	std::map<int, Client> _client_list;

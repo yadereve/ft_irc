@@ -5,7 +5,7 @@ Server::Server()
 }
 
 Server::Server(const std::string port, const std::string pass)
-	: _port(port), _pass(pass), _host("0.0.0.0")
+	: _port(port), _pass(pass), _host("127.0.0.1")
 {
 	
 	commandListInitializer(_command_list);

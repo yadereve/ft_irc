@@ -49,11 +49,10 @@ void Server::createListeningSocket()
 	setsockopt(_listening, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
 	// Bind the ip address and port to socket
-	//sockaddr_in hint;
-	hint.sin_family = AF_INET;
-	hint.sin_port = htons(atoi(_port.c_str()));
-	inet_pton(AF_INET, _host.c_str(), &hint.sin_addr);
-	if (bind(_listening, (sockaddr *)&hint, sizeof(hint)) == -1)
+	_hint.sin_family = AF_INET;
+	_hint.sin_port = htons(atoi(_port.c_str()));
+	inet_pton(AF_INET, _host.c_str(), &_hint.sin_addr);
+	if (bind(_listening, (sockaddr *)&_hint, sizeof(_hint)) == -1)
 		throw std::runtime_error("Can't bind socket!");
 
 	// Tell Winsock the socket is for listening
