@@ -223,6 +223,16 @@ void Client::printMessage(int message_id)
             oss << BRIGHT_MAGENTA BOLT << "He is no longer on server: " << WHITE << _arguments[0] << RESEND;
             oss << BRIGHT_MAGENTA BOLT << "Kick message: " << WHITE << _arguments[2] << RESEND;
             break;
+        case INVITE_SUCCESS:
+            oss << BRIGHT_MAGENTA BOLT << "You invited " << WHITE << _arguments[0]
+                << BRIGHT_MAGENTA BOLT << " to channel: " << WHITE << _arguments[1] << RESEND;
+            break;
+        case YOU_WERE_INVITED:
+            oss << BRIGHT_MAGENTA BOLT << "You were invited by " << WHITE << _arguments[0]
+                << BRIGHT_MAGENTA BOLT << " to join channel: " << WHITE << _arguments[1] << RESEND;
+        case MODE_UPDATED:
+            oss << BRIGHT_MAGENTA BOLT << "Channel mode updated: " << WHITE << _arguments[0] << " → " << _arguments[1] << RESEND;
+            break;
         }
     }
 

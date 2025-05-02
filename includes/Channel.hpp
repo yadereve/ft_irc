@@ -15,9 +15,9 @@ class Channel
 private:
 	typedef std::map<std::string, Client *> _mapclient;
 
-	_mapclient		clients;
-	_mapclient		invited;
-	std::vector<Client*>	operators;
+	_mapclient			clients;
+	_mapclient			invited;
+	std::vector<Client*> operators;
 	std::string			mode;
 	std::string			name;
 	std::string			key;
@@ -25,73 +25,81 @@ private:
 	std::string			password;
 	int					usersLimit;
 	int					usersCount;
+	bool				inviteOnly;
+	bool				topicRestricted;
 
 public:
+	// Construtor e destrutor
 	Channel();
 	Channel(std::string);
 	~Channel();
 
-	// METHODS
-	void			addClient(Client *client);
-	bool			isMember(Client *client);
-	bool			addOperator(Client* client);
-	void			removeClient(Client *client);
-	bool			isOperator(Client *client) const;
-	// GETTERS
-	const std::string		&getName(void) const;
-	const _mapclient	&getClients(void) const;
+	// Métodos principais
+	void				addClient(Client *client);
+	void				removeClient(Client *client);
+	bool				isMember(Client *client);
+	bool				addOperator(Client *client);
+	bool				removeOperator(Client *client);
+	bool				isOperator(Client *client) const;
 
-	const std::string		&getTopic(void) const;
-	void						setTopic(const std::string &src);
+	// Getters e setters
+	const std::string&	getName(void) const;
+	void				setName(const std::string &src);
 
-//	std::string getName() const;
+	const std::string&	getTopic(void) const;
+	void				setTopic(const std::string &src);
 
-private:
+	const std::string&	getPassword(void) const;
+	void				setPassword(const std::string& password);
+	void				removePassword();
 
-	// ATTRIBUTES
-	std::string _name;
+	const std::string&	getKey(void) const;
+	void				setKey(std::string &src);
 
-	// Client management
-	bool			isEmpty(void);
-	
-	// Messaging
-	void			sendMessage(const std::string &source, const std::string &command, const std::string &args);
-	void			privateMessage(const std::string &source, const std::string &command, const std::string &args);
-	
-	// Invitation
-	bool			isInvited(Client *client);
-	void			addInvited(Client *client);
-	void			delInvited(Client *client);
-	
-	// Mode management
-	std::string		addMode(const std::string &mode);
-	std::string		delMode(const std::string &mode);
-	std::string		getPrefix(Client *client) const;
-	std::string		getSymbol(void) const;
+	int					getUserLimit() const;
+	void				setUserLimit(int limit);
+	void				removeUserLimit();
 
-	// Operator methods
-	bool			removeOperator(Client* client);
+	int					getUserCount() const;
+	void				setUserCount(int count);
 
-	// Password methods
-	void			setPassword(const std::string& password);
-	const std::string& getPassword() const;
-	void			removePassword();
+	const std::string	getMode(void) const;
 
-	// Getters and setters
-	void						setName(const std::string &src);
-	void						setClients(_mapclient &src);
-	const std::string		&getKey(void) const;
-	void						setKey(std::string &src);
-	void						setInvited(_mapclient &src);
-	const _mapclient	&getInvited(void) const;
-	const std::string		getMode(void) const;
-	int 						getUserLimit() const;
-	void						setUserLimit(int limit);
-	void 						removeUserLimit();
-	int 						getUserCount() const;
-	void						setUserCount(int count);
+	const _mapclient&	getClients(void) const;
+	void				setClients(_mapclient &src);
+
+	const _mapclient&	getInvited(void) const;
+	void				setInvited(_mapclient &src);
+
+	// Invite-only
+	void				setInviteOnly(bool value);
+	bool				isInviteOnly() const;
+
+	// Restrição de tópico
+	void				setTopicRestriction(bool value);
+	bool				isTopicRestricted() const;
+
+	// Outros
+	bool				isEmpty(void);
+	std::string			getPrefix(Client *client) const;
+	std::string			getSymbol(void) const;
+
+	// Mensagens
+	void				sendMessage(const std::string &source, const std::string &command, const std::string &args);
+	void				privateMessage(const std::string &source, const std::string &command, const std::string &args);
+	void				broadcast(const std::string& message);
+
+	// Convites
+	bool				isInvited(Client *client);
+	void				addInvited(Client *client);
+	void				delInvited(Client *client);
+
+	// Modos
+	std::string			addMode(const std::string &mode);
+	std::string			delMode(const std::string &mode);
 };
 
+// Para debug/log
 std::ostream &operator<<(std::ostream &o, const Channel &src);
 
 #endif

@@ -43,6 +43,8 @@ int Client::help()
         oss << CYAN << "│" << std::endl;
         privmsg(oss);
         oss << CYAN << "│" << std::endl;
+        invite(oss);
+        oss << CYAN << "│" << std::endl;
     }
     oss << CYAN BOLT << "├─────────────────────────────────────────────────┐" << RESEND;
     oss << CYAN BOLT << "│                    HELP MENU                    │" << RESEND;

@@ -35,8 +35,17 @@ int Client::join()
         // if exist just join channel
         // TODO - user join channel (CHANNEL)
         channel = _server.getChannelByName(channel_name);
+
+        std::cout << "== JOIN DEBUG ==" << std::endl;
+        std::cout << "Channel: " << channel_name << std::endl;
+        std::cout << "Invite-only: " << channel->isInviteOnly() << std::endl;
+        std::cout << "Is Invited: " << channel->isInvited(this) << std::endl;
+        std::cout << "Is Member: " << channel->isMember(this) << std::endl;
+
         if (channel && !channel->isMember(this))
         {
+            if (channel->isInviteOnly() && !channel->isInvited(this))
+                return ERR_INVITE_ONLY_CHAN;
             channel->addClient(this);
             printMessage(JOINED_CHANNEL);
         }

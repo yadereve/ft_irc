@@ -77,11 +77,14 @@ private:
 	void part(std::ostringstream &oss);
 	void topic(std::ostringstream &oss);
 	void kick(std::ostringstream &oss);
+	void mode(std::ostringstream &oss);
 	void privmsg(std::ostringstream &oss);
+	void invite(std::ostringstream &oss);
 	// command handler
 	int parser(std::string);
 	int commandHandler(int);
 	void printMessage(int nb);
+	void printMessage(int messageId, const std::string& arg1, const std::string& arg2);
 	// command utils
 	bool nickAlreadyExist(std::string str);
 	bool validName(std::string str);
