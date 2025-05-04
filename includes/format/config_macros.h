@@ -22,7 +22,6 @@ enum commands
 	PRIVMSG,
 	INVITE,
 	KICK,
-	BOT,
 };
 
 enum messages
