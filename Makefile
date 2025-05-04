@@ -8,12 +8,13 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 SRC_DIR = sources
 SRC_DIR_BOT = sources/Bot
 OBJ_DIR = objects
+OBJ_DIR_BOT = objects/Bot
 
-SRC = $(shell find $(SRC_DIR) -type f -name "*.cpp" ! -path "sources/Bot/*" | sed 's|sources/||')
-SRC_BOT = $(shell find $(SRC_DIR_BOT) -type f -name "*.cpp" | sed 's|sources/Bot/||')
+SRC = $(shell find $(SRC_DIR) -type f -name "*.cpp" ! -path "$(SRC_DIR_BOT)/*" | sed 's|$(SRC_DIR)/||')
+SRC_BOT = $(shell find $(SRC_DIR_BOT) -type f -name "*.cpp" | sed 's|$(SRC_DIR_BOT)/||')
 	
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-OBJ_BOT = $(SRC_BOT:%.cpp=$(OBJ_DIR)/Bot/%.o)
+OBJ_BOT = $(SRC_BOT:%.cpp=$(OBJ_DIR_BOT)/%.o)
 
 TOTAL := $(words $(SRC))
 
@@ -25,18 +26,18 @@ BLUE = \033[34m
 
 #--------------- RULES ----------------
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(@D)
-	$(CC) -c $(CXXFLAGS) -o $@ $<
-	@COMPILED=$$(find $(OBJ_DIR) -type f -name "*.o"  | wc -l); \
-	PERCENT=$$(echo "scale=2; $$COMPILED / $(TOTAL) * 100" | bc); \
-	printf "\r$(BLUE)Compiling... %d%%$(NC)" $$(printf "%.0f" $$PERCENT)
-	#@echo "$(GREEN)[OK]$(NC)\t"$@
-
-$(OBJ_DIR)/Bot/%.o: $(SRC_DIR_BOT)/%.cpp
+$(OBJ_DIR_BOT)/%.o: $(SRC_DIR_BOT)/%.cpp
 	@mkdir -p $(@D)
 	$(CC) -c $(CXXFLAGS) -o $@ $<
 	@echo "$(GREEN)[OK]$(NC)\t"$@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CC) -c $(CXXFLAGS) -o $@ $<
+	@COMPILED=$$(find $(OBJ_DIR) -type f -name "*.o" ! -path "$(OBJ_DIR_BOT)/*" | wc -l); \
+	PERCENT=$$(echo "scale=2; $$COMPILED / $(TOTAL) * 100" | bc); \
+	printf "\r$(BLUE)Compiling... %d%%$(NC)" $$(printf "%.0f" $$PERCENT)
+	#@echo "$(GREEN)[OK]$(NC)\t"$@
 
 $(NAME): $(OBJ)
 	@$(CC) $(CXXFLAGS) $(OBJ) -o $(NAME)
@@ -69,7 +70,11 @@ clean:
 	@rm -rf $(OBJ_DIR)
 	@echo "$(GREEN)[OK]\t$(RED)temporary object files deleted$(NC)"
 
-fclean: clean
+clean_bot:
+	@rm -rf $(NAME_BOT)
+	@echo "$(GREEN)[OK]$(NC)\t$(NAME_BOT) $(RED)deleted$(NC)"
+
+fclean: clean clean_bot
 	@rm -f $(NAME)
 	@echo "$(GREEN)[OK]$(NC)\t$(NAME) $(RED)deleted$(NC)"
 

@@ -3,7 +3,11 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-Bot::Bot(const std::string& serverIp, int port, const std::string password, const std::string nickname, const std::string username, const std::string channel) : _serverIp(serverIp), _port(port), _password(password), _nickname(nickname), _username(username), _channel(channel)
+Bot::Bot(const std::string& serverIp, int port, const std::string password, 
+		const std::string nickname, const std::string username, 
+		const std::string channel) : 
+		_serverIp(serverIp), _port(port), _password(password), 
+		_nickname(nickname), _username(username), _channel(channel)
 { }
 
 Bot::~Bot()
@@ -23,14 +27,18 @@ static std::string getTime()
 
 void Bot::sendMessage(const std::string& message)
 {
-	send(_socketFd, message.c_str(), message.size(), 0);
+	if (send(_socketFd, message.c_str(), message.length(), 0) == -1)
+	{
+		std::cerr << "Error send(): " << strerror(errno) << std::endl;
+		return;
+	}
 }
 
 void Bot::registerToServer()
 {
 	sendMessage("PASS " + _password + "\r\n");
 	sendMessage("NICK " + _nickname + "\r\n");
-	sendMessage("USER " + _username + " * * : " + _username + "\r\n");
+	sendMessage("USER " + _username + " * * : " + _username + "_" + "\r\n");
 	sendMessage("JOIN " + _channel + "\r\n");
 }
 
@@ -47,7 +55,7 @@ void Bot::handleIncomingMessage()
 			break;
 		}
 		std::string message(buffer);
-		std::cout << "Received: " << message << std::endl;
+		std::cout << message;
 
 		if (message.find("help") != std::string::npos)
 		{
@@ -75,18 +83,22 @@ void Bot::run()
 	_socketFd = socket(AF_INET, SOCK_STREAM, 0);
 	if (_socketFd == -1)
 	{
-		std::cerr << "Failed to create socket." << std::endl;
+		std::cerr << "Error socket(): " << strerror(errno) << std::endl;
 		return;
 	}
 	
 	struct sockaddr_in serverAddr;
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_port = htons(_port);
-	inet_pton(AF_INET, _serverIp.c_str(), &serverAddr.sin_addr);
+	if (inet_pton(serverAddr.sin_family, _serverIp.c_str(), &serverAddr.sin_addr) < 0)
+	{
+		std::cerr << "Error inet_pton(): " << strerror(errno) << std::endl;
+		return;
+	}
 
 	if (connect(_socketFd, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0)
 	{
-		std::cerr << "Failed to connect to server" << std::endl;
+		std::cerr << "Error connect(): " << strerror(errno) << std::endl;
 		close(_socketFd);
 		return;
 	}
