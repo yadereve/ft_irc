@@ -66,6 +66,7 @@ private:
 	int part();
 	int privmsg();
 	int topic();
+	int bot();
 	// commands description message
 	void pass(std::ostringstream &oss);
 	void nick(std::ostringstream &oss);

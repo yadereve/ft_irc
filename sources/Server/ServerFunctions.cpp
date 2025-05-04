@@ -15,6 +15,7 @@ void Server::commandListInitializer(std::vector<std::string> &list)
 	list.push_back("PRIVMSG");
 	list.push_back("INVITE");
 	list.push_back("KICK");
+	list.push_back("BOT");
 }
 
 std::string Server::getTime() const
