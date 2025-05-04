@@ -57,24 +57,17 @@ void Bot::handleIncomingMessage()
 		std::string message(buffer);
 		std::cout << message;
 
-		if (message.find("help") != std::string::npos)
-		{
+		if (message.find(" :help") != std::string::npos)
 			sendMessage("PRIVMSG " + _channel + " :Available commands: help, time, joke, echo\r\n");
-		}
-		if (message.find("time") != std::string::npos)
-		{
+
+		if (message.find(" :time") != std::string::npos)
 			sendMessage("PRIVMSG " + _channel + " :Current time: " + getTime() + "\r\n");
-		}
 
-		if (message.find("joke") != std::string::npos)
-		{
+		if (message.find(" :joke") != std::string::npos)
 			sendMessage("PRIVMSG " + _channel + " :Why do programmers prefer dark mode? Because light attracts bugs!\r\n");
-		}
 
-		if (message.find("echo") != std::string::npos)
-		{
+		if (message.find(" :echo") != std::string::npos)
 			sendMessage(message + "\r\n");
-		}
 	}
 }
 
