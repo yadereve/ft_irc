@@ -92,7 +92,7 @@ void Server::handleNewConnection()
 	int clientSocket = accept(_listening, (sockaddr *)&clientAddr, &clientSize);
 	if (clientSocket == -1)
 		throw std::runtime_error("Error accepting client!");
-	
+
 	DEBUG("clientSocket: " << clientSocket);
 	// Set client socket to non_blocking
 	fcntl(clientSocket, F_SETFL, O_NONBLOCK);

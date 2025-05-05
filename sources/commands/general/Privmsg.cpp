@@ -52,7 +52,7 @@ int Client::privmsg()
         //_server.privateMessage(destination,":" + _nick + " PRIVMSG " + destination + " " + message); // FIX
         Client* target = _server.getClientByNick(destination);
         if (target)
-            target->messageClient(this->getNickname() + " (priv): " + message + "\n");
+            target->messageClient(this->getNickname() + " (priv): " + message + "\r\n");
     }
 
     return 0;

@@ -2,6 +2,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <cerrno>
 
 Bot::Bot(const std::string& serverIp, int port, const std::string password, 
 		const std::string nickname, const std::string username, 
@@ -38,7 +39,7 @@ void Bot::registerToServer()
 {
 	sendMessage("PASS " + _password + "\r\n");
 	sendMessage("NICK " + _nickname + "\r\n");
-	sendMessage("USER " + _username + " * * : " + _username + "_" + "\r\n");
+	sendMessage("USER " + _username + " * * :" + _username + "_" + "\r\n");
 	sendMessage("JOIN " + _channel + "\r\n");
 }
 
@@ -57,16 +58,16 @@ void Bot::handleIncomingMessage()
 		std::string message(buffer);
 		std::cout << message;
 
-		if (message.find(" :help") != std::string::npos)
+		if (message.find("help") != std::string::npos)
 			sendMessage("PRIVMSG " + _channel + " :Available commands: help, time, joke, echo\r\n");
 
-		if (message.find(" :time") != std::string::npos)
+		if (message.find("time") != std::string::npos)
 			sendMessage("PRIVMSG " + _channel + " :Current time: " + getTime() + "\r\n");
 
-		if (message.find(" :joke") != std::string::npos)
+		if (message.find("joke") != std::string::npos)
 			sendMessage("PRIVMSG " + _channel + " :Why do programmers prefer dark mode? Because light attracts bugs!\r\n");
 
-		if (message.find(" :echo") != std::string::npos)
+		if (message.find("echo") != std::string::npos)
 			sendMessage(message + "\r\n");
 	}
 }

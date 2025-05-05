@@ -126,6 +126,7 @@
 #define CLEAR_ACTUAL_LINE ""
 #define RESET ""
 #define BLACK ""
+#define PINK ""
 #define RED ""
 #define GREEN ""
 #define YELLOW ""
