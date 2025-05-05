@@ -13,6 +13,8 @@
 class Channel;
 class Client;
 
+static bool run = true;
+
 class Server
 {
 public:

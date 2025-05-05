@@ -83,6 +83,8 @@ void Server::handlePollEvents()
 		if (_pollFds[i].revents & POLLIN)
 			handleClientMessage(i);
 	}
+	if (!run)
+		return;
 }
 
 void Server::handleNewConnection()

@@ -1,5 +1,11 @@
 #include "../includes/Server.hpp"
 
+void signalHandler(int signum)
+{
+	(void)signum;
+	run = false;
+}
+
 int main(int ac, char* av[])
 {
 	try
@@ -10,7 +16,7 @@ int main(int ac, char* av[])
 		std::cout << "---------------SERVER---------------\n";
 
 		parseInput(av[1], av[2]);
-		signal(SIGPIPE, SIG_IGN);
+		signal(SIGINT, signalHandler);
 		Server server(av[1], av[2]);
 		server.start();
 		std::cout << BLUE << ">>> The Server Closed! <<<" << RESET << std::endl;

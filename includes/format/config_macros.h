@@ -112,6 +112,7 @@ enum errors
 #include <sys/socket.h>
 #include <utility>
 #include <ctime>
+#include <csignal>
 
 #endif
 
