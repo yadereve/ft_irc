@@ -24,9 +24,14 @@ Server &Server::operator=(const Server &other)
 
 Server::~Server()
 {
+
 	for (size_t i = 0; i < _pollFds.size(); ++i)
 		close(_pollFds[i].fd);
-	close(_listening);
+	_pollFds.clear();
+	_client_list.clear();
+	
+	if (_listening != -1)
+		close(_listening);
 }
 
 /* getters */

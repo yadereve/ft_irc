@@ -1,4 +1,5 @@
 #include "../../includes/Server.hpp"
+#include <csignal>
 
 void Server::commandListInitializer(std::vector<std::string> &list)
 {
@@ -32,7 +33,7 @@ void Server::start()
 	setupPullFds();
 
 	std::cout << "[" << getTime() << "] " << "Server is running on port " << _port << std::endl;
-	while (true)
+	while (run)
 		handlePollEvents();
 }
 
@@ -74,7 +75,11 @@ void Server::handlePollEvents()
 {
 	int pollCount = poll(_pollFds.data(), _pollFds.size(), -1);
 	if (pollCount == -1)
+	{
+		if (errno == EINTR)
+			return;
 		throw std::runtime_error("Poll error!");
+	}
 
 	if (_pollFds[0].revents & POLLIN)
 		handleNewConnection();
@@ -83,8 +88,6 @@ void Server::handlePollEvents()
 		if (_pollFds[i].revents & POLLIN)
 			handleClientMessage(i);
 	}
-	if (!run)
-		return;
 }
 
 void Server::handleNewConnection()

@@ -5,7 +5,7 @@ int Client::parser(std::string raw_input)
     // remove input las char '\n'
     std::string input = raw_input.substr(0, raw_input.find_first_of("\n"));
 	std::string raw = input.substr(0, raw_input.find_first_of("\r"));
-	DEBUG("raw: " << raw);
+	DEBUG("raw:" << raw);
 
     // handle void input
     if (raw.length() <= 0)

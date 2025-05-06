@@ -1,8 +1,9 @@
 #include "../includes/Server.hpp"
 
-void signalHandler(int signum)
+volatile sig_atomic_t run = true;
+
+void signalHandler(int)
 {
-	(void)signum;
 	run = false;
 }
 
@@ -19,7 +20,7 @@ int main(int ac, char* av[])
 		signal(SIGINT, signalHandler);
 		Server server(av[1], av[2]);
 		server.start();
-		std::cout << BLUE << ">>> The Server Closed! <<<" << RESET << std::endl;
+		std::cout << BLUE << "\n>>> The Server Closed! <<<" << RESET << std::endl;
 		return 0;
 	}
 	catch (const std::exception& e)
@@ -27,11 +28,11 @@ int main(int ac, char* av[])
 		std::cerr << e.what() << std::endl;
 		return 1;
 	}
-	catch (...)
-	{
-		std::cerr << "Exception occurred" << std::endl;
-		return 2;
-	}
+	//catch (...)
+	//{
+		//std::cerr << "Exception occurred" << std::endl;
+		//return 2;
+	//}
 
 	return 0;
 }

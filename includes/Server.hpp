@@ -13,7 +13,7 @@
 class Channel;
 class Client;
 
-static bool run = true;
+extern volatile sig_atomic_t run;
 
 class Server
 {

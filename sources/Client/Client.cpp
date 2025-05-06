@@ -72,26 +72,24 @@ bool Client::nickExist(std::string nick)
 void Client::executeCommand(std::string input)
 {
 	DEBUG("input: \n" << input);
-	size_t j = 0;
-	for (size_t i = 0; i < input.size(); ++i)
+	for (size_t i = 0; i < input.length(); ++i)
 	{
+		_input += input[i];
 		if (input[i] == '\n')
 		{
 			// reset command and arguments
 			_cmd.clear();
 			_arguments.clear();
-			std::string raw_input = input.substr(j, input.length());
-			DEBUG("raw_input: " << raw_input);
-			
+
 			// transform input into a legible command
-			size_t command_id = parser(raw_input);
+			size_t command_id = parser(_input);
 
 			// execute command by id
 			int return_message = commandHandler(command_id);
 
 			// print return message
 			printMessage(return_message);
-			j = i + 1;
+			_input.clear();
 		}
 	}
 }
