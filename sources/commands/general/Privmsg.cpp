@@ -13,7 +13,7 @@ int Client::privmsg()
         return ERR_NOT_AUTHENTICATED;
 
     // Ensure there are exactly two arguments: target (nick/channel) and message
-    if (_arguments.size() != 2)
+    if (_arguments.size() < 2)
         return ERR_NEED_MORE_PARAMS;
 
     // Initialize values
