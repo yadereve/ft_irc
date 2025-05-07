@@ -12,25 +12,6 @@ int Client::privmsg()
     if (!_authenticated_check)
         return ERR_NOT_AUTHENTICATED;
 
-<<<<<<< HEAD
-    // check if has a token
-    if (_arguments.size() < 2)
-        return ERR_NEED_MORE_PARAMS;
-
-    // initialize values
-    std::string destination = _arguments[0];
-    std::string message;
-    for (size_t i = 1; i < _arguments.size(); i++)
-    {
-        message += _arguments[i];
-        message += " ";
-    }
-
-    // check if message starts with ':'
-    if (message[0] != ':')
-        return ERR_NO_MESSAGE_GIVEN;
-    message.erase(0, 1);
-=======
     // Ensure there are exactly two arguments: target (nick/channel) and message
     if (_arguments.size() != 2)
         return ERR_NEED_MORE_PARAMS;
@@ -38,7 +19,6 @@ int Client::privmsg()
     // Initialize values
     std::string destination = _arguments[0];  // Target (nickname or channel)
     std::string message = _arguments[1];      // Message to send
->>>>>>> origin/temp
 
     // Build the message with the user's full mask
     std::string full_mask = getFullMask();
@@ -52,21 +32,6 @@ int Client::privmsg()
         if (!channel)
             return ERR_NO_SUCH_CHANNEL;
 
-<<<<<<< HEAD
-        // TODO - check if user is on channel (CHANNEL)
-        Channel *channel = _server.getChannelByName(destination);
-        if (!channel->isMember(this))
-            return ERR_USER_NOT_IN_CHANNEL;
-
-        // TODO - send message to each client on channel (CHANNEL)
-        const std::map<std::string, Client *> &clients = channel->getClients();
-        for (std::map<std::string, Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it)
-        {
-            Client *target = it->second;
-            if (target != this) // não envia para si mesmo
-                target->messageClient(this->getNickname() + " to " + destination + ": " + message);
-        }
-=======
         // Check if the client is a member of the channel
         if (!channel->isMember(this))
             return ERR_USER_NOT_IN_CHANNEL;
@@ -79,7 +44,6 @@ int Client::privmsg()
 		    if (target != this)  // Don't send to the sender
 		        target->messageClient(formatted_message);  // Send message to other clients in the channel
 		}
->>>>>>> origin/temp
     }
     // If it's a private message (a nickname)
     else
@@ -89,16 +53,8 @@ int Client::privmsg()
         if (!target)
             return ERR_NO_SUCH_NICK;
 
-<<<<<<< HEAD
-        // send message to the other client
-        //_server.privateMessage(destination,":" + _nick + " PRIVMSG " + destination + " " + message); // FIX
-        Client *target = _server.getClientByNick(destination);
-        if (target)
-            target->messageClient(this->getNickname() + " (priv): " + message + "\r\n");
-=======
         // Send the message to the target client
         target->messageClient(formatted_message);
->>>>>>> origin/temp
     }
 
     return 0;
