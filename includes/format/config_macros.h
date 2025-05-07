@@ -113,6 +113,7 @@ enum errors
 #include <utility>
 #include <ctime>
 #include <csignal>
+#include <cerrno>
 
 #endif
 

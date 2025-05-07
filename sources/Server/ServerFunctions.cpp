@@ -1,5 +1,4 @@
 #include "../../includes/Server.hpp"
-#include <csignal>
 
 void Server::commandListInitializer(std::vector<std::string> &list)
 {
