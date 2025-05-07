@@ -2,7 +2,7 @@
 
 void Client::privmsg(std::ostringstream &oss)
 {
-    oss << CYAN << "├─ " << CYAN BOLT << "PRIVMSG <nick/channel> <message>" << std::endl;
+    oss << CYAN << "├─ " << CYAN BOLT << "PRIVMSG <nick/channel> :<message>" << std::endl;
     oss << CYAN << "│" << WHITE << "\tSend a message to a nick or channel" << std::endl;
 }
 
@@ -24,6 +24,11 @@ int Client::privmsg()
         message += _arguments[i];
         message += " ";
     }
+
+    // check if message starts with ':'
+    if (message[0] != ':')
+        return ERR_NO_MESSAGE_GIVEN;
+    message.erase(0, 1);
 
     // if is a channel
     if (destination[0] == '#')

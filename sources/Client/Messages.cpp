@@ -9,7 +9,9 @@ void Client::printMessage(int message_id)
         return;
 
     // if its a error
-    if (message_id >= 400)
+    if (message_id == ERR_EMPTY_INPUT)
+        return;
+    else if (message_id >= 400)
         oss << RED BOLT << message_id << ": ";
 
     switch (message_id)
@@ -94,14 +96,14 @@ void Client::printMessage(int message_id)
         case ERR_INVALID_INPUT:
             oss << "Invalid Input" << RESEND;
             break;
-        case ERR_EMPTY_INPUT:
-            oss << "Empty Input" << RESEND;
-            break;
         case ERR_ERRONEUS_USER:
             oss << "Erroneous User" << RESEND;
             break;
         case ERR_ERRONEUS_REAL_NAME:
             oss << "Erroneous Real Name" << RESEND;
+            break;
+        case ERR_NO_MESSAGE_GIVEN:
+            oss << "No message given" << RESEND;
             break;
         }
 
@@ -160,19 +162,12 @@ void Client::printMessage(int message_id)
             oss << RESEND;
             oss << ORANGE;
             oss << "      ┌─────────────────────────────────────────┐     " << std::endl;
-            oss << ORANGE;
             oss << "      │                                         │     " << std::endl;
-            oss << ORANGE;
             oss << "      │        ▗▖    ▗▄▖ ▗▄▄▖ ▗▄▄▖▗▖  ▗▖        │     " << std::endl;
-            oss << ORANGE;
             oss << "      │        ▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▝▚▞▘         │     " << std::endl;
-            oss << ORANGE;
             oss << "      │        ▐▌   ▐▌ ▐▌▐▛▀▚▖▐▛▀▚▖ ▐▌          │     " << std::endl;
-            oss << ORANGE;
             oss << "      │        ▐▙▄▄▖▝▚▄▞▘▐▙▄▞▘▐▙▄▞▘ ▐▌          │     " << std::endl;
-            oss << ORANGE;
             oss << "      │                                         │     " << std::endl;
-            oss << ORANGE;
             oss << "      └─────────────────────────────────────┬───┘     " << std::endl;
             oss << "                                            │         " << std::endl;
             oss << "         ┌──────────────────────────────────┘         " << std::endl;
