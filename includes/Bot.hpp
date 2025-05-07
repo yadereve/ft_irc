@@ -12,6 +12,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <cerrno>
+#include <cstdlib>
 
 #define BUFFER_SIZE 512
 

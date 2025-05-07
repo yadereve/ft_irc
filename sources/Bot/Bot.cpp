@@ -38,6 +38,38 @@ void Bot::registerToServer()
 	sendMessage("USER " + _username + " * * :" + _username + "_" + "\r\n");
 	sendMessage("JOIN " + _channel + "\r\n");
 }
+static std::string randomJoke()
+{
+	srand(time(0));
+	int randomNum =	rand() % 11;
+	std::cout << randomNum;
+	switch (randomNum)
+	{
+		case 0:
+			return " :How do you comfort a JavaScript bug? You console it.\r\n";
+		case 1:
+			return " :Why do programmers prefer dark mode? Because light attracts bugs!\r\n";
+		case 2:
+			return " :Why don’t programmers like nature? It has too many bugs.\r\n"; 
+		case 3:
+			return " :Why do programmers hate going outside? The sunlight causes too many errors.\r\n";
+		case 4:
+			return " :How many programmers does it take to change a light bulb? None. It’s a hardware problem!\r\n";
+		case 5:
+			return " :Why was the developer unhappy at his job? He wanted arrays but got strings.\r\n";
+		case 6:
+			return " :What do you call a programmer who doesn't write code? A debugger.\r\n";
+		case 7:
+			return " :Why was the JavaScript developer so good at relationships? Because he always knew how to handle promises.\r\n";
+		case 8:
+			return " :Why do C++ developers prefer coffee? Because it’s an object-oriented drink.\r\n";
+		case 9:
+			return " :What’s a programmer's favorite hangout spot? The loop.\r\n";
+		case 10:
+			return " :Why did the computer go to the doctor? It had a virus!\r\n";
+	}
+	return "\r\n";
+}
 
 void Bot::handleIncomingMessage()
 {
@@ -62,7 +94,7 @@ void Bot::handleIncomingMessage()
 			sendMessage("PRIVMSG " + _channel + " :Current time: " + getTime() + "\r\n");
 
 		if (message.find(":joke") != std::string::npos)
-			sendMessage("PRIVMSG " + _channel + " :Why do programmers prefer dark mode? Because light attracts bugs!\r\n");
+			sendMessage("PRIVMSG " + _channel + randomJoke());
 	}
 }
 
