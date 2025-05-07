@@ -18,11 +18,20 @@ int Client::privmsg()
 
     // Initialize values
     std::string destination = _arguments[0];  // Target (nickname or channel)
-    std::string message = _arguments[1];      // Message to send
+    std::string message;					      // Message to send
+	for (size_t i = 1; i < _arguments.size(); i++)
+	{
+		message += _arguments[i];
+		message += " ";
+	}
 
     // Build the message with the user's full mask
     std::string full_mask = getFullMask();
     std::string formatted_message = ":" + full_mask + " PRIVMSG " + destination + " :" + message + "\r\n";
+	// check if message starts with ':'
+	if (message[0] != ':')
+		return ERR_NO_MESSAGE_GIVEN;
+	message.erase(0, 1);
 
     // If it's a channel (starts with '#')
     if (destination[0] == '#')
@@ -36,8 +45,8 @@ int Client::privmsg()
         if (!channel->isMember(this))
             return ERR_USER_NOT_IN_CHANNEL;
 
-        // Send the message to each client on the channel
-       const std::map<std::string, Client*>& clients = channel->getClients();
+		// Send the message to each client on the channel
+		const std::map<std::string, Client*>& clients = channel->getClients();
 		for (std::map<std::string, Client*>::const_iterator it = clients.begin(); it != clients.end(); ++it)
 		{
 		    Client* target = it->second;
