@@ -88,6 +88,8 @@ int Client::commandHandler(int command_id)
     case INVITE:
         return invite();
     }
+	// case HEXCHAT:
+	// 	return hexchat();
 
     return 0;
 }

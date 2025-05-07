@@ -22,6 +22,7 @@ enum commands
 	PRIVMSG,
 	INVITE,
 	KICK,
+	HEXCHAT,
 };
 
 enum messages
@@ -121,7 +122,7 @@ enum errors
  *                                        *
  ******************************************/
 
-#define DEBUG_ENABLE 1
+#define DEBUG_ENABLE 0
 
 #if DEBUG_ENABLE
 	#define DEBUG(msg) std::cerr << "\033[36m[DEBUG] \033[0m" << "'" << msg << "'" << std::endl

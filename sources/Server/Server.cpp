@@ -46,6 +46,16 @@ Channel *Server::getChannelByName(std::string channel_name)
 	return NULL;
 }
 
+std::string Server::getHostname() const
+{
+    char buffer[256];  // Buffer para armazenar o nome do host
+    if (gethostname(buffer, sizeof(buffer)) == 0) {
+        return std::string(buffer);  // Retorna o nome do host como string
+    } else {
+        return "Unknown";  // Se falhar, retorna "Unknown"
+    }
+}
+
 Client* Server::getClientByNick(const std::string& nickname) const
 {
 	for (std::map<int, Client>::const_iterator it = _client_list.begin(); it != _client_list.end(); ++it)

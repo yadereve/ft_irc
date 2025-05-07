@@ -61,9 +61,15 @@ int Client::topic()
     {
         // TODO - change channel topic do the new one (CHANNEL)
         channel->setTopic(topic);
+
+        // Broadcast the new topic to the channel
+        std::string full_mask = getFullMask();
+        std::string topic_message = ":" + full_mask + " TOPIC " + channel_name + " :" + topic;
+
+        channel->broadcast(topic_message + "\r\n");
+
         messageClient("Channel topic for " + channel_name + " changed to: " + topic);
         printMessage(CHANNEL_TOPIC_CHANGED);
     }
-
     return 0;
 }

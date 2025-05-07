@@ -97,6 +97,7 @@ public:
 	// Modos
 	std::string			addMode(const std::string &mode);
 	std::string			delMode(const std::string &mode);
+
 };
 
 // Para debug/log

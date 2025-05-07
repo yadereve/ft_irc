@@ -39,6 +39,7 @@ public:
 	std::vector<Channel>& getChannelList();
 	Client* getClientByNick(const std::string& nickname) const;
 	Channel *getChannelByName(std::string);
+	std::string getHostname() const;
 	// setters
 	void setNewNick(std::string, std::string);
 	void setNewChannel(std::string);
