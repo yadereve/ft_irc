@@ -6,6 +6,7 @@
 
 #include "Server.hpp"
 #include "Utils.hpp"
+#include "Channel.hpp" 
 
 class Server;
 
@@ -17,6 +18,9 @@ public:
 
 	// METHODS
 	void executeCommand(std::string);
+	void resolveHostname();
+	std::string getFullMask() const;
+
 	// message client
 	void messageClient(std::string);
 	void messageClient(int);
@@ -30,6 +34,7 @@ public:
 	// add for channel
 	std::string getNickname() const;
 	void receiveMessage(const std::string &source, const std::string &command, const std::string &args);
+	
 
 private:
 	// ATTRIBUTES
@@ -44,6 +49,7 @@ private:
 	std::string _nick;
 	std::string _user;
 	std::string _real_name;
+	std::string _hostname;
 	// status
 	bool _pass_check;
 	bool _nick_check;
@@ -66,6 +72,7 @@ private:
 	int mode();
 	int part();
 	int privmsg();
+	int hexchat();
 	int topic();
 	int bot();
 	// commands description message
@@ -92,6 +99,8 @@ private:
 	bool validName(std::string str);
 	bool channelExist(std::string);
 	bool nickExist(std::string);
+	void sendJoinMessages(const std::string& channel_name, Channel* channel);
+
 };
 
 #endif

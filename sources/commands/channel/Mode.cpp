@@ -117,6 +117,18 @@ int Client::mode()
         }
     }
 
+	// Send the mode change message to the channel
+	std::string full_mask = getFullMask();
+    std::string mode_message = ":" + full_mask + " MODE " + channel_name + " " + mode_flags;
+
+	// If there are parameters (for example, a password or user limit), append them
+    if (!param.empty())
+        mode_message += " " + param;
+
+    // Broadcast the mode change message to all channel members
+    channel->broadcast(mode_message + "\r\n");
+
+    // Print message indicating the mode has been updated
     printMessage(MODE_UPDATED);
     return 0;
 }

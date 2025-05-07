@@ -54,7 +54,7 @@
 
 #define COLORS ON
 
-#if COLORS == ON
+#if COLORS == OFF
 
 // Cursor Moving
 #define CURSOR_UP(x) "\033[" << x << "A"

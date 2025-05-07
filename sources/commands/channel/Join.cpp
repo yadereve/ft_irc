@@ -12,75 +12,51 @@ void Client::join(std::ostringstream &oss)
 
 int Client::join()
 {
-    // check if is authenticated
-    if (_authenticated_check == false)
-        return ERR_NOT_AUTHENTICATED;
+	if (!_authenticated_check)
+		return ERR_NOT_AUTHENTICATED;
 
-    // check if join have 1 argument
-    if (_arguments.size() != 1)
-        return ERR_NEED_MORE_PARAMS;
+	if (_arguments.size() != 1)
+		return ERR_NEED_MORE_PARAMS;
 
-    // initialize values
-    std::string channel_name = _arguments[0];
+	std::string channel_name = _arguments[0];
+	if (channel_name.empty() || channel_name[0] != '#')
+		return ERR_BAD_CHAN_MASK;
 
-    // check if channel starts with #
-    if (channel_name[0] != '#')
-        return ERR_BAD_CHAN_MASK;
+	Channel* channel = NULL;
 
-    Channel *channel = NULL;
+	if (channelExist(channel_name)) {
+		channel = _server.getChannelByName(channel_name);
 
-    // check if channel already exist
-    if (channelExist(channel_name) == true)
-    {
-        // if exist just join channel
-        // TODO - user join channel (CHANNEL)
-        channel = _server.getChannelByName(channel_name);
+		if (!channel->isMember(this)) {
+			if (channel->isInviteOnly() && !channel->isInvited(this))
+				return ERR_INVITE_ONLY_CHAN;
 
-        std::cout << "== JOIN DEBUG ==" << std::endl;
-        std::cout << "Channel: " << channel_name << std::endl;
-        std::cout << "Invite-only: " << channel->isInviteOnly() << std::endl;
-        std::cout << "Is Invited: " << channel->isInvited(this) << std::endl;
-        std::cout << "Is Member: " << channel->isMember(this) << std::endl;
+			if (channel->getUserLimit() > 0 && channel->getUserCount() >= channel->getUserLimit())
+				return ERR_CHANNEL_IS_FULL;
 
-        if (channel && !channel->isMember(this))
-        {
-            if (channel->isInviteOnly() && !channel->isInvited(this))
-                return ERR_INVITE_ONLY_CHAN;
-            channel->addClient(this);
-            printMessage(JOINED_CHANNEL);
-        }
-    }
-    else
-    {
-        // if it doesn't exist
-        // - create it
-        // - join it
-        // - become channel OP
+			channel->addClient(this);
+			sendJoinMessages(channel_name, channel);
+			printMessage(JOINED_CHANNEL);
+		}
+	} else {
+		_server.setNewChannel(channel_name);
 
-        // create new channel (SERVER)
-        _server.setNewChannel(channel_name);
-        const std::vector<Channel> &channels = _server.getChannelList();
-        for (size_t i = 0; i < channels.size(); ++i)
-        {
-            if (channels[i].getName() == channel_name)
-            {
-                channel = const_cast<Channel *>(&channels[i]);
-                break;
-            }
-        }
-        if (channel)
-        {
-            channel->addClient(this);
-            channel->addOperator(this);
-            printMessage(CHANNEL_CREATED);
-            printMessage(JOINED_CHANNEL);
-            printMessage(CHANNEL_OP);
-        }
+		const std::vector<Channel>& channels = _server.getChannelList();
+		for (size_t i = 0; i < channels.size(); ++i) {
+			if (channels[i].getName() == channel_name) {
+				channel = const_cast<Channel*>(&channels[i]);
+				break;
+			}
+		}
 
-        // TODO - user join channel (CHANNEL)
-
-        // TODO - user become channel OP (CHANNEL)
-    }
-
-    return 0;
+		if (channel) {
+			channel->addClient(this);
+			channel->addOperator(this);
+			sendJoinMessages(channel_name, channel);
+			printMessage(CHANNEL_CREATED);
+			printMessage(JOINED_CHANNEL);
+			printMessage(CHANNEL_OP);
+		}
+	}
+	return 0;
 }

@@ -8,10 +8,11 @@ void Client::privmsg(std::ostringstream &oss)
 
 int Client::privmsg()
 {
-    // check if is authenticated
-    if (_authenticated_check == false)
+    // Check if the client is authenticated
+    if (!_authenticated_check)
         return ERR_NOT_AUTHENTICATED;
 
+<<<<<<< HEAD
     // check if has a token
     if (_arguments.size() < 2)
         return ERR_NEED_MORE_PARAMS;
@@ -29,14 +30,29 @@ int Client::privmsg()
     if (message[0] != ':')
         return ERR_NO_MESSAGE_GIVEN;
     message.erase(0, 1);
+=======
+    // Ensure there are exactly two arguments: target (nick/channel) and message
+    if (_arguments.size() != 2)
+        return ERR_NEED_MORE_PARAMS;
 
-    // if is a channel
+    // Initialize values
+    std::string destination = _arguments[0];  // Target (nickname or channel)
+    std::string message = _arguments[1];      // Message to send
+>>>>>>> origin/temp
+
+    // Build the message with the user's full mask
+    std::string full_mask = getFullMask();
+    std::string formatted_message = ":" + full_mask + " PRIVMSG " + destination + " :" + message + "\r\n";
+
+    // If it's a channel (starts with '#')
     if (destination[0] == '#')
     {
-        // check if channel exist
-        if (!channelExist(destination))
+        // Check if the channel exists
+        Channel* channel = _server.getChannelByName(destination);
+        if (!channel)
             return ERR_NO_SUCH_CHANNEL;
 
+<<<<<<< HEAD
         // TODO - check if user is on channel (CHANNEL)
         Channel *channel = _server.getChannelByName(destination);
         if (!channel->isMember(this))
@@ -50,20 +66,41 @@ int Client::privmsg()
             if (target != this) // não envia para si mesmo
                 target->messageClient(this->getNickname() + " to " + destination + ": " + message);
         }
+=======
+        // Check if the client is a member of the channel
+        if (!channel->isMember(this))
+            return ERR_USER_NOT_IN_CHANNEL;
+
+        // Send the message to each client on the channel
+       const std::map<std::string, Client*>& clients = channel->getClients();
+		for (std::map<std::string, Client*>::const_iterator it = clients.begin(); it != clients.end(); ++it)
+		{
+		    Client* target = it->second;
+		    if (target != this)  // Don't send to the sender
+		        target->messageClient(formatted_message);  // Send message to other clients in the channel
+		}
+>>>>>>> origin/temp
     }
-    // if is a user
+    // If it's a private message (a nickname)
     else
     {
-        // check if user exist
-        if (!nickExist(destination))
+        // Check if the target client (nickname) exists
+        Client* target = _server.getClientByNick(destination);
+        if (!target)
             return ERR_NO_SUCH_NICK;
 
+<<<<<<< HEAD
         // send message to the other client
         //_server.privateMessage(destination,":" + _nick + " PRIVMSG " + destination + " " + message); // FIX
         Client *target = _server.getClientByNick(destination);
         if (target)
             target->messageClient(this->getNickname() + " (priv): " + message + "\r\n");
+=======
+        // Send the message to the target client
+        target->messageClient(formatted_message);
+>>>>>>> origin/temp
     }
 
     return 0;
 }
+
