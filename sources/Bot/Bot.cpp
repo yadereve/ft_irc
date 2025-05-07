@@ -1,8 +1,4 @@
 #include "../../includes/Bot.hpp"
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <cerrno>
 
 Bot::Bot(const std::string& serverIp, int port, const std::string password,
 		const std::string nickname, const std::string username,
@@ -35,14 +31,6 @@ void Bot::sendMessage(const std::string& message)
 	}
 }
 
-static std::string extractAfterColon(std::string& str)
-{
-	size_t pos = str.find(":");
-	if (pos != std::string::npos && pos + 1 < str.size())
-		return str.substr(pos + 1);
-	return "";
-}
-
 void Bot::registerToServer()
 {
 	sendMessage("PASS " + _password + "\r\n");
@@ -68,20 +56,13 @@ void Bot::handleIncomingMessage()
 		std::cout << message;
 
 		if (message.find(":help") != std::string::npos)
-			sendMessage("PRIVMSG " + _channel + " :Available commands: help, time, joke, echo\r\n");
+			sendMessage("PRIVMSG " + _channel + " :Available commands: help, time, joke\r\n");
 
 		if (message.find(":time") != std::string::npos)
 			sendMessage("PRIVMSG " + _channel + " :Current time: " + getTime() + "\r\n");
 
 		if (message.find(":joke") != std::string::npos)
 			sendMessage("PRIVMSG " + _channel + " :Why do programmers prefer dark mode? Because light attracts bugs!\r\n");
-
-		if (message.find(":echo") != std::string::npos)
-		{
-			std::string msg;
-			msg = extractAfterColon(message);
-			sendMessage("PRIVMASG " + _channel + ":" + msg + "\r\n");
-		}
 	}
 }
 

@@ -11,6 +11,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <cerrno>
 
 #define BUFFER_SIZE 512
 
