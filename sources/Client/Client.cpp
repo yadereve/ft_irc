@@ -140,45 +140,35 @@ std::string Client::getFullMask() const {
 }
 
 void Client::sendJoinMessages(const std::string& channel_name, Channel* channel) {
-	std::string hostname = _server.getHostname();
 	std::string full_mask = getFullMask();
+	std::string hostname = _server.getHostname();
 
-	// Current timestamp for @time in HexChat format
-	std::ostringstream timestamp;
-	timestamp << "@time=" << std::time(0);  // Unix timestamp
-	std::string time_str = timestamp.str();
-
-	std::cout << "Hostname: " << hostname << std::endl;
-
-	// JOIN message
-	messageClient(":" + full_mask + " JOIN :" + channel_name + "\r\n");
-
-	// Channel MODE (324)
-	messageClient(":" + hostname + " 324 " + _nick + " " + channel_name + " +nt\r\n");
-
-	// Channel creation time (329)
-	std::ostringstream ts;
-	ts << ":" << hostname << " 329 " << _nick << " " << channel_name << " " << std::time(0) << "\r\n";
-	messageClient(ts.str());
-
-	// Names list (353)
-	std::string names_line;
+	// JOIN message to all members in the channel
+	std::string join_msg = ":" + full_mask + " JOIN :" + channel_name + "\r\n";
 	const std::map<std::string, Client*>& clients = channel->getClients();
+
 	for (std::map<std::string, Client*>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
 		Client* client = it->second;
-		if (channel->isOperator(client))
-			names_line += "@" + client->getNickname() + " ";
-		else
-			names_line += client->getNickname() + " ";
+		client->messageClient(join_msg);  // Send JOIN to everyone
 	}
-	messageClient(":" + hostname + " 353 " + _nick + " = " + channel_name + " :" + names_line + "\r\n");
 
-    // End of NAMES list (366)
-    messageClient(":" + hostname + " 366 " + _nick + " " + channel_name + " :End of /NAMES list.\r\n");
+	// Send MODE and other responses only to the joining client (this)
+	this->messageClient(":" + hostname + " 324 " + _nick + " " + channel_name + " +nt\r\n");
 
-    // Additional WHO information
-    messageClient(":" + hostname + " 354 " + _nick + " 152 " + channel_name + " ~" + _nick + " 62.28.170.40 " + hostname + " " + _nick + " H@ 0 :realname\r\n");
+	std::ostringstream ts;
+	ts << ":" << hostname << " 329 " << _nick << " " << channel_name << " " << std::time(0) << "\r\n";
+	this->messageClient(ts.str());
 
-    // End of WHO list (315)
-    messageClient(":" + hostname + " 315 " + _nick + " " + channel_name + " :End of /WHO list\r\n");
+	// Build and send NAMES list only to joining client
+	std::string names_line;
+	for (std::map<std::string, Client*>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+		Client* client = it->second;
+		if (!names_line.empty()) names_line += " ";
+		if (channel->isOperator(client))
+			names_line += "@" + client->getNickname();
+		else
+			names_line += client->getNickname();
+	}
+	this->messageClient(":" + hostname + " 353 " + _nick + " = " + channel_name + " :" + names_line + "\r\n");
+	this->messageClient(":" + hostname + " 366 " + _nick + " " + channel_name + " :End of /NAMES list.\r\n");
 }

@@ -45,6 +45,7 @@ public:
 	void setNewChannel(std::string);
 	// clears
 	void removeChannel(std::string channel_name);
+	void handleCC(int signal);
 
 private:
 	Server();

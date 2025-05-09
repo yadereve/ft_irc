@@ -103,3 +103,9 @@ void Server::removeChannel(std::string channel_name)
 	}
 }
 
+void Server::handleCC(int signal)
+{
+	(void)signal;
+	Server::~Server();
+}
+

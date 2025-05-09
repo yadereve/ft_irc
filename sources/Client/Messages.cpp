@@ -223,11 +223,11 @@ void Client::printMessage(int message_id)
             break;
         case KICK_SOMEONE:
             oss << BRIGHT_MAGENTA BOLT << "You just kicked: " << WHITE << _arguments[1] << RESEND;
-            oss << BRIGHT_MAGENTA BOLT << "He is no longer on server: " << WHITE << _arguments[0] << RESEND;
+            oss << BRIGHT_MAGENTA BOLT << "He is no longer on channel: " << WHITE << _arguments[0] << RESEND;
             break;
         case KICK_SOMEONE_MESSAGE:
             oss << BRIGHT_MAGENTA BOLT << "You just kicked: " << WHITE << _arguments[1] << RESEND;
-            oss << BRIGHT_MAGENTA BOLT << "He is no longer on server: " << WHITE << _arguments[0] << RESEND;
+            oss << BRIGHT_MAGENTA BOLT << "He is no longer on channel: " << WHITE << _arguments[0] << RESEND;
             oss << BRIGHT_MAGENTA BOLT << "Kick message: " << WHITE << _arguments[2] << RESEND;
             break;
         case INVITE_SUCCESS:
