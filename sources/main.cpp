@@ -28,11 +28,6 @@ int main(int ac, char* av[])
 		std::cerr << e.what() << std::endl;
 		return 1;
 	}
-	//catch (...)
-	//{
-		//std::cerr << "Exception occurred" << std::endl;
-		//return 2;
-	//}
 
 	return 0;
 }

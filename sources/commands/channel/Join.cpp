@@ -30,11 +30,12 @@ int Client::join()
 		if (!channel->isMember(this)) {
 			if (channel->isInviteOnly() && !channel->isInvited(this))
 				return ERR_INVITE_ONLY_CHAN;
+			
+			channel->addClient(this);
 
 			if (channel->getUserLimit() > 0 && channel->getUserCount() >= channel->getUserLimit())
 				return ERR_CHANNEL_IS_FULL;
 
-			channel->addClient(this);
 			sendJoinMessages(channel_name, channel);
 			printMessage(JOINED_CHANNEL);
 		}
