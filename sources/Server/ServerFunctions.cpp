@@ -106,7 +106,7 @@ void Server::handleNewConnection()
 	_pollFds.push_back(clientFd);
 
 	// Create client object
-	Client newClient(*this, clientSocket);
+	Client* newClient = new Client(*this, clientSocket);
 	_client_list.insert((std::make_pair(clientSocket, newClient)));
 
 	std::cout << "[" << getTime() << "] " << GREEN << "New client connected: " << clientSocket << RESET << std::endl;
@@ -131,15 +131,15 @@ void Server::handleClientMessage(size_t& index)
 	else
 	{
 		// Process client message
-		std::map<int, Client>::iterator it = _client_list.find(clientSocket);
+		std::map<int, Client*>::iterator it = _client_list.find(clientSocket);
 		if (it != _client_list.end())
-			it->second.executeCommand(std::string(buf, bytesReceived));
+			it->second->executeCommand(std::string(buf, bytesReceived));
 	}
 }
 
 void Server::handleQuit(int clientSocket)
 {
-	std::map<int, Client>::iterator it = _client_list.find(clientSocket);
+	std::map<int, Client*>::iterator it = _client_list.find(clientSocket);
 	if (it == _client_list.end())
 		return;
 	std::cout << "[" << getTime() << "] " << RED << "Client " << clientSocket << " disconnected" << RESET << std::endl;
@@ -152,12 +152,16 @@ void Server::handleQuit(int clientSocket)
 			break;
 		}
 	}
+	delete it->second;
 	_client_list.erase(it);
 }
 
 void Server::privateMessage(std::string nick, std::string msg)
 {
 	Client *c = getClientByNick(nick);
-	DEBUG("privmsg nick: " << nick);
-	c->messageClient(msg + "\r\n");
+	if (c)
+	{
+		DEBUG("privmsg nick: " << nick);
+		c->messageClient(msg + "\r\n");
+	}
 }

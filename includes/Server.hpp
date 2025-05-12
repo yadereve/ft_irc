@@ -55,7 +55,7 @@ private:
 	sockaddr_in _hint;
 	int _listening;
 	std::vector<pollfd> _pollFds;
-	std::map<int, Client> _client_list;
+	std::map<int, Client*> _client_list;
 	std::vector<std::string> _nick_list;
 	std::vector<std::string> _command_list;
 	std::vector<Channel> _channel_list;

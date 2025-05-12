@@ -63,10 +63,10 @@ std::string Server::getHostname() const
 
 Client* Server::getClientByNick(const std::string& nickname) const
 {
-	for (std::map<int, Client>::const_iterator it = _client_list.begin(); it != _client_list.end(); ++it)
+	for (std::map<int, Client*>::const_iterator it = _client_list.begin(); it != _client_list.end(); ++it)
 	{
-		if (it->second.getNickname() == nickname)
-			return const_cast<Client*>(&it->second);
+		if (it->second->getNickname() == nickname)
+			return it->second;
 	}
 	return NULL;
 }
