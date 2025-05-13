@@ -152,7 +152,6 @@ void Server::handleQuit(int clientSocket)
 			break;
 		}
 	}
-	delete it->second;
 	_client_list.erase(it);
 }
 
