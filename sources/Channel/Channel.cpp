@@ -264,3 +264,18 @@ void Channel::broadcast(const std::string& message) {
         it->second->messageClient(message);
     }
 }
+void Channel::addKickedClient(Client *client) {
+    kicked.insert(client);
+}
+
+bool Channel::isKicked(Client *client) const {
+    return kicked.find(client) != kicked.end();
+}
+
+void Channel::removeInvited(Client* client)
+{
+	if (!client)
+		return;
+
+	invited.erase(client->getNickname());
+}

@@ -47,16 +47,31 @@ int Client::kick()
             break;
         }
     }
-    Client *target = _server.getClientByNick(username);
-    if (!target || !channel->isMember(target))
-        return ERR_NOT_ON_CHANNEL;
+	Client *target = _server.getClientByNick(username);
+	if (!target || !channel->isMember(target))
+	    return ERR_NOT_ON_CHANNEL;	
+	// TODO - check if actual user has OP permissions on channel (CHANNEL)
+	if (!channel->isOperator(this))
+	    return ERR_CHAN_OP_PRIV_NEEDED;
 
-    // TODO - check if actual user has OP permissions on channel (CHANNEL)
-    if (!channel->isOperator(this))
-        return ERR_CHAN_OP_PRIV_NEEDED;
-
+	channel->addKickedClient(target);	
     // TODO - user is removed from channel (CHANNEL)
     channel->removeClient(target);
+
+	std::string kick_msg = ":" + getFullMask() + " KICK " + channel_name + " " + username;
+	if (!message.empty())
+		kick_msg += " :" + message;
+
+	const std::map<std::string, Client*> &clients = channel->getClients();
+	for (std::map<std::string, Client*>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+		Client *client = it->second;
+		if (client != target) 
+			client->messageClient(kick_msg + "\r\n");
+	}
+
+	target->messageClient(kick_msg + "\r\n");
+
+	target->messageClient(":" + getFullMask() + " :You have been kicked from " + channel_name + "\r\n");
 
     if (message.size() > 0)
         printMessage(KICK_SOMEONE_MESSAGE);

@@ -7,6 +7,7 @@
 # include <map>
 # include <string>
 # include <vector>
+# include <set>
 
 class Client;
 
@@ -18,6 +19,7 @@ private:
 	_mapclient			clients;
 	_mapclient			invited;
 	std::vector<Client*> operators;
+	std::set<Client*>	kicked;
 	std::string			mode;
 	std::string			name;
 	std::string			key;
@@ -74,6 +76,7 @@ public:
 	// Invite-only
 	void				setInviteOnly(bool value);
 	bool				isInviteOnly() const;
+	void				removeInvited(Client *client);
 
 	// Restrição de tópico
 	void				setTopicRestriction(bool value);
@@ -93,6 +96,8 @@ public:
 	bool				isInvited(Client *client);
 	void				addInvited(Client *client);
 	void				delInvited(Client *client);
+	void				addKickedClient(Client *client);
+	bool				isKicked(Client *client) const;
 
 	// Modos
 	std::string			addMode(const std::string &mode);

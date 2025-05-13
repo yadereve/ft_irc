@@ -27,18 +27,21 @@ int Client::join()
 	if (channelExist(channel_name)) {
 		channel = _server.getChannelByName(channel_name);
 
-		if (!channel->isMember(this)) {
-			if (channel->isInviteOnly() && !channel->isInvited(this))
-				return ERR_INVITE_ONLY_CHAN;
+		if (channel->isMember(this))
+			return ERR_USER_ON_CHANNEL;
+
+		if (!channel->isInvited(this) && (channel->isInviteOnly() || channel->isKicked(this)))
+			return ERR_INVITE_ONLY_CHAN;
+		
+		if (channel->getUserLimit() > 0 && channel->getUserCount() >= channel->getUserLimit())
+			return ERR_CHANNEL_IS_FULL;
 			
-			channel->addClient(this);
+		channel->addClient(this);
 
-			if (channel->getUserLimit() > 0 && channel->getUserCount() >= channel->getUserLimit())
-				return ERR_CHANNEL_IS_FULL;
+		channel->removeInvited(this);
 
-			sendJoinMessages(channel_name, channel);
-			printMessage(JOINED_CHANNEL);
-		}
+		sendJoinMessages(channel_name, channel);
+		printMessage(JOINED_CHANNEL);
 	} else {
 		_server.setNewChannel(channel_name);
 
