@@ -43,6 +43,8 @@ int Client::mode()
 
     bool adding = true;
     size_t paramIndex = 2;
+    std::vector<std::string> params;
+    std::string mode_changes;
 
     for (size_t i = 0; i < mode_flags.size(); ++i)
     {
@@ -65,12 +67,13 @@ int Client::mode()
         switch (mode)
         {
             case 'i':
-                std::cout << "Setting invite-only to: " << adding << std::endl; // Debug print
                 channel->setInviteOnly(adding);
+				mode_changes += "i";
                 break;
 
             case 't':
                 channel->setTopicRestriction(adding);
+	        	mode_changes += "t";
                 break;
 
             case 'k':
@@ -79,9 +82,13 @@ int Client::mode()
                     if (_arguments.size() <= paramIndex)
                         return ERR_NEED_MORE_PARAMS;
                     channel->setPassword(_arguments[paramIndex++]);
+					params.push_back(_arguments[paramIndex++]);
                 }
-                else
-                    channel->removePassword();
+                else {
+					channel->removePassword();
+					mode_changes += "k";
+				}
+				mode_changes += "k";
                 break;
 
             case 'l':
@@ -91,26 +98,31 @@ int Client::mode()
                         return ERR_NEED_MORE_PARAMS;
                     int limit = std::atoi(_arguments[paramIndex++].c_str());
                     channel->setUserLimit(limit);
+					params.push_back(_arguments[paramIndex++]);
                 }
-                else
-                    channel->removeUserLimit();
+                else {
+					channel->removeUserLimit();
+					mode_changes += "l";
+				}
+				mode_changes += "l";
                 break;
 
             case 'o':
+			{
                 if (_arguments.size() <= paramIndex)
                     return ERR_NEED_MORE_PARAMS;
 
-                {
-                    Client* target = _server.getClientByNick(_arguments[paramIndex++]);
-                    if (!target || !channel->isMember(target))
-                        return ERR_NOT_ON_CHANNEL;
-
-                    if (adding)
-                        channel->addOperator(target);
-                    else
-                        channel->removeOperator(target);
-                }
+                Client* target = _server.getClientByNick(_arguments[paramIndex++]);
+                if (!target || !channel->isMember(target))
+                    return ERR_NOT_ON_CHANNEL;
+                if (adding)
+                    channel->addOperator(target);
+                else
+                    channel->removeOperator(target);
+				 mode_changes += "o";
+                params.push_back(_arguments[paramIndex++]);
                 break;
+			}
 
             default:
                 return ERR_UNKNOWN_MODE;

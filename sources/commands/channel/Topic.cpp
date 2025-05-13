@@ -45,8 +45,14 @@ int Client::topic()
         }
     }
 
-    if (!channel || !channel->isMember(this))
-        return ERR_NOT_ON_CHANNEL;
+    if (!channel || !channel->isMember(this)) {
+		return ERR_NOT_ON_CHANNEL;
+	}
+
+	if (!channel->isOperator(this)) {
+		return ERR_CHAN_OP_PRIV_NEEDED;
+	}
+	    
 
     // show topic
     if (_arguments.size() == 1)

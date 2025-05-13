@@ -15,7 +15,7 @@ int Client::join()
 	if (!_authenticated_check)
 		return ERR_NOT_AUTHENTICATED;
 
-	if (_arguments.size() != 1)
+	if (_arguments.size() != 1 && _arguments.size() != 2)
 		return ERR_NEED_MORE_PARAMS;
 
 	std::string channel_name = _arguments[0];
@@ -29,13 +29,24 @@ int Client::join()
 
 		if (channel->isMember(this))
 			return ERR_USER_ON_CHANNEL;
+		
+		if (!channel->getPassword().empty())
+		{
+			// Check if password argument is present
+			if (_arguments.size() < 2)
+				return ERR_BAD_CHANNEL_KEY;
+
+			std::string pass = _arguments[1];
+			if (pass != channel->getPassword())
+				return ERR_BAD_CHANNEL_KEY;
+		}
 
 		if (!channel->isInvited(this) && (channel->isInviteOnly() || channel->isKicked(this)))
 			return ERR_INVITE_ONLY_CHAN;
 		
 		if (channel->getUserLimit() > 0 && channel->getUserCount() >= channel->getUserLimit())
-			return ERR_CHANNEL_IS_FULL;
-			
+			return ERR_CHANNEL_IS_FULL;		
+
 		channel->addClient(this);
 
 		channel->removeInvited(this);
