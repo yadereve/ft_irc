@@ -3,7 +3,7 @@ NAME = ircserv
 NAME_BOT = ircbot
 
 CC = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98
 
 SRC_DIR = sources
 SRC_DIR_BOT = sources/Bot
@@ -52,15 +52,6 @@ $(NAME_BOT): $(OBJ_BOT)
 all: $(NAME)
 
 bot: $(NAME_BOT)
-
-# generate dependency files
-# CXXFLAGS += -MMD
-
-# leacks
-# CXXFLAGS += -fsanitize=address
-
-# for MacOs: cpp08
-#	@$(CC) $(CXXFLAGS) $(OBJ) -o $(NAME) -lc++
 
 # valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./whatever
 

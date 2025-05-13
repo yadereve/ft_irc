@@ -121,11 +121,7 @@ void Server::handleClientMessage(size_t& index)
 
 	if (bytesReceived <= 0)
 	{
-		// Client disconnected
-		std::cout << "[" << getTime() << "] " << RED << "Client " << clientSocket << " disconnected" << RESET << std::endl;
-		close(clientSocket);
-		_pollFds.erase(_pollFds.begin() + index);
-		_client_list.erase(clientSocket);
+		handleQuit(clientSocket);
 		--index; // Adjust index after removal
 	}
 	else
@@ -152,6 +148,15 @@ void Server::handleQuit(int clientSocket)
 			break;
 		}
 	}
+	//deleting a nick from the _nick_list
+	std::string nick = it->second->getNickname();
+	std::vector<std::string>::iterator itNick = std::find(_nick_list.begin(), _nick_list.end(), nick);
+	if (itNick != _nick_list.end())
+		_nick_list.erase(itNick);
+
+	//deleting a client from the _client_list
+	if (it->second)
+		delete it->second;
 	_client_list.erase(it);
 }
 

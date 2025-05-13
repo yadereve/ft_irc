@@ -44,7 +44,6 @@ private:
 	// temporary data
 	std::string _cmd;
 	std::vector<std::string> _arguments;
-	std::string _input;
 	// user data
 	std::string _nick;
 	std::string _user;
