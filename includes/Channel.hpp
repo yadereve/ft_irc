@@ -81,6 +81,7 @@ public:
 	// Restrição de tópico
 	void				setTopicRestriction(bool value);
 	bool				isTopicRestricted() const;
+	bool				TopicFlag() const;
 
 	// Outros
 	bool				isEmpty(void);
@@ -98,6 +99,7 @@ public:
 	void				delInvited(Client *client);
 	void				addKickedClient(Client *client);
 	bool				isKicked(Client *client) const;
+	Client*				getOnlyClient() const;
 
 	// Modos
 	std::string			addMode(const std::string &mode);

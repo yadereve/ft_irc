@@ -61,6 +61,13 @@ int Client::part()
     // TODO - user is removed from a channel (CHANNEL)
     target_channel->removeClient(this);
 	target_channel->removeOperator(this);
+
+	if (target_channel->getUserCount() == 1) {
+	// Pegue o único membro restante
+	Client* remainingClient = target_channel->getOnlyClient();
+	if (remainingClient)
+		target_channel->addOperator(remainingClient);
+	}
     printMessage(LEAVE_CHANNEL);
 
     // TODO - check if channel is empty (CHANNEL)

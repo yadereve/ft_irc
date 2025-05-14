@@ -72,9 +72,15 @@ int Client::mode()
                 break;
 
             case 't':
-                channel->setTopicRestriction(adding);
-	        	mode_changes += "t";
-                break;
+        		if (adding) {
+        		    channel->setTopicRestriction(true);
+        		    mode_changes += "t";
+        		}
+				else {
+        		    channel->setTopicRestriction(false);
+        		    mode_changes += "t";
+        		}
+        		break;
 
             case 'k':
                 if (adding)

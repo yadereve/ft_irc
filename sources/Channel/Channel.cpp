@@ -12,7 +12,7 @@ void Channel::addClient(Client *client) {
 	usersCount++;
 }
 
-Channel::Channel(std::string name) : name(name), inviteOnly(false), topicRestricted(false)
+Channel::Channel(std::string name) : mode(""), name(name),  key(""), topic(""), password(""), usersLimit(0), usersCount(0), inviteOnly(false), topicRestricted(false)
 {
 }
 
@@ -94,8 +94,11 @@ std::string Channel::addMode(const std::string &newMode) {
 
 // Remove um modo do canal
 std::string Channel::delMode(const std::string &removeMode) {
-    mode.erase(mode.find(removeMode), removeMode.length());
-    std::cout << "Mode after removing: " << mode << std::endl; // Debug print
+    size_t pos = mode.find(removeMode);
+    
+    if (pos != std::string::npos) {
+        mode.erase(pos, removeMode.length());
+    }
     return mode;
 }
 
@@ -248,11 +251,12 @@ bool Channel::isInviteOnly() const {
 }
 
 void Channel::setTopicRestriction(bool value) {
-    topicRestricted = value;
+    if (topicRestricted != value)
+        topicRestricted = value;
     if (value)
-        addMode("t");
+		addMode("t");
     else
-        delMode("t");
+		delMode("t");
 }
 
 bool Channel::isTopicRestricted() const {
@@ -278,4 +282,10 @@ void Channel::removeInvited(Client* client)
 		return;
 
 	invited.erase(client->getNickname());
+}
+
+Client* Channel::getOnlyClient() const {
+	if (clients.size() == 1)
+		return clients.begin()->second;
+	return NULL;
 }

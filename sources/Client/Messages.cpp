@@ -210,7 +210,7 @@ void Client::printMessage(int message_id)
             oss << BRIGHT_MAGENTA BOLT << "You left the channel: " << WHITE << _arguments[0] << RESEND;
             break;
         case SHOWING_CHANNEL_TOPIC:
-            oss << BRIGHT_MAGENTA BOLT << "You are seeing the topic of the channel: " << WHITE << _arguments[0] << RESEND;
+            oss << BRIGHT_MAGENTA BOLT << " You are seeing the topic of the channel: " << WHITE << _arguments[0] << RESEND;
             break;
         case CHANNEL_TOPIC_CHANGED:
             oss << BRIGHT_MAGENTA BOLT << "You are changing the topic of the channel: " << WHITE << _arguments[0] << RESEND;

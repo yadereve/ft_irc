@@ -49,7 +49,7 @@ int Client::topic()
 		return ERR_NOT_ON_CHANNEL;
 	}
 
-	if (!channel->isOperator(this)) {
+	if (!channel->isOperator(this) && !channel->isTopicRestricted()) {
 		return ERR_CHAN_OP_PRIV_NEEDED;
 	}
 	    
