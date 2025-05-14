@@ -22,9 +22,13 @@ int Client::quit()
     for (size_t i = 0; i < channels.size(); ++i) {
         Channel* ch = const_cast<Channel*>(&channels[i]);
         if (ch->isMember(this)) {
-            std::string quitMessage = this->getNickname() + " has left the channel: " + ch->getName() + "\n";
+			
+			std::string quitMessage = ":" + this->getNickname() + "!" + _user + "@" + _hostname + " QUIT :" + reason + "\r\n";
             ch->broadcast(quitMessage);  // Envia a mensagem para o canal
             ch->removeClient(this);
+			Client* remainingClient = ch->getOnlyClient();
+			if (remainingClient  && !ch->isOperator(remainingClient))
+				ch->addOperator(remainingClient);
         }
     }
 

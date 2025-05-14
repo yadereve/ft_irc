@@ -35,8 +35,6 @@ void Channel::removeClient(Client *client) {
         std::cerr << "Client is NULL!" << std::endl;
         return;
     }
-
-    std::cout << "Removing client: " << client << std::endl;
 	
 	std::string nickname = client->getNickname();
 
